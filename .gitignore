@@ -1,0 +1,28 @@
+# Linux
+.*
+!.gitignore
+!.htaccess
+*~
+
+
+# Netbeans
+nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
+nbactions.xml
+nb-configuration.xml
+
+
+# cordova Mobile
+config.xml
+hooks/
+nbproject/
+platforms/
+plugins/
+
+# pruebas
+pruebahandlebars.html
+js/Beers.json
+
