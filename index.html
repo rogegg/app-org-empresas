@@ -28,10 +28,16 @@
         <meta name=”viewport” content=”user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=high-dpi” />
 
 
-        <!-- Ficheros JavaScript -->
-	      <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-        <script src="js/jQueryMobile/jquery.mobile-1.4.5.min.js"></script>
+        <!-- JqueryMobile -->
+	    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+        <script src="js/jQueryMobile/jquery.mobile-1.4.5.js"></script>
+        <script src="js/my.effects.jquery.mobile.js"></script>
+
+        
+        <!-- Handlebars -->
         <script src="js/handlebars/handlebars-v3.0.0.js"></script>
+        
+        <!-- Mis funciones JavaScript -->
         <script src="js/functions.js"></script>
 
 
@@ -39,6 +45,8 @@
         <link rel="stylesheet" href="js/jQueryMobile/jquery.mobile-1.4.0.min.css" />
         <link rel="stylesheet" href="js/jQueryMobile/theme-classic.css" />
 
+       
+       
         <title>Aplicación Organización Empresas</title>
         <script src="https://spreadsheets.google.com/feeds/list/1sFG2bBd0m00Lps7f6cZXUEAT2CbFgCof9W97ATx2VRE/ovfi9s6/public/values?alt=json-in-script&callback=leerAsignaturas" type="text/javascript"></script>
 
@@ -105,12 +113,10 @@
               <h3>{{nombre_variable}}</h3>
                 <div data-role="collapsible-set">
                   {{#each subvariables}}
-                    <div data-role="collapsible" data-collapsed="true"
-                        data-theme="g">
+                    <div data-role="collapsible" data-collapsed="true" data-theme="g">
                       <h4>{{nombre_subvariable}}</h4>
                           {{#each conceptos}}
-
-                          <a href="#{{id}}" data-rel="popup" class="{{{asig}}} ui-btn ui-btn-inline ui-corner-all">{{nombre_concepto}}</a>
+                          <a href="#{{id}}" data-transition="slideup" data-rel="popup" class="{{{asig}}} ui-btn ui-btn-inline ui-corner-all">{{nombre_concepto}}</a>
                           <div data-role="popup" id="{{id}}">
                             <div data-role="main" class="ui-content">
                               <input type="button" value="Definición" data-theme="b">
@@ -127,7 +133,16 @@
             {{~/each}}
           </div>
         </script>
-        <!-- -->
+        <!-- Fin plantilla conceptos -->
+        
+        <script>
+            $('#my-collaspible').bind('expand', function () {
+                $(this).children().slideDown(1000);
+            }).bind('collapse', function () {
+                $(this).children().next().slideUp(1000);
+            });
+        
+        </script>
 
     </head>
 
@@ -141,7 +156,7 @@
             <script>$('#contenedor-headerHome').html(htmlHeader);</script>
 
             <div class="center">
-            </br><img src="img/logo.png" alt="logo" height="200" width="200">
+            <br><img src="img/logo.png" alt="logo" height="200" width="200">
             </div>
 
             <div id="contenedor-home"></div>
@@ -203,7 +218,6 @@
         -->
         <div data-role="page" id="info" data-theme="c">
             <p>
-                información de la aplicación información de la aplicación
                 información de la aplicación información de la aplicación
             </p>
         </div>

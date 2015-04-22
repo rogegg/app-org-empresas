@@ -1315,15 +1315,34 @@ html body .ui-group-theme-g .ui-btn:visited,
 html head + body .ui-btn.ui-btn-g:visited {
 	background: 			#fadb4e /*{e-bup-background-color}*/;
 	background-image: -webkit-gradient(linear, left top, left bottom, from( #49A5BF /*{e-bup-background-start}*/), to( #49A5BF /*{e-bup-background-end}*/)); /* Saf4+, Chrome */
-	background-image: -webkit-linear-gradient( #49A5BF /*{e-bup-background-start}*/, #49A5BF /*{e-bup-background-end}*/); /* Chrome 10+, Saf5.1+ */
-	background-image:    -moz-linear-gradient( #49A5BF /*{e-bup-background-start}*/, #49A5BF /*{e-bup-background-end}*/); /* FF3.6 */
-	background-image:     -ms-linear-gradient( #49A5BF /*{e-bup-background-start}*/, #49A5BF /*{e-bup-background-end}*/); /* IE10 */
-	background-image:      -o-linear-gradient( #49A5BF /*{e-bup-background-start}*/, #49A5BF /*{e-bup-background-end}*/); /* Opera 11.10+ */
-	background-image:         linear-gradient( #49A5BF /*{e-bup-background-start}*/, #49A5BF /*{e-bup-background-end}*/);
-	border-color:	 		#00000 /*{e-bup-border}*/;
+	background-image: -webkit-linear-gradient( #F27954 /*{e-bup-background-start}*/, #F15A29 /*{e-bup-background-end}*/); /* Chrome 10+, Saf5.1+ */
+	background-image:    -moz-linear-gradient( #F27954 /*{e-bup-background-start}*/, #F15A29 /*{e-bup-background-end}*/); /* FF3.6 */
+	background-image:     -ms-linear-gradient( #F27954 /*{e-bup-background-start}*/, #F15A29 /*{e-bup-background-end}*/); /* IE10 */
+	background-image:      -o-linear-gradient( #F27954 /*{e-bup-background-start}*/, #F15A29 /*{e-bup-background-end}*/); /* Opera 11.10+ */
+	background-image:         linear-gradient( #F27954 /*{e-bup-background-start}*/, #F15A29 /*{e-bup-background-end}*/);
+	border-color:	 		#ffffff /*{e-bup-border}*/;
 	color: 					#ffffff /*{e-bup-color}*/;
 	text-shadow: 0 /*{e-bup-shadow-x}*/ 1px /*{e-bup-shadow-y}*/ 0 /*{e-bup-shadow-radius}*/ #000000 /*{e-bup-shadow-color}*/;
 }
+
+
+/*Transitions - collapsible*/
+.ui-collapsible-content {
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  -ms-transition: all 0.3s;
+  -o-transition: all 0.3s;
+  transition: all 0.3s;
+  height: auto;
+  overflow: hidden;
+}
+
+.ui-collapsible-content-collapsed {
+  display: block;
+  height: 0;
+  padding: 0 50px;
+}
+
 
 /************************** end of my theme **********************************/
 
