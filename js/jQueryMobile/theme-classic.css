@@ -226,6 +226,11 @@ html .ui-btn.ui-checkbox-on:after {
 	background-size: 2.875em 2.875em;
 }
 
+/* My icons*/
+.ui-icon-arrow-r-orange{
+    background-image: url(/app-org-empresas/js/jQueryMobile/images/my-icons-png/arrow-r-orange.png);
+}
+
 /* Swatches */
 
 /* A

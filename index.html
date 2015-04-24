@@ -31,11 +31,13 @@
         <!-- JqueryMobile -->
 	    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
         <script src="js/jQueryMobile/jquery.mobile-1.4.5.js"></script>
-        <script src="js/my.effects.jquery.mobile.js"></script>
+        
 
         
         <!-- Handlebars -->
         <script src="js/handlebars/handlebars-v3.0.0.js"></script>
+        <!-- HandlebarsHelpers -->
+        <script src="js/handlebars/handlebars-helpers.js"></script>
         
         <!-- Mis funciones JavaScript -->
         <script src="js/functions.js"></script>
@@ -109,43 +111,108 @@
         <script id="plantilla-conceptos" type="text/x-handlebars-template">
           <div data-role="collapsible-set">
             {{#each variable}}
-            <div data-role="collapsible" data-collapsed="true">
-              <h3>{{nombre_variable}}</h3>
-                <div data-role="collapsible-set">
-                  {{#each subvariables}}
-                    <div data-role="collapsible" data-collapsed="true" data-theme="g">
-                      <h4>{{nombre_subvariable}}</h4>
-                          {{#each conceptos}}
-                          <a href="#{{id}}" data-transition="slideup" data-rel="popup" class="{{{asig}}} ui-btn ui-btn-inline ui-corner-all">{{nombre_concepto}}</a>
-                          <div data-role="popup" id="{{id}}">
-                            <div data-role="main" class="ui-content">
-                              <input type="button" value="Definición" data-theme="b">
-                              <p align="center">{{definicion}}</p>
-                              <input type="button" value="Ejemplo" data-theme="b">
-                              <p align="center">
-                                  {{ejemplo}}
+            <div data-role="collapsible" data-collapsed="true" data-collapsed-icon="carat-r" data-expanded-icon="carat-d">
+             <h3>{{nombre_variable}}</h3> 
+             <div data-role="collapsible-set">
+                {{#each subvariables}}
+                <!-- Si hay subvariable -->
+                <div data-role="collapsible" data-collapsed="true" data-theme="g" data-collapsed-icon="arrow-r" data-expanded-icon="arrow-d">
+                  <h4>{{nombre_subvariable}}</h4>
+                      {{#each conceptos}}
+                      <a href="#{{id}}" data-transition="slideup" data-rel="popup" class="{{{asig}}} ui-btn ui-btn-inline ui-corner-all">{{nombre_concepto}}</a>
+                      <div data-role="popup" id="{{id}}">
+                        <div data-role="main" class="ui-content">
+                          <input type="button" value="Definición" data-theme="b">
+                          <p align="center">{{definicion}}</p>
+                          <input type="button" value="Ejemplo" data-theme="b">
+                          <p align="center">
+                              {{#ifCond img '!=' '' }}
                                   <br><img src="{{img}}" width=100 height=100></img>
-                              </p>
-                            </div>
-                          </div>
-                          {{~/each}}
-                    </div>
-                  {{~/each}}
+                              {{/ifCond}}
+                          </p>
+                        </div>
+                      </div>
+                      {{~/each}}
                 </div>
+
+                {{~/each}}
+                </div>            
             </div>
             {{~/each}}
           </div>
         </script>
         <!-- Fin plantilla conceptos -->
         
-        <script>
-            $('#my-collaspible').bind('expand', function () {
-                $(this).children().slideDown(1000);
-            }).bind('collapse', function () {
-                $(this).children().next().slideUp(1000);
-            });
-        
+        <!-- Plantilla para CONCEPTOS v4. Eliminar subvariables vacías
+
+        <script id="plantilla-conceptos" type="text/x-handlebars-template">
+          <div data-role="collapsible-set">
+            {{#each variable}}
+            <div data-role="collapsible" data-collapsed="true">
+              <h3>{{nombre_variable}}</h3>
+                
+                 {{#ifCond nombre_subvariable '!=' '' }}
+                 <div data-role="collapsible-set">
+                  {{#each subvariables}}
+                    <!-- Si hay subvariable 
+                    
+                        <div data-role="collapsible" data-collapsed="true" data-theme="g" data-collapsed-icon="arrow-r" data-expanded-icon="arrow-d">
+                          <h4>{{nombre_subvariable}}</h4>
+                              {{#each conceptos}}
+                              <a href="#{{id}}" data-transition="slideup" data-rel="popup" class="{{{asig}}} ui-btn ui-btn-inline ui-corner-all">{{nombre_concepto}}</a>
+                              <div data-role="popup" id="{{id}}">
+                                <div data-role="main" class="ui-content">
+                                  <input type="button" value="Definición" data-theme="b">
+                                  <p align="center">{{definicion}}</p>
+                                  <input type="button" value="Ejemplo" data-theme="b">
+                                  <p align="center">
+                                      {{ejemplo}}
+                                      {{#ifCond img '!=' '' }}
+                                          <br><img src="{{img}}" width=100 height=100></img>
+                                      {{/ifCond}}
+                                  </p>
+                                </div>
+                              </div>
+                              {{~/each}}
+                        </div>
+                   
+                    {{~/each}}
+                    </div>
+                 {{/ifCond}}
+                 <p>Prueeeeba antes de else</p>
+                 
+                 <!-- Si no hay subvariable 
+                 {{#ifCond nombre_subvariable '==' '' }}
+                     <div data-role="collapsible-set">
+                        <div data-role="collapsible">
+                            <h4>PRUEBA ELSE</h4>
+                        </div>             
+                    </div>   
+                      
+                 {{/ifCond}}
+                
+            </div>
+            {{~/each}}
+          </div>
         </script>
+         Fin plantilla conceptos -->    
+         
+         
+         <!-- Plantilla Autoevaluación -->
+        <script id="plantilla-autoevaluacion" type="text/x-handlebars-template">
+          <a href="#preguntas" data-role="button">Preguntas Cortas</a>
+          <a href="#verdader-falso" data-role="button">Verdadero/Falso</a>
+        </script>
+        
+         <!-- Plantilla Preguntas Cortas -->
+        <script id="plantilla-preguntas-cortas" type="text/x-handlebars-template">
+          <a data-role="button" data-theme="g">Pregunta</a>
+          <p>{{pregunta}}</p>
+          <a data-role="button" data-theme="g">Respuesta</a>
+        </script>
+         
+         
+         
 
     </head>
 
@@ -213,8 +280,35 @@
         <div data-role="page" id="Autoevaluación" data-theme="c">
           <div id="contenedor-header-autoevaluacion"></div>
           <script>$('#contenedor-header-autoevaluacion').html(htmlH);</script>
+          
+          <div id="contenedor-autoevaluacion"></div>
+          <script>
+            var source   = $("#plantilla-autoevaluacion").html();
+            var template = Handlebars.compile(source);
+            var html     = template();
+            $('#contenedor-autoevaluacion').html(html);
+          </script>
         </div>
 
+        <!--
+            Página de PREGUNTAS CORTAS.
+        -->
+        <div data-role="page" id="preguntas" data-theme="c">
+          <div id="contenedor-header-preguntas"></div>
+          <script>$('#contenedor-header-preguntas').html(htmlH);</script>
+          
+          <div id="contenedor-preguntas"></div>
+          <script>
+            var source   = $("#plantilla-preguntas-cortas").html();
+            var template = Handlebars.compile(source);
+            var html     = template();
+            $('#contenedor-preguntas').html(html);
+          </script>
+        </div>
+
+        
+        
+        
 
         <!--
             Página de información
