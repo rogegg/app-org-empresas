@@ -70,7 +70,7 @@ function leerConceptos(json) {
 
   variable = new Array();
   subvariable = new Array();
-  vConcepto = new Array();
+  v_concepto = new Array();
 
   variable_tmp = "";
 
@@ -119,7 +119,7 @@ function leerConceptos(json) {
 
             /*************************** CONCEPTOS ********************************/
             for(l=k ; l<total && json.feed.entry[k].gsx$subvariable.$t == json.feed.entry[l].gsx$subvariable.$t ; l++){
-              vConcepto.push({asig: json.feed.entry[l].gsx$asignatura.$t, 
+              v_concepto.push({asig: json.feed.entry[l].gsx$asignatura.$t, 
                               id:l,
                               nombre_concepto: json.feed.entry[l].gsx$concepto.$t,
                               definicion: String(json.feed.entry[l].gsx$definicion.$t),
@@ -131,7 +131,7 @@ function leerConceptos(json) {
             //Añadimos las subvariables y conceptos a las variables.
             context_conceptos.variable[j].subvariables.push(
               {nombre_subvariable: json.feed.entry[k].gsx$subvariable.$t,
-                conceptos: vConcepto
+                conceptos: v_concepto
 
               }
 
@@ -140,7 +140,7 @@ function leerConceptos(json) {
 
           subvariable_tmp = json.feed.entry[k].gsx$subvariable.$t;
 
-          vConcepto=[];
+          v_concepto=[];
                 /************************** FIN CONCEPTOS *****************************/
         }
       }

@@ -55,7 +55,7 @@
 
 
         <!-- Plantilla para la cabecera del home -->
-        <script id="plantilla-headerHome" type="text/x-handlebars-template">
+        <script id="plantilla-header-home" type="text/x-handlebars-template">
           <div data-role="header" data-theme="b">
               <a href="#info" data-role="button" data-icon="info"
                  data-iconpos="notext" class="ui-btn-right">Info</a>
@@ -64,9 +64,9 @@
         </script>
 
         <script>
-          var src   = $("#plantilla-headerHome").html();
+          var src   = $("#plantilla-header-home").html();
           var t = Handlebars.compile(src);
-          var htmlHeader = t(context);
+          var html_header = t(context);
         </script>
 
         <!-- Plantilla para la cabecera general-->
@@ -80,15 +80,14 @@
             </div>
         </script>
         <script>
-          var srcHeader   = $("#plantilla-header").html();
-          var tHeader = Handlebars.compile(srcHeader);
-          var htmlH = tHeader(context);
+          var src_header   = $("#plantilla-header").html();
+          var t_header = Handlebars.compile(src_header);
+          var html_h = t_header(context);
         </script>
 
 
         <!-- Plantilla para el HOME de la página. -->
         <script id="plantilla-home" type="text/x-handlebars-template">
-
           {{#each asignatura}}
             <a href="#menu" data-role="button" onclick="filtroAsignatura('{{codigo}}')">{{{nombre}}}</a>
           {{~/each}}
@@ -126,6 +125,7 @@
                           <p align="center">{{definicion}}</p>
                           <input type="button" value="Ejemplo" data-theme="b">
                           <p align="center">
+                              {{ejemplo}}
                               {{#ifCond img '!=' '' }}
                                   <br><img src="{{img}}" width=100 height=100></img>
                               {{/ifCond}}
@@ -222,8 +222,8 @@
             Se selecciona la asignatura.
         -->
         <div data-role="page" id="home" data-theme="c">
-            <div id="contenedor-headerHome"></div>
-            <script>$('#contenedor-headerHome').html(htmlHeader);</script>
+            <div id="contenedor-header-home"></div>
+            <script>$('#contenedor-header-home').html(html_header);</script>
 
             <div class="center">
             <br><img src="img/logo.png" alt="logo" height="200" width="200">
@@ -245,7 +245,7 @@
           <script src="https://spreadsheets.google.com/feeds/list/1sFG2bBd0m00Lps7f6cZXUEAT2CbFgCof9W97ATx2VRE/osnfhix/public/values?alt=json-in-script&callback=leerMenu" type="text/javascript"></script>
 
           <div id="contenedor-header"></div>
-          <script>$('#contenedor-header').html(htmlH);</script>
+          <script>$('#contenedor-header').html(html_h);</script>
 
           <div id="contenedor-menu"></div>
           <script>
@@ -263,7 +263,7 @@
           <script src="https://spreadsheets.google.com/feeds/list/1sFG2bBd0m00Lps7f6cZXUEAT2CbFgCof9W97ATx2VRE/od6/public/values?alt=json-in-script&callback=leerConceptos" type="text/javascript"></script>
 
           <div id="contenedor-header-conceptos"></div>
-          <script>$('#contenedor-header-conceptos').html(htmlH);</script>
+          <script>$('#contenedor-header-conceptos').html(html_h);</script>
 
           <div id="contenedor-conceptos"></div>
           <script>
@@ -279,7 +279,7 @@
         -->
         <div data-role="page" id="Autoevaluación" data-theme="c">
           <div id="contenedor-header-autoevaluacion"></div>
-          <script>$('#contenedor-header-autoevaluacion').html(htmlH);</script>
+          <script>$('#contenedor-header-autoevaluacion').html(html_h);</script>
           
           <div id="contenedor-autoevaluacion"></div>
           <script>
@@ -295,7 +295,7 @@
         -->
         <div data-role="page" id="preguntas" data-theme="c">
           <div id="contenedor-header-preguntas"></div>
-          <script>$('#contenedor-header-preguntas').html(htmlH);</script>
+          <script>$('#contenedor-header-preguntas').html(html_h);</script>
           
           <div id="contenedor-preguntas"></div>
           <script>
