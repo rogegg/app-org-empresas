@@ -119,7 +119,7 @@
                   <h4>{{nombre_subvariable}}</h4>
                       {{#each conceptos}}
                       <a href="#{{id}}" data-transition="slideup" data-rel="popup" class="{{{asig}}} ui-btn ui-btn-inline ui-corner-all">{{nombre_concepto}}</a>
-                      <div data-role="popup" id="{{id}}">
+                      <div data-role="popup" id="{{id}}" data-position-to="window">
                         <div data-role="main" class="ui-content">
                           <input type="button" value="Definición" data-theme="b">
                           <p align="center">{{definicion}}</p>
@@ -198,19 +198,31 @@
          Fin plantilla conceptos -->    
          
          
-         <!-- Plantilla Autoevaluación -->
+        <!-- Plantilla Autoevaluación -->
         <script id="plantilla-autoevaluacion" type="text/x-handlebars-template">
-          <a href="#preguntas" data-role="button">Preguntas Cortas</a>
+          <a href="#temas_preguntas" data-role="button">Preguntas Cortas</a>
           <a href="#verdader-falso" data-role="button">Verdadero/Falso</a>
         </script>
         
-         <!-- Plantilla Preguntas Cortas -->
-        <script id="plantilla-preguntas-cortas" type="text/x-handlebars-template">
-          <a data-role="button" data-theme="g">Pregunta</a>
-          <p>{{pregunta}}</p>
-          <a data-role="button" data-theme="g">Respuesta</a>
+        <!-- Plantilla Temas Preguntas Cortas -->
+        <script id="plantilla-temas-preguntas-cortas" type="text/x-handlebars-template">
+            <ul data-role="listview" data-inset="true" data-filter="true">
+                <li data-role="list-divider" data-theme="b">Temas</li>
+                {{#each tema}}
+                    <li><a href="#pregunta" onclick="generaPregunta()">{{nombre_tema}}</a></li>
+                {{~/each}}
+                <li><a href="#">Tema de prueba para preguntas cortas</a></li>
+            </ul>
         </script>
-         
+        
+        <!-- Plantilla Preguntas Cortas -->
+        <!-- Usamos class en <p> porque aparentemente jQuery no inserta bien con id's en la plantilla -->
+        <script id="plantilla-preguntas-cortas" type="text/x-handlebars-template">            
+            <a data-role="button" data-theme="g">Pregunta</a>
+            <p class="pregunta"></p>
+            <a data-role="button" data-theme="g">Respuesta</a>
+            <p class="opciones"></p>
+        </script> 
          
          
 
@@ -278,6 +290,8 @@
             Página de AUTOEVALUACION.
         -->
         <div data-role="page" id="Autoevaluación" data-theme="c">
+          <script src="https://spreadsheets.google.com/feeds/list/1sFG2bBd0m00Lps7f6cZXUEAT2CbFgCof9W97ATx2VRE/otku9qe/public/values?alt=json-in-script&callback=leerPreguntas" type="text/javascript"></script>
+          
           <div id="contenedor-header-autoevaluacion"></div>
           <script>$('#contenedor-header-autoevaluacion').html(html_h);</script>
           
@@ -290,22 +304,40 @@
           </script>
         </div>
 
+       
+       
         <!--
-            Página de PREGUNTAS CORTAS.
+            Página para los temas de PREGUNTAS CORTAS.
         -->
-        <div data-role="page" id="preguntas" data-theme="c">
+        <div data-role="page" id="temas_preguntas" data-theme="c">
           <div id="contenedor-header-preguntas"></div>
           <script>$('#contenedor-header-preguntas').html(html_h);</script>
           
-          <div id="contenedor-preguntas"></div>
+          <div id="contenedor-temas-preguntas"></div>
           <script>
-            var source   = $("#plantilla-preguntas-cortas").html();
+            var source   = $("#plantilla-temas-preguntas-cortas").html();
             var template = Handlebars.compile(source);
-            var html     = template();
-            $('#contenedor-preguntas').html(html);
+            var html     = template(context_preguntas);
+            $('#contenedor-temas-preguntas').html(html);
           </script>
         </div>
-
+        
+        
+        <!--
+            Página para la pregunta corta
+        -->
+        <div data-role="page" id="pregunta" data-theme="c">
+            <div id="contenedor-header-pregunta"></div>
+            <script>$('#contenedor-header-pregunta').html(html_h);</script>
+          
+            <div id="contenedor-preguntas"></div>
+            <script>
+                var source   = $("#plantilla-preguntas-cortas").html();
+                var template = Handlebars.compile(source);
+                var html     = template(context_pregunta);
+                $('#contenedor-preguntas').html(html);
+            </script>    
+        </div>
         
         
         

@@ -7,6 +7,8 @@ context.name = "Organización Empresas"
 
 var context_menu = new Object();
 var context_conceptos = new Object();
+var context_preguntas = new Object();
+var context_pregunta = new Object();
 
 //Muestra sólo los ejercicios y conceptos de la asignatura (Organización de Empresas)
 function showOe(){
@@ -63,22 +65,6 @@ function leerMenu(json) {
 }
 
 
-function leerConceptos(json) {
-  context_conceptos.variable = new Array();
-
-  total = json.feed.entry.length;
-
-  variable = new Array();
-  subvariable = new Array();
-  v_concepto = new Array();
-
-  variable_tmp = "";
-
-  for(i=0, j=0;i<total;i++){
-    //No incluimos variables repetidas en el vector variable.
-
-    if(variable_tmp != json.feed.entry[i].gsx$variable.$t){
-      variable_tmp = json.feed.entry[i].gsx$variable.$t;
 
 /*      //Estructura estática de ejemplo
       context_conceptos.variable[j] = {
@@ -102,6 +88,24 @@ function leerConceptos(json) {
          ]
       };
 */
+
+//Función para extraer la información de la hoja conceptos.
+//Y presentarlos como la extructura anterior de ejemplo.
+function leerConceptos(json) {
+  context_conceptos.variable = new Array();
+
+  total = json.feed.entry.length;
+
+  variable = new Array();
+  subvariable = new Array();
+  v_concepto = new Array();
+
+  variable_tmp = "";
+
+  for(i=0, j=0;i<total;i++){
+    //No incluimos variables repetidas en el vector variable.
+    if(variable_tmp != json.feed.entry[i].gsx$variable.$t){
+      variable_tmp = json.feed.entry[i].gsx$variable.$t;
 
       //Estructura de cada variable
       context_conceptos.variable[j] = {
@@ -141,20 +145,58 @@ function leerConceptos(json) {
           subvariable_tmp = json.feed.entry[k].gsx$subvariable.$t;
 
           v_concepto=[];
-                /************************** FIN CONCEPTOS *****************************/
+          /************************** FIN CONCEPTOS *****************************/
         }
       }
           /***********************FIN_SUBVARIABLES*********************************/
-          j++;
+      j++;
 
     }
 
 
-  //console.log(context_conceptos.variable[3].subvariables[0]);
-  //console.log(context_conceptos.variable[3]);
-
+  
   }
 
 }
+
+
+
+
+function leerPreguntas(json) {
+    context_preguntas.tema = new Array();
+    var tema_tmp = "";
+    total = json.feed.entry.length;
+    
+    for(i=0, j=0;i<total;i++){
+        //No incluimos variables repetidas en el vector tema.
+        if(tema_tmp != json.feed.entry[i].gsx$tema.$t){
+            tema_tmp = json.feed.entry[i].gsx$tema.$t;
+            //Si no es vacía
+            if(tema_tmp != ""){
+                //Estructura de cada variable
+                context_preguntas.tema[j] = {
+                    nombre_tema: json.feed.entry[i].gsx$tema.$t,
+                    id_tema: j,
+                };
+                j++;
+            }
+        }
+        
+    }
+    
+    //console.log("Context preguntas");
+    //console.log(context_preguntas);
+    
+}
+
+
+function generaPregunta(){
+    $('.pregunta').append('<p>Prueba nombre_pregunta</p>');
+    $('.opciones').append('<p>opcion1;opcion2;opcion3</p>');
+    //context_pregunta.nombre_pregunta = "Prueba nombre_pregunta";
+    //context_pregunta.opciones = "opcion1;opcion2;opcion3";
+    //console.log(context_pregunta);
+}
+
 
 /***************************************************/
