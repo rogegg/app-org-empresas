@@ -210,20 +210,27 @@
             <ul data-role="listview" data-inset="true" data-filter="true">
                 <li data-role="list-divider" data-theme="b">Temas</li>
                 {{#each tema}}
-                    <li><a href="#pregunta" onclick="generaPregunta()">{{nombre_tema}}</a></li>
+                     <li>
+                         <a href="#{{id_tema}}" data-rel="popup" class="ui-btn ui-corner-all ui-shadow ui-btn-inline" data-transition="pop">
+                             {{nombre_tema}}
+                         </a>
+                     </li>
+                     
+                     <div data-role="popup" id="{{id_tema}}" data-position-to="window">
+                         <div data-role="main" class="ui-content">
+                             <a data-role="button" data-theme="g">Pregunta</a>
+                             <p class="pregunta"></p>
+                             <a data-role="button" data-theme="g">Respuesta</a>
+                             <p class="opciones"></p>
+                         </div>
+                     </div>
                 {{~/each}}
-                <li><a href="#">Tema de prueba para preguntas cortas</a></li>
-            </ul>
+                
+
+            </ul>                  
         </script>
         
-        <!-- Plantilla Preguntas Cortas -->
-        <!-- Usamos class en <p> porque aparentemente jQuery no inserta bien con id's en la plantilla -->
-        <script id="plantilla-preguntas-cortas" type="text/x-handlebars-template">            
-            <a data-role="button" data-theme="g">Pregunta</a>
-            <p class="pregunta"></p>
-            <a data-role="button" data-theme="g">Respuesta</a>
-            <p class="opciones"></p>
-        </script> 
+
          
          
 
@@ -322,26 +329,7 @@
             $('#contenedor-temas-preguntas').html(html);
           </script>
         </div>
-        
-        
-        <!--
-            Página para la pregunta corta
-        -->
-        <div data-role="page" id="pregunta" data-theme="c">
-            <div id="contenedor-header-pregunta"></div>
-            <script>$('#contenedor-header-pregunta').html(html_h);</script>
-          
-            <div id="contenedor-preguntas"></div>
-            <script>
-                var source   = $("#plantilla-preguntas-cortas").html();
-                var template = Handlebars.compile(source);
-                var html     = template(context_pregunta);
-                $('#contenedor-preguntas').html(html);
-            </script>    
-        </div>
-        
-        
-        
+            
 
         <!--
             Página de información

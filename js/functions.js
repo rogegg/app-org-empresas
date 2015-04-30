@@ -1,14 +1,18 @@
+//"use strict";
 
 var total = 0;
 var filtro_asignatura="S";
 var context = new Object();
-context.name = "Organización Empresas"
+var tema_seleccionado = null;
+context.name = "Organización Empresas";
 
 
 var context_menu = new Object();
 var context_conceptos = new Object();
 var context_preguntas = new Object();
 var context_pregunta = new Object();
+
+
 
 //Muestra sólo los ejercicios y conceptos de la asignatura (Organización de Empresas)
 function showOe(){
@@ -136,7 +140,6 @@ function leerConceptos(json) {
             context_conceptos.variable[j].subvariables.push(
               {nombre_subvariable: json.feed.entry[k].gsx$subvariable.$t,
                 conceptos: v_concepto
-
               }
 
             );
@@ -152,20 +155,21 @@ function leerConceptos(json) {
       j++;
 
     }
-
-
   
   }
-
+    console.log(context_conceptos);
 }
 
 
 
-
+//Recibe datos de la hoja de cálculo en la variable json
+//Devuelve una estructura json más sencilla para mostrar con el sistema de plantillas.
 function leerPreguntas(json) {
     context_preguntas.tema = new Array();
     var tema_tmp = "";
     total = json.feed.entry.length;
+    var v_preguntas = new Array();
+    var n_enunciados_por_tema;
     
     for(i=0, j=0;i<total;i++){
         //No incluimos variables repetidas en el vector tema.
@@ -176,27 +180,57 @@ function leerPreguntas(json) {
                 //Estructura de cada variable
                 context_preguntas.tema[j] = {
                     nombre_tema: json.feed.entry[i].gsx$tema.$t,
-                    id_tema: j,
+                    id_tema: "id_tema"+i,
+                    preguntas:[],
                 };
+                /************ Preguntas dentro de un tema *******************/
+                var k=0;
+                for(k=i; json.feed.entry[k].gsx$tema.$t == json.feed.entry[i].gsx$tema.$t && k<total ;k++){
+                    console.log("*************************Dentro for");
+                    v_preguntas.push({enunciado: json.feed.entry[k].gsx$enunciado.$t,
+                                      opciones: json.feed.entry[k].gsx$opciones.$t,
+                                      respuesta: json.feed.entry[k].gsx$respuesta.$t
+                    })
+                }
+                //K es el número enunciados por tema.
+                var x = randomInt(0,k);
+                //Pasamos la pregunta aleatoria a la plantilla.
+                context_preguntas.tema[j].preguntas = v_preguntas[x];
+                v_preguntas=[];
+                
+                
                 j++;
+                console.log(context_preguntas);
             }
-        }
-        
+        }        
     }
     
     //console.log("Context preguntas");
     //console.log(context_preguntas);
-    
 }
 
 
+
+
+
+/*
+//Función que genera una pregunta aleatoria a partir de un tema
 function generaPregunta(){
-    $('.pregunta').append('<p>Prueba nombre_pregunta</p>');
+    //Buscamos entre qué indices están las preguntas de nuestro tema
+
+    $('.pregunta').append('<p>Prueba nombre_pregunta del tema _'+tema+'_</p>');
     $('.opciones').append('<p>opcion1;opcion2;opcion3</p>');
+
     //context_pregunta.nombre_pregunta = "Prueba nombre_pregunta";
     //context_pregunta.opciones = "opcion1;opcion2;opcion3";
-    //console.log(context_pregunta);
-}
+    console.log(tema);
 
+}*/
+
+
+
+function randomInt(min,max){
+    return Math.floor(Math.random()*(max-min+1)+min);
+}
 
 /***************************************************/
