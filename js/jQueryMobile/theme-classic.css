@@ -1349,6 +1349,12 @@ html head + body .ui-btn.ui-btn-g:visited {
 }
 
 
+.ui-disabled-g{
+	
+	pointer-events: none;
+}
+
+
 /************************** end of my theme **********************************/
 
 

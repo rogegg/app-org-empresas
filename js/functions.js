@@ -184,18 +184,21 @@ function leerPreguntas(json) {
                     preguntas:[],
                 };
                 /************ Preguntas dentro de un tema *******************/
-                var k=0;
+                var k;
                 for(k=i; json.feed.entry[k].gsx$tema.$t == json.feed.entry[i].gsx$tema.$t && k<total ;k++){
                     console.log("*************************Dentro for");
-                    v_preguntas.push({enunciado: json.feed.entry[k].gsx$enunciado.$t,
-                                      opciones: json.feed.entry[k].gsx$opciones.$t,
-                                      respuesta: json.feed.entry[k].gsx$respuesta.$t
-                    })
+                    
                 }
                 //K es el número enunciados por tema.
-                var x = randomInt(0,k);
+                var x = randomInt(i,k-1);
+                
+                v_preguntas.push({enunciado: json.feed.entry[x].gsx$enunciado.$t,
+                                      opciones: json.feed.entry[x].gsx$opciones.$t,
+                                      respuesta: json.feed.entry[x].gsx$respuesta.$t
+                })
+                
                 //Pasamos la pregunta aleatoria a la plantilla.
-                context_preguntas.tema[j].preguntas = v_preguntas[x];
+                context_preguntas.tema[j].preguntas = v_preguntas;
                 v_preguntas=[];
                 
                 

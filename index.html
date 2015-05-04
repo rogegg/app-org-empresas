@@ -29,7 +29,7 @@
         <meta name=”viewport” content=”user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=high-dpi” />
 
 
-        <!-- JqueryMobile -->
+         <!-- JqueryMobile -->
 	    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
         <script src="js/jQueryMobile/jquery.mobile-1.4.5.js"></script>
         
@@ -48,13 +48,16 @@
         <link rel="stylesheet" href="js/jQueryMobile/jquery.mobile-1.4.0.min.css" />
         <link rel="stylesheet" href="js/jQueryMobile/theme-classic.css" />
 
+        
+
        
        
         <title>Aplicación Organización Empresas</title>
         <script src="https://spreadsheets.google.com/feeds/list/1sFG2bBd0m00Lps7f6cZXUEAT2CbFgCof9W97ATx2VRE/ovfi9s6/public/values?alt=json-in-script&callback=leerAsignaturas" type="text/javascript"></script>
 
 
-
+       
+       
         <!-- Plantilla para la cabecera del home -->
         <script id="plantilla-header-home" type="text/x-handlebars-template">
           <div data-role="header" data-theme="b">
@@ -207,7 +210,7 @@
         
         <!-- Plantilla Temas Preguntas Cortas -->
         <script id="plantilla-temas-preguntas-cortas" type="text/x-handlebars-template">
-            <ul data-role="listview" data-inset="true" data-filter="true">
+            <ul data-role="listview" data-inset="true" data-filter="true" >
                 <li data-role="list-divider" data-theme="b">Temas</li>
                 {{#each tema}}
                      <li>
@@ -218,15 +221,17 @@
                      
                      <div data-role="popup" id="{{id_tema}}" data-position-to="window">
                          <div data-role="main" class="ui-content">
-                             <a data-role="button" data-theme="g">Pregunta</a>
-                             <p class="pregunta"></p>
-                             <a data-role="button" data-theme="g">Respuesta</a>
-                             <p class="opciones"></p>
+                             {{#each preguntas}}
+                                 <a data-role="button" data-theme="g" class="ui-disabled-g">Pregunta</a>
+                                 <p class="pregunta"></p>
+                                 <p>{{enunciado}}</p>
+                                 <a data-role="button" data-theme="g" class="ui-disabled-g">Respuesta</a>
+                                 <p class="opciones"></p>
+                                 <p>{{opciones}}</p>
+                             {{~/each}}
                          </div>
                      </div>
                 {{~/each}}
-                
-
             </ul>                  
         </script>
         
@@ -328,6 +333,8 @@
             var html     = template(context_preguntas);
             $('#contenedor-temas-preguntas').html(html);
           </script>
+          <a data-role="button" data-theme="g" onclick="location.reload(true)">Genera otra pregunta</a>
+          
         </div>
             
 
