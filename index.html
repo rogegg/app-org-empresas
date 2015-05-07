@@ -218,16 +218,18 @@
                              {{nombre_tema}}
                          </a>
                      </li>
-                     
                      <div data-role="popup" id="{{id_tema}}" data-position-to="window">
                          <div data-role="main" class="ui-content">
+                            
                              {{#each preguntas}}
                                  <a data-role="button" data-theme="g" class="ui-disabled-g">Pregunta</a>
                                  <p class="pregunta"></p>
                                  <p>{{enunciado}}</p>
                                  <a data-role="button" data-theme="g" class="ui-disabled-g">Respuesta</a>
                                  <p class="opciones"></p>
-                                 <p>{{opciones}}</p>
+                                 {{#each opciones}}
+                                     <a href="#respuesta_preguntas_cortas" data-role="button" onclick="generaRespuesta('{{nombre}}','{{../respuesta}}','{{../explicacion}}')">{{nombre}}</a>
+                                 {{~/each}}
                              {{~/each}}
                          </div>
                      </div>
@@ -235,10 +237,14 @@
             </ul>                  
         </script>
         
-
-         
-         
-
+        <!-- Plantilla respuesta a preguntas cortas -->
+        <script id="plantilla-respuesta-preguntas-cortas" type="text/x-handlebars-template">
+            <a data-role="button" id="respuesta"></a>   
+            <a data-role="button" id="opcion"></a>   
+            <p id="explicacion"></p>
+            <a href="#temas_preguntas" data-role="button">Siguiente</a>
+        </script>
+        
     </head>
 
     <body>
@@ -302,9 +308,7 @@
         <!--
             Página de AUTOEVALUACION.
         -->
-        <div data-role="page" id="Autoevaluación" data-theme="c">
-          <script src="https://spreadsheets.google.com/feeds/list/1sFG2bBd0m00Lps7f6cZXUEAT2CbFgCof9W97ATx2VRE/otku9qe/public/values?alt=json-in-script&callback=leerPreguntas" type="text/javascript"></script>
-          
+        <div data-role="page" id="Autoevaluación" data-theme="c">      
           <div id="contenedor-header-autoevaluacion"></div>
           <script>$('#contenedor-header-autoevaluacion').html(html_h);</script>
           
@@ -323,6 +327,7 @@
             Página para los temas de PREGUNTAS CORTAS.
         -->
         <div data-role="page" id="temas_preguntas" data-theme="c">
+          <script src="https://spreadsheets.google.com/feeds/list/1sFG2bBd0m00Lps7f6cZXUEAT2CbFgCof9W97ATx2VRE/otku9qe/public/values?alt=json-in-script&callback=leerPreguntas" type="text/javascript"></script>          
           <div id="contenedor-header-preguntas"></div>
           <script>$('#contenedor-header-preguntas').html(html_h);</script>
           
@@ -334,9 +339,23 @@
             $('#contenedor-temas-preguntas').html(html);
           </script>
           <a data-role="button" data-theme="g" onclick="location.reload(true)">Genera otra pregunta</a>
-          
         </div>
             
+            
+        <!--
+            Respuesta a preguntas cortas
+        -->    
+        <div data-role="page" id="respuesta_preguntas_cortas" data-theme="c">
+            <div id="contenedor-header-respuesta"></div>
+            <script>$('#contenedor-header-respuesta').html(html_h);</script>
+            <div id="contenedor-respuesta-preguntas-cortas"></div>
+            <script>
+                var source   = $("#plantilla-respuesta-preguntas-cortas").html();
+                var template = Handlebars.compile(source);
+                var html     = template(context_preguntas);
+                $('#contenedor-respuesta-preguntas-cortas').html(html);
+            </script>
+        </div>
 
         <!--
             Página de información

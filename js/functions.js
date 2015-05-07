@@ -1,4 +1,4 @@
-//"use strict";
+"use strict";
 
 var total = 0;
 var filtro_asignatura="S";
@@ -46,11 +46,11 @@ function filtroAsignatura(codigo_asignatura){
 
 
 function leerAsignaturas(json) {
-  asig = new Array();
-  cod = new Array();
+  var asig = new Array();
+  var cod = new Array();
   context.asignatura = new Array();
-  total = json.feed.entry.length;
-  for(i=0; i<total; i++){
+  var total = json.feed.entry.length;
+  for(var i=0; i<total; i++){
     asig[i] = json.feed.entry[i].gsx$asignatura.$t;
     cod[i] = json.feed.entry[i].gsx$codigoasignatura.$t;
     context.asignatura[i] = {nombre: asig[i], codigo: cod[i]};
@@ -59,10 +59,10 @@ function leerAsignaturas(json) {
 
 
 function leerMenu(json) {
-  menu = new Array();
+  var menu = new Array();
   context_menu.menu = new Array();
-  total = json.feed.entry.length;
-  for(i=0; i<total; i++){
+  var total = json.feed.entry.length;
+  for(var i=0; i<total; i++){
     menu[i] = json.feed.entry[i].gsx$menu.$t;
     context_menu.menu[i] = { nombre_menu: menu[i]}
   }
@@ -93,20 +93,23 @@ function leerMenu(json) {
       };
 */
 
-//Función para extraer la información de la hoja conceptos.
-//Y presentarlos como la extructura anterior de ejemplo.
+
+//Función que recibe datos de la hoja de cálculo de google drive en la variable json
+//Devuelve una estructura json más sencilla para mostrar con el sistema de plantillas HandlebarsJs.
+//Esta hoja contiene conceptos, agrupados en subvariables, que a su vez están agrupadas en variables.
 function leerConceptos(json) {
   context_conceptos.variable = new Array();
 
-  total = json.feed.entry.length;
+  var total = json.feed.entry.length;
 
-  variable = new Array();
-  subvariable = new Array();
-  v_concepto = new Array();
+  var variable = new Array();
+  var subvariable = new Array();
+  var v_concepto = new Array();
 
-  variable_tmp = "";
+  var variable_tmp = "";
 
-  for(i=0, j=0;i<total;i++){
+  //Recorre todas las filas usadas en la hoja de cálculo
+  for(var i=0, j=0;i<total;i++){
     //No incluimos variables repetidas en el vector variable.
     if(variable_tmp != json.feed.entry[i].gsx$variable.$t){
       variable_tmp = json.feed.entry[i].gsx$variable.$t;
@@ -118,15 +121,15 @@ function leerConceptos(json) {
       };
 
       /************************* SUBVARIABLES ******************************/
-      subvariable_tmp = "";
-      for(k=i ; k<total && json.feed.entry[i].gsx$variable.$t == json.feed.entry[k].gsx$variable.$t; k++){
+      var subvariable_tmp = "";
+      for(var k=i ; k<total && json.feed.entry[i].gsx$variable.$t == json.feed.entry[k].gsx$variable.$t; k++){
         //Si la subvariable no es vacía...
         if(json.feed.entry[k].gsx$subvariable.$t != ""){
           //Si la subvariable no es igual a la anterior...
           if(subvariable_tmp != json.feed.entry[k].gsx$subvariable.$t){
 
             /*************************** CONCEPTOS ********************************/
-            for(l=k ; l<total && json.feed.entry[k].gsx$subvariable.$t == json.feed.entry[l].gsx$subvariable.$t ; l++){
+            for(var l=k ; l<total && json.feed.entry[k].gsx$subvariable.$t == json.feed.entry[l].gsx$subvariable.$t ; l++){
               v_concepto.push({asig: json.feed.entry[l].gsx$asignatura.$t, 
                               id:l,
                               nombre_concepto: json.feed.entry[l].gsx$concepto.$t,
@@ -162,76 +165,114 @@ function leerConceptos(json) {
 
 
 
-//Recibe datos de la hoja de cálculo en la variable json
-//Devuelve una estructura json más sencilla para mostrar con el sistema de plantillas.
+//Función que recibe datos de la hoja de cálculo de google drive en la variable json
+//Devuelve una estructura json más sencilla para mostrar con el sistema de plantillas HandlebarsJs.
+//Esta hoja contiene preguntas cortas, agrupadas por Tema.
 function leerPreguntas(json) {
     context_preguntas.tema = new Array();
     var tema_tmp = "";
-    total = json.feed.entry.length;
+    var total = json.feed.entry.length;
     var v_preguntas = new Array();
-    var n_enunciados_por_tema;
+    var v_opciones = new Array();
     
-    for(i=0, j=0;i<total;i++){
-        //No incluimos variables repetidas en el vector tema.
+    //Recorremos las filas de la hoja de cálculo hasta el final.
+    for(var i=0, j=0;i<total;i++){
+        //Si el tema es diferente al anterior, creamos una nueva estructura TEMA.
         if(tema_tmp != json.feed.entry[i].gsx$tema.$t){
             tema_tmp = json.feed.entry[i].gsx$tema.$t;
             //Si no es vacía
             if(tema_tmp != ""){
-                //Estructura de cada variable
+                //Estructura JSON de cada tema
                 context_preguntas.tema[j] = {
                     nombre_tema: json.feed.entry[i].gsx$tema.$t,
                     id_tema: "id_tema"+i,
                     preguntas:[],
                 };
                 /************ Preguntas dentro de un tema *******************/
+                
+                //////NOTA: CAMBIAR ---> Actualmente se envía sólo una pregunta a la plantilla. 
+                //////-----------> Hay que cambiarlo y enviar las X preguntas a la plantilla, 
+                //////-----------> desde la plantilla seleccionar aleatoriamente una pregunta.
+                
                 var k;
                 for(k=i; json.feed.entry[k].gsx$tema.$t == json.feed.entry[i].gsx$tema.$t && k<total ;k++){
-                    console.log("*************************Dentro for");
+                    console.log("*************************Dentro for");    
+             
+                    //CONSULTAR NOTA ARRIBA: CAMBIAR
+                    //K es el número enunciados por tema.
+                    //var x = randomInt(i,k-1);
                     
                 }
-                //K es el número enunciados por tema.
+                //Calculamos un número aleatorio entre las preguntas que hay en del mismo tema.
                 var x = randomInt(i,k-1);
+                console.log("Random [i_k-1]= ["+i+"_"+(k-1)+"]  ;Valor X---> "+x);
                 
-                v_preguntas.push({enunciado: json.feed.entry[x].gsx$enunciado.$t,
-                                      opciones: json.feed.entry[x].gsx$opciones.$t,
-                                      respuesta: json.feed.entry[x].gsx$respuesta.$t
+                //Pasamos a un vector las diferentes respuestas.
+                v_opciones = generaOpciones(json.feed.entry[x].gsx$opciones.$t);    
+                
+                v_preguntas.push({    class_pregunta:k,
+                                      enunciado: json.feed.entry[x].gsx$enunciado.$t,
+                                      opciones: v_opciones,
+                                      respuesta: json.feed.entry[x].gsx$respuesta.$t,
+                                      explicacion: json.feed.entry[x].gsx$explicacion.$t
                 })
                 
-                //Pasamos la pregunta aleatoria a la plantilla.
+                //Guardamos la pregunta aleatoria en el tema.
                 context_preguntas.tema[j].preguntas = v_preguntas;
                 v_preguntas=[];
-                
-                
                 j++;
-                console.log(context_preguntas);
+                
+                
+                //console.log(context_preguntas);
             }
         }        
     }
     
-    //console.log("Context preguntas");
-    //console.log(context_preguntas);
+    console.log("Context preguntas");
+    console.log(context_preguntas);
 }
 
 
 
 
 
-/*
-//Función que genera una pregunta aleatoria a partir de un tema
-function generaPregunta(){
-    //Buscamos entre qué indices están las preguntas de nuestro tema
+//Función que recibe una cadena de palabras separadas por ; 
+////y devuelve un vector en la que cada posición es una de esas palabras.
+function generaOpciones(cadena){
+    var x = -1; //primera posicion a almacenar
+    var vector = new Array();
+    for(var i=0; i<cadena.length ; i++) {
+        //Si encuentro un punto y coma almaceno la palabra.
+        if(cadena[i]==";"){
+            //vector[j] = cadena.substring(x+1,i);
+            vector.push({nombre: cadena.substring(x+1,i)});
+            x=i+1;
+        }
+    }
+    vector.push({nombre:cadena.substring(x+1,cadena.length)})
+    return vector;
+}
 
-    $('.pregunta').append('<p>Prueba nombre_pregunta del tema _'+tema+'_</p>');
-    $('.opciones').append('<p>opcion1;opcion2;opcion3</p>');
 
-    //context_pregunta.nombre_pregunta = "Prueba nombre_pregunta";
-    //context_pregunta.opciones = "opcion1;opcion2;opcion3";
-    console.log(tema);
+//Comprueba si la respuesta es correcta o no, y genera la página de respuesta correcta o incorrecta
+function generaRespuesta(respuesta_seleccionada,respuesta_correcta,explicacion){
+        $('#respuesta').empty();
+        $('#respuesta').append(respuesta_seleccionada);    
+    
+        if(respuesta_correcta == respuesta_seleccionada){
+            $('#opcion').empty(); 
+            $('#opcion').append("CORRECTO: "+respuesta_correcta);    
+        }else{
+            $('#opcion').empty();
+            $('#opcion').append("INCORRECTO: "+respuesta_correcta);    
+        }
+    
+        $('#explicacion').empty();
+        $('#explicacion').append(explicacion);
+}
 
-}*/
 
-
-
+//Devuelve un número aleatorio entre min y max.
 function randomInt(min,max){
     return Math.floor(Math.random()*(max-min+1)+min);
 }
