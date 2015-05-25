@@ -174,6 +174,7 @@ function leerPreguntas(json) {
     var total = json.feed.entry.length;
     var v_preguntas = new Array();
     var v_opciones = new Array();
+    var n_preguntas = 0;
     
     //Recorremos las filas de la hoja de cálculo hasta el final.
     for(var i=0, j=0;i<total;i++){
@@ -182,10 +183,20 @@ function leerPreguntas(json) {
             tema_tmp = json.feed.entry[i].gsx$tema.$t;
             //Si no es vacía
             if(tema_tmp != ""){
+                
+                //********************************************
+                //Contamos las preguntas por tema
+                n_preguntas = 0;
+                for(var l=i;json.feed.entry[l].gsx$tema.$t == json.feed.entry[i].gsx$tema.$t && l<total;l++){
+                    n_preguntas ++;
+                }
+                                
                 //Estructura JSON de cada tema
                 context_preguntas.tema[j] = {
                     nombre_tema: json.feed.entry[i].gsx$tema.$t,
                     id_tema: "id_tema"+i,
+                    id2_tema: i, //Se utiliza para conocer el índice del id.
+                    numero_preguntas: n_preguntas,
                     preguntas:[],
                 };
                 /************ Preguntas dentro de un tema *******************/
@@ -201,21 +212,18 @@ function leerPreguntas(json) {
                     //CONSULTAR NOTA ARRIBA: CAMBIAR
                     //K es el número enunciados por tema.
                     //var x = randomInt(i,k-1);
-                    
-                }
-                //Calculamos un número aleatorio entre las preguntas que hay en del mismo tema.
-                var x = randomInt(i,k-1);
-                console.log("Random [i_k-1]= ["+i+"_"+(k-1)+"]  ;Valor X---> "+x);
                 
-                //Pasamos a un vector las diferentes respuestas.
-                v_opciones = generaOpciones(json.feed.entry[x].gsx$opciones.$t);    
-                
-                v_preguntas.push({    class_pregunta:k,
-                                      enunciado: json.feed.entry[x].gsx$enunciado.$t,
+                    v_opciones = generaOpciones(json.feed.entry[k].gsx$opciones.$t); 
+                    v_preguntas.push({  
+                                      id_pregunta:k,
+                                      enunciado: json.feed.entry[k].gsx$enunciado.$t,
                                       opciones: v_opciones,
-                                      respuesta: json.feed.entry[x].gsx$respuesta.$t,
-                                      explicacion: json.feed.entry[x].gsx$explicacion.$t
-                })
+                                      respuesta: json.feed.entry[k].gsx$respuesta.$t,
+                                      explicacion: json.feed.entry[k].gsx$explicacion.$t
+                    })
+                    v_opciones = [];
+                }
+                           
                 
                 //Guardamos la pregunta aleatoria en el tema.
                 context_preguntas.tema[j].preguntas = v_preguntas;
@@ -280,5 +288,26 @@ function generaRespuesta(respuesta_seleccionada,respuesta_correcta,explicacion){
 function randomInt(min,max){
     return Math.floor(Math.random()*(max-min+1)+min);
 }
+
+//Función que filtra las preguntas cortas para mostrar sólo una aleatoria.
+//ID -> ID del tema
+//n -> número de preguntas del tema
+//x -> número aleatorio entre ID y ID+n
+function filtroAleatorioPreguntas(id,n){
+    //Pasamos a enteros para evitar problemas con cadenas.
+    id = parseInt(id); 
+    n = parseInt(n);
+    
+    //Ocultamos las preguntas para después mostrar una aleatoria.
+    $('.pregunta').hide();
+    $('.opciones').hide();
+    
+    var x = randomInt(id,id+n-1);
+    //Mostramos la pregunta seleccionada aleatoriamente.
+    $('.pregunta'+x).show();
+    
+}
+
+
 
 /***************************************************/

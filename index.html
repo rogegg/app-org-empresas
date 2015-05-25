@@ -213,21 +213,21 @@
                 <li data-role="list-divider" data-theme="b">Temas</li>
                 {{#each tema}}
                      <li>
-                         <a href="#{{id_tema}}" data-rel="popup" class="ui-btn ui-corner-all ui-shadow ui-btn-inline" data-transition="pop">
+                         <a href="#{{id_tema}}" data-rel="popup" class="ui-btn ui-corner-all ui-shadow ui-btn-inline" data-transition="pop" onclick="filtroAleatorioPreguntas('{{id2_tema}}','{{numero_preguntas}}')">
                              {{nombre_tema}}
                          </a>
                      </li>
                      <div data-role="popup" id="{{id_tema}}" data-position-to="window">
                          <div data-role="main" class="ui-content">   
                              {{#each preguntas}}
-                                 <a data-role="button" data-theme="g" class="ui-disabled-g">Pregunta</a>
-                                 <p class="pregunta"></p>
-                                 <p>{{enunciado}}</p>
-                                 <a data-role="button" data-theme="g" class="ui-disabled-g">Respuesta</a>
-                                 <p class="opciones"></p>
-                                 {{#each opciones}}
-                                     <a href="#respuesta_preguntas_cortas" data-role="button" onclick="generaRespuesta('{{nombre}}','{{../respuesta}}','{{../explicacion}}')">{{nombre}}</a>
-                                 {{~/each}}
+                                 <a data-role="button" data-theme="g" class="ui-disabled-g pregunta pregunta{{id_pregunta}}">Pregunta</a>
+                                 <p class="pregunta pregunta{{id_pregunta}}">{{enunciado}}</p>
+                                 <a data-role="button" data-theme="g" class="opciones ui-disabled-g pregunta{{id_pregunta}}">Respuesta</a>
+                                 <p class="opciones pregunta{{id_pregunta}}">
+                                     {{#each opciones}}
+                                         <a href="#respuesta_preguntas_cortas" data-role="button" onclick="generaRespuesta('{{nombre}}','{{../respuesta}}','{{../explicacion}}')">{{nombre}}</a>
+                                     {{~/each}}
+                                 </p>
                              {{~/each}}
                          </div>
                      </div>
