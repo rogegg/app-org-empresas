@@ -1350,9 +1350,59 @@ html head + body .ui-btn.ui-btn-g:visited {
 
 
 .ui-disabled-g{
-	
 	pointer-events: none;
 }
+
+/* Correct button */
+.ui-page-theme-g .ui-right-g,
+html .ui-bar-g .ui-right-g,
+html .ui-body-g .ui-right-g,
+html body .ui-group-theme-g .ui-right-g,
+html head + body .ui-right-g.ui-btn-g,
+/* Button visited */
+.ui-page-theme-g .ui-right-g:visited,
+html .ui-bar-g .ui-right-g:visited,
+html .ui-body-g .ui-right-g:visited,
+html body .ui-group-theme-g .ui-right-g:visited,
+html head + body .ui-right-g.ui-btn-g:visited {
+	background: 			#19C43B /*{e-bup-background-color}*/;
+	background-image: -webkit-gradient(linear, left top, left bottom, from( #19C43B /*{e-bup-background-start}*/), to( #19C43B /*{e-bup-background-end}*/)); /* Saf4+, Chrome */
+	background-image: -webkit-linear-gradient( #19C43B /*{e-bup-background-start}*/, #D60000 /*{e-bup-background-end}*/); /* Chrome 10+, Saf5.1+ */
+	background-image:    -moz-linear-gradient( #19C43B /*{e-bup-background-start}*/, #19C43B /*{e-bup-background-end}*/); /* FF3.6 */
+	background-image:     -ms-linear-gradient( #19C43B /*{e-bup-background-start}*/, #19C43B /*{e-bup-background-end}*/); /* IE10 */
+	background-image:      -o-linear-gradient( #19C43B /*{e-bup-background-start}*/, #19C43B /*{e-bup-background-end}*/); /* Opera 11.10+ */
+	background-image:         linear-gradient( #19C43B /*{e-bup-background-start}*/, #19C43B /*{e-bup-background-end}*/);
+	border-color:	 		#ffffff /*{e-bup-border}*/;
+	color: 					#ffffff /*{e-bup-color}*/;
+	text-shadow: 0 /*{e-bup-shadow-x}*/ 1px /*{e-bup-shadow-y}*/ 0 /*{e-bup-shadow-radius}*/ #000000 /*{e-bup-shadow-color}*/;
+}
+
+/* Wrong button */
+.ui-page-theme-g .ui-wrong-g,
+html .ui-bar-g .ui-wrong-g,
+html .ui-body-g .ui-wrong-g,
+html body .ui-group-theme-g .ui-wrong-g,
+html head + body .ui-wrong-g.ui-btn-g,
+/* Button visited */
+.ui-page-theme-g .ui-wrong-g:visited,
+html .ui-bar-g .ui-wrong-g:visited,
+html .ui-body-g .ui-wrong-g:visited,
+html body .ui-group-theme-g .ui-wrong-g:visited,
+html head + body .ui-wrong-g.ui-btn-g:visited {
+	background: 			#D60000 /*{e-bup-background-color}*/;
+	background-image: -webkit-gradient(linear, left top, left bottom, from( #D60000 /*{e-bup-background-start}*/), to( #D60000 /*{e-bup-background-end}*/)); /* Saf4+, Chrome */
+	background-image: -webkit-linear-gradient( #D60000 /*{e-bup-background-start}*/, #D60000 /*{e-bup-background-end}*/); /* Chrome 10+, Saf5.1+ */
+	background-image:    -moz-linear-gradient( #D60000 /*{e-bup-background-start}*/, #D60000 /*{e-bup-background-end}*/); /* FF3.6 */
+	background-image:     -ms-linear-gradient( #D60000 /*{e-bup-background-start}*/, #D60000 /*{e-bup-background-end}*/); /* IE10 */
+	background-image:      -o-linear-gradient( #D60000 /*{e-bup-background-start}*/, #D60000 /*{e-bup-background-end}*/); /* Opera 11.10+ */
+	background-image:         linear-gradient( #D60000 /*{e-bup-background-start}*/, #D60000 /*{e-bup-background-end}*/);
+	border-color:	 		#ffffff /*{e-bup-border}*/;
+	color: 					#ffffff /*{e-bup-color}*/;
+	text-shadow: 0 /*{e-bup-shadow-x}*/ 1px /*{e-bup-shadow-y}*/ 0 /*{e-bup-shadow-radius}*/ #000000 /*{e-bup-shadow-color}*/;
+}
+
+
+
 
 
 /************************** end of my theme **********************************/

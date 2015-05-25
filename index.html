@@ -52,7 +52,7 @@
 
        
        
-        <title>Aplicación Organización Empresas</title>
+        <title>iOrg</title>
         <script src="https://spreadsheets.google.com/feeds/list/1sFG2bBd0m00Lps7f6cZXUEAT2CbFgCof9W97ATx2VRE/ovfi9s6/public/values?alt=json-in-script&callback=leerAsignaturas" type="text/javascript"></script>
 
 
@@ -115,32 +115,31 @@
           <div data-role="collapsible-set">
             {{#each variable}}
             <div data-role="collapsible" data-collapsed="true" data-collapsed-icon="carat-r" data-expanded-icon="carat-d">
-             <h3>{{nombre_variable}}</h3> 
-             <div data-role="collapsible-set">
-                {{#each subvariables}}
-                <!-- Si hay subvariable -->
-                <div data-role="collapsible" data-collapsed="true" data-theme="g" data-collapsed-icon="arrow-r" data-expanded-icon="arrow-d">
-                  <h4>{{nombre_subvariable}}</h4>
-                      {{#each conceptos}}
-                      <a href="#{{id}}" data-transition="slideup" data-rel="popup" class="{{{asig}}} ui-btn ui-btn-inline ui-corner-all">{{nombre_concepto}}</a>
-                      <div data-role="popup" id="{{id}}" data-position-to="window">
-                        <div data-role="main" class="ui-content">
-                          <input type="button" value="Definición" data-theme="b">
-                          <p align="center">{{definicion}}</p>
-                          <input type="button" value="Ejemplo" data-theme="b">
-                          <p align="center">
-                              {{ejemplo}}
-                              {{#ifCond img '!=' '' }}
-                                  <br><img src="{{img}}" width=100 height=100></img>
-                              {{/ifCond}}
-                          </p>
-                        </div>
-                      </div>
-                      {{~/each}}
-                </div>
-
-                {{~/each}}
-                </div>            
+              <h3>{{nombre_variable}}</h3> 
+              <div data-role="collapsible-set">
+                 {{#each subvariables}}
+                 <!-- Si hay subvariable -->
+                 <div data-role="collapsible" data-collapsed="true" data-theme="g" data-collapsed-icon="arrow-r" data-expanded-icon="arrow-d">
+                   <h4>{{nombre_subvariable}}</h4>
+                       {{#each conceptos}}
+                       <a href="#{{id}}" data-transition="slideup" data-rel="popup" class="{{{asig}}} ui-btn ui-btn-inline ui-corner-all">{{nombre_concepto}}</a>
+                       <div data-role="popup" id="{{id}}" data-position-to="window">
+                         <div data-role="main" class="ui-content">
+                           <input type="button" value="Definición" data-theme="b">
+                           <p align="center">{{definicion}}</p>
+                           <input type="button" value="Ejemplo" data-theme="b">
+                           <p align="center">
+                               {{ejemplo}}
+                               {{#ifCond img '!=' '' }}
+                                   <br><img src="{{img}}" width=100 height=100></img>
+                               {{/ifCond}}
+                           </p>
+                         </div>
+                       </div>
+                       {{~/each}}
+                 </div>
+                 {{~/each}}
+              </div>            
             </div>
             {{~/each}}
           </div>
@@ -219,8 +218,7 @@
                          </a>
                      </li>
                      <div data-role="popup" id="{{id_tema}}" data-position-to="window">
-                         <div data-role="main" class="ui-content">
-                            
+                         <div data-role="main" class="ui-content">   
                              {{#each preguntas}}
                                  <a data-role="button" data-theme="g" class="ui-disabled-g">Pregunta</a>
                                  <p class="pregunta"></p>
@@ -234,13 +232,14 @@
                          </div>
                      </div>
                 {{~/each}}
-            </ul>                  
+            </ul>  
+                            
         </script>
         
         <!-- Plantilla respuesta a preguntas cortas -->
         <script id="plantilla-respuesta-preguntas-cortas" type="text/x-handlebars-template">
-            <a data-role="button" id="respuesta"></a>   
-            <a data-role="button" id="opcion"></a>   
+            <a data-role="button" id="respuesta"></a>
+            <a data-role="button" id="opcion" data-theme="g"></a>
             <p id="explicacion"></p>
             <a href="#temas_preguntas" data-role="button">Siguiente</a>
         </script>
@@ -341,8 +340,8 @@
           <a data-role="button" data-theme="g" onclick="location.reload(true)">Genera otra pregunta</a>
         </div>
             
-            
         <!--
+
             Respuesta a preguntas cortas
         -->    
         <div data-role="page" id="respuesta_preguntas_cortas" data-theme="c">

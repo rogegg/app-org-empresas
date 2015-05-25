@@ -4,7 +4,7 @@ var total = 0;
 var filtro_asignatura="S";
 var context = new Object();
 var tema_seleccionado = null;
-context.name = "Organización Empresas";
+context.name = "iOrg"; //nombre de la aplicacion
 
 
 var context_menu = new Object();
@@ -260,10 +260,14 @@ function generaRespuesta(respuesta_seleccionada,respuesta_correcta,explicacion){
         $('#respuesta').append(respuesta_seleccionada);    
     
         if(respuesta_correcta == respuesta_seleccionada){
-            $('#opcion').empty(); 
+            $('#opcion').empty();
+            $('#opcion').removeClass("ui-wrong-g");
+            $('#opcion').addClass("ui-right-g");
             $('#opcion').append("CORRECTO: "+respuesta_correcta);    
         }else{
             $('#opcion').empty();
+            $('#opcion').removeClass("ui-right-g");
+            $('#opcion').addClass("ui-wrong-g");
             $('#opcion').append("INCORRECTO: "+respuesta_correcta);    
         }
     
