@@ -204,7 +204,7 @@
         <!-- Plantilla Autoevaluación -->
         <script id="plantilla-autoevaluacion" type="text/x-handlebars-template">
           <a href="#temas_preguntas" data-role="button">Preguntas Cortas</a>
-          <a href="#verdader-falso" data-role="button">Verdadero/Falso</a>
+          <a href="#preguntas_verdadero_falso" data-role="button">Verdadero/Falso</a>
         </script>
         
         <!-- Plantilla Temas Preguntas Cortas -->
@@ -243,6 +243,55 @@
             <p id="explicacion"></p>
             <a href="#temas_preguntas" data-role="button">Siguiente</a>
         </script>
+        
+
+        <!-- Plantilla Preguntas Verdadero y Falso -->
+        <script id="plantilla-preguntas-vf" type="text/x-handlebars-template">
+            <ul data-role="listview" data-inset="true" data-filter="true" >
+                <li data-role="list-divider" data-theme="b">Temas</li>
+                {{#each tema}}
+                     <li>
+                         <a href="#{{id_tema}}" data-rel="popup" class="ui-btn ui-corner-all ui-shadow ui-btn-inline" data-transition="pop" onclick="filtroAleatorioPreguntas('{{id2_tema}}','{{numero_preguntas}}')">
+                             {{nombre_tema}}
+                         </a>
+                     </li>
+                     <div data-role="popup" id="{{id_tema}}" data-position-to="window">
+                         <div data-role="main" class="ui-content">   
+                             {{#each preguntas}}
+                                 <a data-role="button" data-theme="c" class="pregunta pregunta{{id_pregunta}}">Pregunta</a>
+                                 <p class="pregunta pregunta{{id_pregunta}}">{{enunciado}}</p>
+                                 <br/>
+                                 <center class="pregunta pregunta{{id_pregunta}}">
+                                     <a style="display: inline;" href="#respuesta_preguntas_verdadero_falso"
+                                         data-role="button" data-icon="check" class="ui-right-g" data-theme="g"
+                                         onclick="generaRespuestaVF('V','{{respuesta}}','{{explicacion}}')">
+                                             Verdadero</a>
+                                     <a style="display: inline;" href="#respuesta_preguntas_verdadero_falso" 
+                                        data-role="button" data-icon="delete" class="ui-wrong-g" data-theme="g"
+                                        onclick="generaRespuestaVF('F','{{respuesta}}','{{explicacion}}')">
+                                             Falso</a>
+                                 </center>                                 
+                             {{~/each}}
+                         </div>
+                     </div>
+                {{~/each}}
+            </ul>  
+                            
+        </script>
+        
+        <!-- Plantilla respuesta a preguntas verdadero/falso -->
+        <script id="plantilla-respuesta-verdadero-falso" type="text/x-handlebars-template">
+            <a data-role="button" id="opcionVF" data-theme="g"></a>
+            <p id="explicacionVF"></p>
+            <a href="#preguntas_verdadero_falso" data-role="button">Siguiente</a>
+        </script>
+        
+        
+        
+        
+        
+        
+        
         
     </head>
 
@@ -337,7 +386,6 @@
             var html     = template(context_preguntas);
             $('#contenedor-temas-preguntas').html(html);
           </script>
-          <a data-role="button" data-theme="g" onclick="location.reload(true)">Genera otra pregunta</a>
         </div>
             
         <!--
@@ -356,6 +404,45 @@
             </script>
         </div>
 
+       
+       
+       <!--
+            Página para los temas de preguntas verdadero/falso.
+        -->
+        <div data-role="page" id="preguntas_verdadero_falso" data-theme="c">
+          <script src="https://spreadsheets.google.com/feeds/list/1sFG2bBd0m00Lps7f6cZXUEAT2CbFgCof9W97ATx2VRE/o2iqq0f/public/values?alt=json-in-script&callback=leerPreguntasVF" type="text/javascript"></script>          
+          <div id="contenedor-header-preguntas-vf"></div>
+          <script>$('#contenedor-header-preguntas-vf').html(html_h);</script>
+          
+          <div id="contenedor-preguntas-vf"></div>
+          <script>
+            var source   = $("#plantilla-preguntas-vf").html();
+            var template = Handlebars.compile(source);
+            var html     = template(context_preguntas_vf);
+            $('#contenedor-preguntas-vf').html(html);
+          </script>
+        </div>
+       
+       
+       
+        <!--
+
+            Respuesta a preguntas cortas
+        -->    
+        <div data-role="page" id="respuesta_preguntas_verdadero_falso" data-theme="c">
+            <div id="contenedor-header-respuesta-vf"></div>
+            <script>$('#contenedor-header-respuesta-vf').html(html_h);</script>
+            <div id="contenedor-respuesta-preguntas-vf"></div>
+            <script>
+                var source   = $("#plantilla-respuesta-verdadero-falso").html();
+                var template = Handlebars.compile(source);
+                var html     = template(context_preguntas_vf);
+                $('#contenedor-respuesta-preguntas-vf').html(html);
+            </script>
+        </div>
+        
+       
+       
         <!--
             Página de información
         -->

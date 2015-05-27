@@ -10,7 +10,7 @@ context.name = "iOrg"; //nombre de la aplicacion
 var context_menu = new Object();
 var context_conceptos = new Object();
 var context_preguntas = new Object();
-var context_pregunta = new Object();
+var context_preguntas_vf = new Object();
 
 
 
@@ -289,6 +289,7 @@ function randomInt(min,max){
     return Math.floor(Math.random()*(max-min+1)+min);
 }
 
+
 //Función que filtra las preguntas cortas para mostrar sólo una aleatoria.
 //ID -> ID del tema
 //n -> número de preguntas del tema
@@ -308,6 +309,87 @@ function filtroAleatorioPreguntas(id,n){
     
 }
 
+
+
+
+
+//Función que recibe datos de la hoja de cálculo de google drive en la variable json
+//Devuelve una estructura json más sencilla para mostrar con el sistema de plantillas HandlebarsJs.
+//Esta hoja contiene preguntas verdadero y falso, agrupadas por tema y subtema.
+function leerPreguntasVF(json) {
+    context_preguntas_vf.tema = new Array();
+    var tema_tmp = "";
+    var total = json.feed.entry.length;
+    var v_preguntas = new Array();
+    var n_preguntas = 0;
+    
+    //Recorremos las filas de la hoja de cálculo hasta el final.
+    for(var i=0, j=0;i<total;i++){
+        //Si el tema es diferente al anterior, creamos una nueva estructura TEMA.
+        if(tema_tmp != json.feed.entry[i].gsx$tema.$t){
+            tema_tmp = json.feed.entry[i].gsx$tema.$t;
+            //Si no es vacía
+            if(tema_tmp != ""){
+                
+                //********************************************
+                //Contamos las preguntas por tema
+                n_preguntas = 0;
+                for(var l=i;json.feed.entry[l].gsx$tema.$t == json.feed.entry[i].gsx$tema.$t && l<total;l++){
+                    n_preguntas ++;
+                }
+                                
+                //Estructura JSON de cada tema
+                context_preguntas_vf.tema[j] = {
+                    nombre_tema: json.feed.entry[i].gsx$tema.$t,
+                    id_tema: "id_tema_vf"+i,
+                    id2_tema: i, //Se utiliza para conocer el índice del id.
+                    numero_preguntas: n_preguntas,
+                    preguntas:[],
+                };
+                
+                /************ Preguntas dentro de un tema *******************/          
+                var k;
+                for(k=i; json.feed.entry[k].gsx$tema.$t == json.feed.entry[i].gsx$tema.$t && k<total ;k++){            
+                    v_preguntas.push({  
+                                      id_pregunta:k,
+                                      enunciado: json.feed.entry[k].gsx$pregunta.$t,
+                                      respuesta: json.feed.entry[k].gsx$respuesta.$t,
+                                      explicacion: json.feed.entry[k].gsx$explicacion.$t
+                    })
+                }
+                           
+                //Guardamos las preguntas en el tema correspondiente
+                context_preguntas_vf.tema[j].preguntas = v_preguntas;
+                v_preguntas=[];
+                j++;
+                
+                
+            }
+        }        
+    }
+    
+    console.log("Context preguntas VF");
+    console.log(context_preguntas_vf);
+}
+
+
+//Comprueba si la respuesta es correcta o no, y genera la página de respuesta correcta o incorrecta
+function generaRespuestaVF(respuesta_seleccionada,respuesta_correcta,explicacion){
+        if(respuesta_correcta == respuesta_seleccionada){
+            $('#opcionVF').empty();
+            $('#opcionVF').removeClass("ui-wrong-g");
+            $('#opcionVF').addClass("ui-right-g");
+            $('#opcionVF').append("CORRECTO");    
+        }else{
+            $('#opcionVF').empty();
+            $('#opcionVF').removeClass("ui-right-g");
+            $('#opcionVF').addClass("ui-wrong-g");
+            $('#opcionVF').append("INCORRECTO");    
+        }
+    
+        $('#explicacionVF').empty();
+        $('#explicacionVF').append(explicacion);
+}
 
 
 /***************************************************/
