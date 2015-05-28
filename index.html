@@ -131,7 +131,7 @@
                            <p align="center">
                                {{ejemplo}}
                                {{#ifCond img '!=' '' }}
-                                   <br><img src="{{img}}" width=100 height=100></img>
+                                   <br><img src="{{img}}"></img>
                                {{/ifCond}}
                            </p>
                          </div>
@@ -245,6 +245,9 @@
         </script>
         
 
+       
+       
+       
         <!-- Plantilla Preguntas Verdadero y Falso -->
         <script id="plantilla-preguntas-vf" type="text/x-handlebars-template">
             <ul data-role="listview" data-inset="true" data-filter="true" >
@@ -260,7 +263,6 @@
                              {{#each preguntas}}
                                  <a data-role="button" data-theme="c" class="pregunta pregunta{{id_pregunta}}">Pregunta</a>
                                  <p class="pregunta pregunta{{id_pregunta}}">{{enunciado}}</p>
-                                 <br/>
                                  <center class="pregunta pregunta{{id_pregunta}}">
                                      <a style="display: inline;" href="#respuesta_preguntas_verdadero_falso"
                                          data-role="button" data-icon="check" class="ui-right-g" data-theme="g"
