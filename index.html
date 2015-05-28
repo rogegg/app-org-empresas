@@ -118,7 +118,27 @@
               <h3>{{nombre_variable}}</h3> 
               <div data-role="collapsible-set">
                  {{#each subvariables}}
-                 <!-- Si hay subvariable -->
+                 <!-- Si no hay subvariable mostramos directamente los conceptos -->
+                 {{#ifCond nombre_subvariable '==' ../nombre_variable}}         
+                       {{#each conceptos}}
+                       <a href="#{{id}}" data-transition="slideup" data-rel="popup" class="{{{asig}}} ui-btn ui-btn-inline ui-corner-all">{{nombre_concepto}}</a>
+                       <div data-role="popup" id="{{id}}" data-position-to="window">
+                         <div data-role="main" class="ui-content">
+                           <input type="button" value="Definición" data-theme="b">
+                           <p align="center">{{definicion}}</p>
+                           <input type="button" value="Ejemplo" data-theme="b">
+                           <p align="center">
+                               {{ejemplo}}
+                               {{#ifCond img '!=' '' }}
+                                   <br><img src="{{img}}"></img>
+                               {{/ifCond}}
+                           </p>
+                         </div>
+                       </div>
+                       {{~/each}}
+                 </div>                          
+                 <!-- si hay subvariable, mostramos las subvariables -->     
+                 {{else}}             
                  <div data-role="collapsible" data-collapsed="true" data-theme="g" data-collapsed-icon="arrow-r" data-expanded-icon="arrow-d">
                    <h4>{{nombre_subvariable}}</h4>
                        {{#each conceptos}}
@@ -138,6 +158,7 @@
                        </div>
                        {{~/each}}
                  </div>
+                 {{/ifCond}}
                  {{~/each}}
               </div>            
             </div>
@@ -146,60 +167,7 @@
         </script>
         <!-- Fin plantilla conceptos -->
         
-        <!-- Plantilla para CONCEPTOS v4. Eliminar subvariables vacías
-
-        <script id="plantilla-conceptos" type="text/x-handlebars-template">
-          <div data-role="collapsible-set">
-            {{#each variable}}
-            <div data-role="collapsible" data-collapsed="true">
-              <h3>{{nombre_variable}}</h3>
-                
-                 {{#ifCond nombre_subvariable '!=' '' }}
-                 <div data-role="collapsible-set">
-                  {{#each subvariables}}
-                    <!-- Si hay subvariable 
-                    
-                        <div data-role="collapsible" data-collapsed="true" data-theme="g" data-collapsed-icon="arrow-r" data-expanded-icon="arrow-d">
-                          <h4>{{nombre_subvariable}}</h4>
-                              {{#each conceptos}}
-                              <a href="#{{id}}" data-transition="slideup" data-rel="popup" class="{{{asig}}} ui-btn ui-btn-inline ui-corner-all">{{nombre_concepto}}</a>
-                              <div data-role="popup" id="{{id}}">
-                                <div data-role="main" class="ui-content">
-                                  <input type="button" value="Definición" data-theme="b">
-                                  <p align="center">{{definicion}}</p>
-                                  <input type="button" value="Ejemplo" data-theme="b">
-                                  <p align="center">
-                                      {{ejemplo}}
-                                      {{#ifCond img '!=' '' }}
-                                          <br><img src="{{img}}" width=100 height=100></img>
-                                      {{/ifCond}}
-                                  </p>
-                                </div>
-                              </div>
-                              {{~/each}}
-                        </div>
-                   
-                    {{~/each}}
-                    </div>
-                 {{/ifCond}}
-                 <p>Prueeeeba antes de else</p>
-                 
-                 <!-- Si no hay subvariable 
-                 {{#ifCond nombre_subvariable '==' '' }}
-                     <div data-role="collapsible-set">
-                        <div data-role="collapsible">
-                            <h4>PRUEBA ELSE</h4>
-                        </div>             
-                    </div>   
-                      
-                 {{/ifCond}}
-                
-            </div>
-            {{~/each}}
-          </div>
-        </script>
-         Fin plantilla conceptos -->    
-         
+     
          
         <!-- Plantilla Autoevaluación -->
         <script id="plantilla-autoevaluacion" type="text/x-handlebars-template">
@@ -217,7 +185,7 @@
                              {{nombre_tema}}
                          </a>
                      </li>
-                     <div data-role="popup" id="{{id_tema}}" data-position-to="window">
+                     <div data-role="popup" id="{{id_tema}}" data-position-to="window"> 
                          <div data-role="main" class="ui-content">   
                              {{#each preguntas}}
                                  <a data-role="button" data-theme="g" class="ui-disabled-g pregunta pregunta{{id_pregunta}}">Pregunta</a>
@@ -232,8 +200,7 @@
                          </div>
                      </div>
                 {{~/each}}
-            </ul>  
-                            
+            </ul>                      
         </script>
         
         <!-- Plantilla respuesta a preguntas cortas -->
