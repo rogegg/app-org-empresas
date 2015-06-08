@@ -160,7 +160,7 @@ function leerConceptos(json) {
     }
   
   }
-    console.log(context_conceptos);
+    //console.log(context_conceptos);
 }
 
 
@@ -207,7 +207,7 @@ function leerPreguntas(json) {
                 
                 var k;
                 for(k=i; json.feed.entry[k].gsx$tema.$t == json.feed.entry[i].gsx$tema.$t && k<total ;k++){
-                    console.log("*************************Dentro for");    
+                    
              
                     //CONSULTAR NOTA ARRIBA: CAMBIAR
                     //K es el número enunciados por tema.
@@ -236,8 +236,8 @@ function leerPreguntas(json) {
         }        
     }
     
-    console.log("Context preguntas");
-    console.log(context_preguntas);
+    //console.log("Context preguntas");
+    //console.log(context_preguntas);
 }
 
 
@@ -368,8 +368,8 @@ function leerPreguntasVF(json) {
         }        
     }
     
-    console.log("Context preguntas VF");
-    console.log(context_preguntas_vf);
+    //console.log("Context preguntas VF");
+    //console.log(context_preguntas_vf);
 }
 
 

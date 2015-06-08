@@ -41,7 +41,8 @@
         <script src="js/handlebars/handlebars-helpers.js"></script>
         
         <!-- Mis funciones JavaScript -->
-        <script src="js/functions.js"></script>
+        <script src="js/functions.js"></script> 
+        <script src="js/functions_hexagon.js"></script> 
 
 
         <!-- Ficheros Css -->
@@ -256,11 +257,16 @@
             <a href="#preguntas_verdadero_falso" data-role="button">Siguiente</a>
         </script>
         
-        
-        
-        
-        
-        
+                   
+                   
+        <!-- Plantilla Hexágono -->
+        <script id="plantilla-hexagono" type="text/x-handlebars-template">
+            <h1>Hexágono</h1>
+            {{#each pregunta}}
+                <p>{{nombre_pregunta}}</p>
+            {{~/each}}
+        </script>
+                    
         
         
     </head>
@@ -396,7 +402,6 @@
        
        
         <!--
-
             Respuesta a preguntas cortas
         -->    
         <div data-role="page" id="respuesta_preguntas_verdadero_falso" data-theme="c">
@@ -411,7 +416,24 @@
             </script>
         </div>
         
-       
+        
+        <!--
+            Hexágono
+        -->    
+       <div data-role="page" id="Hexágono" data-theme="c">
+            <script src="https://spreadsheets.google.com/feeds/list/1sFG2bBd0m00Lps7f6cZXUEAT2CbFgCof9W97ATx2VRE/oexj1xo/public/values?alt=json-in-script&callback=leerHexagono" type="text/javascript"></script>  
+            <div id="contenedor-header-hexagono"></div>
+            <script>$('#contenedor-header-hexagono').html(html_h);</script>
+            <div id="contenedor-hexagono"></div>
+            <script>
+                var source   = $("#plantilla-hexagono").html();
+                var template = Handlebars.compile(source);
+                var html     = template(context_hexagono);
+                $('#contenedor-hexagono').html(html);
+            </script>
+        </div>
+        
+        
        
         <!--
             Página de información

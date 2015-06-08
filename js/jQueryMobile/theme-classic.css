@@ -1296,7 +1296,6 @@ html head + body .ui-body-e.ui-focus {
 
 
 
-
 /****************************************************************************/
 /****************************************************************************/
 /******************************* My theme ***********************************/
@@ -1367,7 +1366,7 @@ html body .ui-group-theme-g .ui-right-g:visited,
 html head + body .ui-right-g.ui-btn-g:visited {
 	background: 			#19C43B /*{e-bup-background-color}*/;
 	background-image: -webkit-gradient(linear, left top, left bottom, from( #19C43B /*{e-bup-background-start}*/), to( #19C43B /*{e-bup-background-end}*/)); /* Saf4+, Chrome */
-	background-image: -webkit-linear-gradient( #19C43B /*{e-bup-background-start}*/, #D60000 /*{e-bup-background-end}*/); /* Chrome 10+, Saf5.1+ */
+	background-image: -webkit-linear-gradient( #19C43B /*{e-bup-background-start}*/, #19C43B /*{e-bup-background-end}*/); /* Chrome 10+, Saf5.1+ */
 	background-image:    -moz-linear-gradient( #19C43B /*{e-bup-background-start}*/, #19C43B /*{e-bup-background-end}*/); /* FF3.6 */
 	background-image:     -ms-linear-gradient( #19C43B /*{e-bup-background-start}*/, #19C43B /*{e-bup-background-end}*/); /* IE10 */
 	background-image:      -o-linear-gradient( #19C43B /*{e-bup-background-start}*/, #19C43B /*{e-bup-background-end}*/); /* Opera 11.10+ */
