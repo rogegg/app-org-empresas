@@ -264,6 +264,9 @@
             <h1>Hexágono</h1>
             {{#each pregunta}}
                 <p>{{nombre_pregunta}}</p>
+                {{#each opcion}}
+                    <t>{{nombre_opcion}} / </t>
+                {{~/each}}    
             {{~/each}}
         </script>
                     

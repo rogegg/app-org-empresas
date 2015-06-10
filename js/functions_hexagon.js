@@ -9,6 +9,7 @@ function leerHexagono(json){
     var opciones = new Array();    
     var respuesta = new Array();
     var total = json.feed.entry.length;
+    var nombre_pregunta_tmp;
     
        /*
     opciones.push("Supervisión directa");
@@ -28,26 +29,28 @@ function leerHexagono(json){
     respuesta.push("No lo sé");                 //Codigo 6
     */
     
-    
+    console.log("Total: "+total);
     for(var i=0 ; i<total ; i++){
         //Nueva pregunta
         if(String(json.feed.entry[i].gsx$pregunta.$t).length > 0){
-            v_pregunta.push({
-                nombre_pregunta: json.feed.entry[i].gsx$pregunta.$t
-            });
-            //recorremos las 7 opciones (de la 0 a la 6)
-            for(var j=i; j<7 ; j++){
+            nombre_pregunta_tmp = json.feed.entry[i].gsx$pregunta.$t;
+            //recorremos las 7 opciones (de la 0 a la 6)            
+            for(var j=i ; j==i || json.feed.entry[j].gsx$pregunta.$t == "" ; j++){ //revisar, error en la última posición de j.
+                //console.log("J++   ->  "+(j+1);
                 v_opciones.push({
-                   nombre_opcion: json.feed.entry[j].gsx$opciones.$t 
-                });
+                   nombre_opcion: json.feed.entry[j].gsx$opciones.$t
+                });            
+                //console.log(j+"->"+String(json.feed.entry[j].gsx$pregunta.$t).length);
             }
-
+            //console.log(v_opciones);
+            v_pregunta.push({
+                nombre_pregunta: nombre_pregunta_tmp,
+                opcion: v_opciones
+            });
+            v_opciones=[];
         } 
     }
     context_hexagono.pregunta = v_pregunta;
     
-    console.log(json.feed.entry[1].gsx$pregunta.$t); 
-    console.log(String(json.feed.entry[1].gsx$pregunta.$t).length);
-    console.log(v_pregunta);
     console.log(context_hexagono);
 }
