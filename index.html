@@ -263,9 +263,12 @@
         <script id="plantilla-hexagono" type="text/x-handlebars-template">
             <h1>Hexágono</h1>
             {{#each pregunta}}
-                <p>{{nombre_pregunta}}</p>
+                <h4>{{nombre_pregunta}}</h4>
                 {{#each opcion}}
-                    <t>{{nombre_opcion}} / </t>
+                    <p>{{nombre}} -> </p>
+                    {{#each codigo}}
+                        <p>{{this}}</p>
+                    {{~/each}}
                 {{~/each}}    
             {{~/each}}
         </script>

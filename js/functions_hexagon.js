@@ -29,20 +29,13 @@ function leerHexagono(json){
     respuesta.push("No lo sé");                 //Codigo 6
     */
     
-    console.log("Total: "+total);
     for(var i=0 ; i<total ; i++){
         //Nueva pregunta
         if(String(json.feed.entry[i].gsx$pregunta.$t).length > 0){
             nombre_pregunta_tmp = json.feed.entry[i].gsx$pregunta.$t;
-            //recorremos las 7 opciones (de la 0 a la 6)            
-            for(var j=i ; j==i || json.feed.entry[j].gsx$pregunta.$t == "" ; j++){ //revisar, error en la última posición de j.
-                //console.log("J++   ->  "+(j+1);
-                v_opciones.push({
-                   nombre_opcion: json.feed.entry[j].gsx$opciones.$t
-                });            
-                //console.log(j+"->"+String(json.feed.entry[j].gsx$pregunta.$t).length);
-            }
-            //console.log(v_opciones);
+            //Generamos las opciones de cada pregunta
+            v_opciones = generaOpciones(json,i,total);
+           
             v_pregunta.push({
                 nombre_pregunta: nombre_pregunta_tmp,
                 opcion: v_opciones
@@ -54,3 +47,54 @@ function leerHexagono(json){
     
     console.log(context_hexagono);
 }
+
+
+
+
+
+
+function generaOpciones(json,indice,total){
+    var i = indice;
+    var nombre = new Array();
+    var id = new Array();
+    var codigo = new Array();
+    var vector = new Array();
+    var v_codigo = new Array();
+    
+    for(var j=i,k=0 ; (j==i || json.feed.entry[j].gsx$pregunta.$t == "") && j<(total-1); j++, k++){ //revisar, error en la última posición de j.      
+        //Si no es vacío.
+        nombre.push(json.feed.entry[j].gsx$opciones.$t);
+        id.push(j);
+        //Array "multidimensional" para los códigos
+        v_codigo.push(json.feed.entry[j].gsx$codificación.$t);
+        codigo[k] = v_codigo;
+        v_codigo=[];
+    }
+    
+    
+    //Eliminamos nombres repetidos y combinamos su código.    
+    for(var j=0 ; j<nombre.length ; j++){
+        for(var k=j ; k<nombre.length ; k++){
+            if(k!=j && nombre[k]==nombre[j]){
+                nombre.splice(k,1);
+                codigo[j].push(codigo[k].pop());
+                codigo.splice(k,1);
+            }
+        }
+    }
+    
+    //Recorrer nombre y guardar por cada opcion su nombre y código.    
+/*    vector.push({           //Sólo para prueba, necesitamos hacer estructura como describe aquí arriba.
+        nombre: nombre,
+        codigo: codigo
+    })
+*/  
+    for(var j=0; j<nombre.length ;j++){
+        vector.push({
+            nombre: nombre[j],
+            codigo: codigo[j]
+        })
+    }
+    return vector;
+}
+
