@@ -262,12 +262,26 @@
         <!-- Plantilla Hexágono -->
         <script id="plantilla-hexagono" type="text/x-handlebars-template">
             <h1>Hexágono</h1>
+            <div class="ui-field-contain">
             {{#each pregunta}}
-                <p>{{nombre_pregunta}}</p>
-                {{#each opcion}}
-                    <t>{{nombre_opcion}} / </t>
-                {{~/each}}    
+                    <h3>{{nombre_pregunta}}</h3>
+                    <select name="select-custom-{{id_pregunta}}" id="select-custom-{{id_pregunta}}" data-native-menu="false">
+                    {{#each opcion}}
+                        <option value="{{id_opcion}}">{{nombre_opcion}} -> {{codigo}}</option>
+                    {{~/each}}
+                </select>    
             {{~/each}}
+            </div>
+            
+            <div class="ui-field-contain">
+                <label for="select-custom-1">Basic:</label>
+                <select name="select-custom-1" id="select-custom-1" data-native-menu="false">
+                    <option value="1">The 1st Option</option>
+                    <option value="2">The 2nd Option</option>
+                    <option value="3">The 3rd Option</option>
+                    <option value="4">The 4th Option</option>
+                </select>
+            </div>
         </script>
                     
         
