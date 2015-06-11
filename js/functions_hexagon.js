@@ -61,8 +61,8 @@ function generaOpciones(json,indice,total){
     var vector = new Array();
     var v_codigo = new Array();
     
-    for(var j=i,k=0 ; (j==i || json.feed.entry[j].gsx$pregunta.$t == "") && j<(total-1); j++, k++){ //revisar, error en la última posición de j.      
-        //Si no es vacío.
+    //Creamos vector nombre y código para procesarlos.
+    for(var j=i,k=0 ; (j==i || json.feed.entry[j].gsx$pregunta.$t == "") && j<(total-1); j++, k++){ //revisar, error en la última posición de j (última celda del documento).      
         nombre.push(json.feed.entry[j].gsx$opciones.$t);
         id.push(j);
         //Array "multidimensional" para los códigos
@@ -83,18 +83,15 @@ function generaOpciones(json,indice,total){
         }
     }
     
-    //Recorrer nombre y guardar por cada opcion su nombre y código.    
-/*    vector.push({           //Sólo para prueba, necesitamos hacer estructura como describe aquí arriba.
-        nombre: nombre,
-        codigo: codigo
-    })
-*/  
+    //Almacenamos cada nombre con sus códigos.
     for(var j=0; j<nombre.length ;j++){
         vector.push({
             nombre: nombre[j],
             codigo: codigo[j]
         })
     }
+    
+    
     return vector;
 }
 
