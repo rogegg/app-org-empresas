@@ -264,12 +264,12 @@
             <h1>Hexágono</h1>
             <div class="ui-field-contain">
             {{#each pregunta}}
-                    <h3>{{nombre_pregunta}}</h3>
-                    <select name="select-custom-{{id_pregunta}}" id="select-custom-{{id_pregunta}}" data-native-menu="false">
-                    {{#each opcion}}
-                        <option value="{{id_opcion}}">{{nombre_opcion}} -> {{codigo}}</option>
+                {{#each opcion}}
+                    <p>{{nombre}} -> </p>
+                    {{#each codigo}}
+                        <p>{{this}}</p>
                     {{~/each}}
-                </select>    
+                {{~/each}}    
             {{~/each}}
             </div>
             
