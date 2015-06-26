@@ -237,7 +237,7 @@ function leerPreguntas(json) {
     }
     
     //console.log("Context preguntas");
-    console.log(context_preguntas);
+    //console.log(context_preguntas);
 }
 
 

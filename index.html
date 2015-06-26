@@ -261,33 +261,49 @@
                    
         <!-- Plantilla Hexágono -->
         <script id="plantilla-hexagono" type="text/x-handlebars-template">
-            <h1>Hexágono</h1>
-            <div class="ui-field-contain">
+            <h3>Responde estas preguntas para la clasificación de tu empresa.</h3>
+            <form name="formularioHexagono"> <!--action="javascript:submitHexagono()">-->
             {{#each pregunta}}
+                <fieldset style="padding: 10px;" data-role="controlgroup">
+                <legend>Nombre: {{nombre_pregunta}} / ID: {{id_pregunta}} / N_Preguntas: {{../n_preguntas}}</legend>
+                <select name="selHexagono{{id_pregunta}}" id="select-native-{{id_pregunta}}" class="select">
                 {{#each opcion}}
-                    <p>{{nombre}} -> </p>
-                    {{#each codigo}}
-                        <p>{{this}}</p>
-                    {{~/each}}
-                {{~/each}}    
-            {{~/each}}
-            </div>
-            
-            <div class="ui-field-contain">
-                <label for="select-custom-1">Basic:</label>
-                <select name="select-custom-1" id="select-custom-1" data-native-menu="false">
-                    <option value="1">The 1st Option</option>
-                    <option value="2">The 2nd Option</option>
-                    <option value="3">The 3rd Option</option>
-                    <option value="4">The 4th Option</option>
+                    {{#ifCond nombre '!=' '' }}
+                        <option value="{{codigo}}">
+                            {{nombre}}
+                            <a class="codigo-opcion">{{codigo}}</a>
+                        </option>
+                    {{/ifCond}}
+                {{~/each}}
                 </select>
-            </div>
+                </fieldset>
+            {{~/each}}
+            <input type=button value="Dime propiedades" onclick="dimePropiedades()">
+            <button type="submit" id="submit-hexagono" data-theme="b" data-icon="carat-r" data-iconpos="right" onclick="submitHexagono({{n_preguntas}})">Siguiente</button>
+            <a href="#respuesta-hexagono" data-role="button" onclick="submitHexagono({{n_preguntas}})">Siguiente2</a>
+            </form>
         </script>
-                    
+                 
+        <!-- Plantilla respuesta Hexágono -->
+        <script id="plantilla-respuesta-hexagono" type="text/x-handlebars-template">
+            <p>Prueba Respuesta Hexágono</p>
+            <p id="explicacionHexagono"></p>
+            <p>Contador final</p>
+            <p id="contador"></p>
+            <p>Prueba plantilla -> {{x}}</p>
+            {{#each resultado}}
+                <h2>{{condicion}}</h2></center>
+                <img src="{{imagen}}" width="200" height="200"></img></center>
+                {{nombre}}</center>
+            {{~/each}}
+            <a href="#home" data-role="button">Salir</a>
+        </script>               
         
         
     </head>
-
+    
+<!-- *********************************** BODY ************************************************ -->
+    
     <body>
         <!--
             Página home, princial de la aplicación.
@@ -451,6 +467,22 @@
         </div>
         
         
+        <!--
+            Respuesta Hexágono
+        -->    
+        <div data-role="page" id="respuesta-hexagono" data-theme="c">
+            <script src="https://spreadsheets.google.com/feeds/list/1sFG2bBd0m00Lps7f6cZXUEAT2CbFgCof9W97ATx2VRE/ozh90cs/public/values?alt=json-in-script&callback=resultadoHexagono" type="text/javascript"></script>  
+            <div id="contenedor-header-respuesta-hexagono"></div>
+            <script>$('#contenedor-header-respuesta-hexagono').html(html_h);</script>
+            <div id="contenedor-respuesta-hexagono"></div>
+            <script>
+                var source   = $("#plantilla-respuesta-hexagono").html();
+                var template = Handlebars.compile(source);
+                var html     = template(context_resultado_hexagono);
+                $('#contenedor-respuesta-hexagono').html(html);
+            </script>
+        </div>
+       
        
         <!--
             Página de información
