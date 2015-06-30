@@ -1,7 +1,7 @@
 "use strict";
 
 var context_hexagono = new Object();
-var context_resultado_hexagono = new Object();
+
 
 function leerHexagono(json){
     context_hexagono.pregunta = new Array();
@@ -67,6 +67,7 @@ function generaOpciones(json,indice,total,id_opc){
     var v_codigo = new Array();
     
     
+    
     //Creamos vector nombre y código para procesarlos.
     for(var j=i,k=0 ; (j==i || json.feed.entry[j].gsx$pregunta.$t == "") && j<(total-1); j++, k++){ //revisar, error en la última posición de j (última celda del documento).      
         nombre.push(json.feed.entry[j].gsx$opciones.$t);
@@ -116,6 +117,10 @@ function submitHexagono(n_preguntas){
     var v_contador = new Array(7); //Vector para contar 
     var x=0, y=0, z=0; //Variables dominantes en el hexágono.
     var x_i=0, y_i=0, z_i=0; //Indice donde estaban las variables dominantes.
+    var solucion = new Array(); 
+    var solucion_string="";
+    
+    
     
     //Inicialización a 0 de v_contador.
     for(var i=0;i<v_contador.length;i++){
@@ -178,15 +183,63 @@ function submitHexagono(n_preguntas){
         }
     }
     
-    $("#contador").append("<span>Variable X= "+x+"; X_I= "+x_i+"</span><br>");
-    $("#contador").append("<span>Variable Y= "+y+"; Y_I= "+y_i+"</span><br>");
-    $("#contador").append("<span>Variable Z= "+z+"; Z_I= "+z_i+"</span><br>");
+    
+                            //Mostramos los resultados para DEPURACIÓN
+                            $("#contador").append("<span>Variable X= "+x+"; X_I= "+x_i+"</span><br>");
+                            $("#contador").append("<span>Variable Y= "+y+"; Y_I= "+y_i+"</span><br>");
+                            $("#contador").append("<span>Variable Z= "+z+"; Z_I= "+z_i+"</span><br>");
+    context_hexagono.solucion[0] = { x:x, x_i:x_i };
+    context_hexagono.solucion[1] = { y:y, y_i:y_i };
+    context_hexagono.solucion[2] = { z:z, z_i:z_i };
+    
+    //Contemplar varias opciones:
+    //--Si es puro.
+    //--Si es un híbrido doble.
+    //--Si es un híbrido triple.
     
         
+    //Componer el resultado de los arrays a un string
+    solucion_string=String(context_hexagono.solucion[0].x_i)+","+String(context_hexagono.solucion[1].y_i);
+    /*
+    //recorremos context_hexagono.resultado
+    for(var i=0;i<total;i++){
+        //Si context_hexagono.resultado.condicion coincide con solucion_string.
+        if(json.feed.entry[i].gsx$condiciones.$t == solucion_string){
+            //Mostramos solución
+            mostrar.push({
+                condicion: json.feed.entry[i].gsx$condiciones.$t,
+                imagen: json.feed.entry[i].gsx$imagen.$t,
+                nombre: json.feed.entry[i].gsx$nombre.$t
+            })
+        }
+    }*/
+    
+    //recorremos context_hexagono.resultado
+    for(var i in context_hexagono.resultado){
+        $("#contador").append("<span>it= "+i+"; context_hexagono.resultado[i].condicion= "+context_hexagono.resultado[i].condicion+"</span><br>");
+        //Si context_hexagono.resultado.condicion coincide con solucion_string.
+        if(context_hexagono.resultado[i].condicion == solucion_string){
+            $("#contador").append(
+                "<h1> Solución: </h1><br> \
+                 <img src="+context_hexagono.resultado[i].imagen+" width=\"200\" height=\"200\"></img><br> \
+                <p>"+context_hexagono.resultado[i].nombre+"</p><br>"
+            );
+        }
+    }
+    
+    
+    
+    
     
     
     console.log(v_contador);
+    //context_resultado_hexagono.mostrar = mostrar;
+    console.log(solucion_string);
     
+    
+    console.log("Resultado hexagono:");
+    console.log(context_hexagono);
+
     /*var prueba = "0,2,3,4";
     v_valores = procesaValores(prueba);
     console.log(v_valores);
@@ -219,15 +272,19 @@ function procesaValores(cadena){
 
 
 
-
+//Función que compara los datos obtenidos en "submitHexagono()" con 
+//la página de drive "Resultado Hexágono" para mostrar una imagen.
 function resultadoHexagono(json){
     var total = json.feed.entry.length;
     var x = json.feed.entry[0].gsx$condiciones.$t;
     var codificacion;
     var resultado = new Array();
-    context_resultado_hexagono.resultado = new Array();
+    var mostrar = new Array();
+    var solucion_string="";
+    context_hexagono.resultado = new Array();
+    context_hexagono.solucion = new Array() //Solución para las estructuras con mayor selección.
     
-    context_resultado_hexagono.x = x;
+    context_hexagono.x = x;
     
     for(var i=0;i<total;i++){
         resultado.push({
@@ -236,6 +293,7 @@ function resultadoHexagono(json){
             nombre: json.feed.entry[i].gsx$nombre.$t
         })
     }
-    context_resultado_hexagono.resultado = resultado;
-    
+    context_hexagono.resultado = resultado;
 }
+
+

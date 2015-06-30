@@ -290,12 +290,6 @@
             <p id="explicacionHexagono"></p>
             <p>Contador final</p>
             <p id="contador"></p>
-            <p>Prueba plantilla -> {{x}}</p>
-            {{#each resultado}}
-                <h2>{{condicion}}</h2></center>
-                <img src="{{imagen}}" width="200" height="200"></img></center>
-                {{nombre}}</center>
-            {{~/each}}
             <a href="#home" data-role="button">Salir</a>
         </script>               
         
@@ -455,6 +449,7 @@
         -->    
        <div data-role="page" id="Hexágono" data-theme="c">
             <script src="https://spreadsheets.google.com/feeds/list/1sFG2bBd0m00Lps7f6cZXUEAT2CbFgCof9W97ATx2VRE/oexj1xo/public/values?alt=json-in-script&callback=leerHexagono" type="text/javascript"></script>  
+            <script src="https://spreadsheets.google.com/feeds/list/1sFG2bBd0m00Lps7f6cZXUEAT2CbFgCof9W97ATx2VRE/ozh90cs/public/values?alt=json-in-script&callback=resultadoHexagono" type="text/javascript"></script>  
             <div id="contenedor-header-hexagono"></div>
             <script>$('#contenedor-header-hexagono').html(html_h);</script>
             <div id="contenedor-hexagono"></div>
@@ -471,14 +466,14 @@
             Respuesta Hexágono
         -->    
         <div data-role="page" id="respuesta-hexagono" data-theme="c">
-            <script src="https://spreadsheets.google.com/feeds/list/1sFG2bBd0m00Lps7f6cZXUEAT2CbFgCof9W97ATx2VRE/ozh90cs/public/values?alt=json-in-script&callback=resultadoHexagono" type="text/javascript"></script>  
+            
             <div id="contenedor-header-respuesta-hexagono"></div>
             <script>$('#contenedor-header-respuesta-hexagono').html(html_h);</script>
             <div id="contenedor-respuesta-hexagono"></div>
             <script>
                 var source   = $("#plantilla-respuesta-hexagono").html();
                 var template = Handlebars.compile(source);
-                var html     = template(context_resultado_hexagono);
+                var html     = template(context_hexagono);
                 $('#contenedor-respuesta-hexagono').html(html);
             </script>
         </div>
