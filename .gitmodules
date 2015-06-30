@@ -1,3 +1,0 @@
-[submodule "app"]
-	path = app
-	url = git@github.com:rogegg/app-org-empresas.git
