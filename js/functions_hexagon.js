@@ -127,13 +127,17 @@ function submitHexagono(n_preguntas){
         v_contador[i] = 0;
     }
     
+    
+    //Leemos los elementos seleccionados en el select
     $("#explicacionHexagono").empty();
     for(var i=0;i<n_preguntas;i++){
         index = eval("document.formularioHexagono.selHexagono"+i+".selectedIndex");
         valor = eval("document.formularioHexagono.selHexagono"+i+".options[index].value");
         texto = eval("document.formularioHexagono.selHexagono"+i+".options[index].text"); 
+        //Pasamos la cadena de texto con los valores, a un vector.
         v_valores = procesaValores(valor);
         $("#explicacionHexagono").append("<span>ID: "+index+" / Valor: "+valor+", Vector: "+v_valores+" / Texto: "+texto+"<br></span>");
+        
         //Contabilizamos los valores para dar un resultado
         for(var j=0 ; j<v_valores.length ; j++){
             v_contador[parseInt(v_valores[j])] = v_contador[parseInt(v_valores[j])]+1;

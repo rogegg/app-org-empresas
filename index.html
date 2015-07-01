@@ -115,7 +115,7 @@
         <script id="plantilla-conceptos" type="text/x-handlebars-template">
           <div data-role="collapsible-set">
             {{#each variable}}
-            <div data-role="collapsible" data-collapsed="true" data-collapsed-icon="carat-r" data-expanded-icon="carat-d">
+            <div data-role="collapsible" data-collapsed="true" data-collapsed-icon="carat-r" data-expanded-icon="carat-d" class="{{{asig}}}">
               <h3>{{nombre_variable}}</h3> 
               <div data-role="collapsible-set">
                  {{#each subvariables}}
@@ -261,32 +261,34 @@
                    
         <!-- Plantilla Hexágono -->
         <script id="plantilla-hexagono" type="text/x-handlebars-template">
-            <h3>Responde estas preguntas para la clasificación de tu empresa.</h3>
+            <h3>Responda estas preguntas para la clasificación de su empresa:</h3>
             <form name="formularioHexagono"> <!--action="javascript:submitHexagono()">-->
             {{#each pregunta}}
                 <fieldset style="padding: 10px;" data-role="controlgroup">
-                <legend>Nombre: {{nombre_pregunta}} / ID: {{id_pregunta}} / N_Preguntas: {{../n_preguntas}}</legend>
+                <!--<legend>Nombre: {{nombre_pregunta}} / ID: {{id_pregunta}} / N_Preguntas: {{../n_preguntas}}</legend>-->
+                <legend>{{nombre_pregunta}}</legend>
                 <select name="selHexagono{{id_pregunta}}" id="select-native-{{id_pregunta}}" class="select">
+                <option value="" selected="selected">Selecciona una opción</option>
                 {{#each opcion}}
                     {{#ifCond nombre '!=' '' }}
                         <option value="{{codigo}}">
                             {{nombre}}
-                            <a class="codigo-opcion">{{codigo}}</a>
+                            <!--<a class="codigo-opcion">{{codigo}}</a>-->
                         </option>
                     {{/ifCond}}
                 {{~/each}}
                 </select>
                 </fieldset>
             {{~/each}}
-            <input type=button value="Dime propiedades" onclick="dimePropiedades()">
-            <button type="submit" id="submit-hexagono" data-theme="b" data-icon="carat-r" data-iconpos="right" onclick="submitHexagono({{n_preguntas}})">Siguiente</button>
-            <a href="#respuesta-hexagono" data-role="button" onclick="submitHexagono({{n_preguntas}})">Siguiente2</a>
+            <!--<input type=button value="Dime propiedades" onclick="dimePropiedades()">
+            <button type="submit" id="submit-hexagono" data-theme="b" data-icon="carat-r" data-iconpos="right" onclick="submitHexagono({{n_preguntas}})">Siguiente</button>-->
+            <a href="#respuesta-hexagono" data-role="button" onclick="submitHexagono({{n_preguntas}})">Siguiente</a>
             </form>
         </script>
                  
         <!-- Plantilla respuesta Hexágono -->
         <script id="plantilla-respuesta-hexagono" type="text/x-handlebars-template">
-            <p>Prueba Respuesta Hexágono</p>
+            <p>Tipo de empresa</p>
             <p id="explicacionHexagono"></p>
             <p>Contador final</p>
             <p id="contador"></p>

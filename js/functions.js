@@ -116,6 +116,7 @@ function leerConceptos(json) {
 
       //Estructura de cada variable
       context_conceptos.variable[j] = {
+        asig: json.feed.entry[i].gsx$asignatura.$t,  
         nombre_variable: json.feed.entry[i].gsx$variable.$t,
         subvariables:[]
       };
