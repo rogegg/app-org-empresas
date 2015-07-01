@@ -192,27 +192,17 @@ function submitHexagono(n_preguntas){
     context_hexagono.solucion[1] = { y:y, y_i:y_i };
     context_hexagono.solucion[2] = { z:z, z_i:z_i };
     
+    
+    
     //Contemplar varias opciones:
     //--Si es puro.
     //--Si es un híbrido doble.
     //--Si es un híbrido triple.
-    
+    solucion_string = resuelveTipoHexagono(context_hexagono.solucion,n_preguntas);
         
-    //Componer el resultado de los arrays a un string
-    solucion_string=String(context_hexagono.solucion[0].x_i)+","+String(context_hexagono.solucion[1].y_i);
-    /*
-    //recorremos context_hexagono.resultado
-    for(var i=0;i<total;i++){
-        //Si context_hexagono.resultado.condicion coincide con solucion_string.
-        if(json.feed.entry[i].gsx$condiciones.$t == solucion_string){
-            //Mostramos solución
-            mostrar.push({
-                condicion: json.feed.entry[i].gsx$condiciones.$t,
-                imagen: json.feed.entry[i].gsx$imagen.$t,
-                nombre: json.feed.entry[i].gsx$nombre.$t
-            })
-        }
-    }*/
+    //Prueba para componer el resultado de los arrays a un string
+    //solucion_string=String(context_hexagono.solucion[0].x_i)+","+String(context_hexagono.solucion[1].y_i);
+    
     
     //recorremos context_hexagono.resultado
     for(var i in context_hexagono.resultado){
@@ -234,6 +224,7 @@ function submitHexagono(n_preguntas){
     
     console.log(v_contador);
     //context_resultado_hexagono.mostrar = mostrar;
+    console.log("Solución String: ");
     console.log(solucion_string);
     
     
@@ -294,6 +285,38 @@ function resultadoHexagono(json){
         })
     }
     context_hexagono.resultado = resultado;
+}
+
+
+
+// -Función que identifica que tipo de hexágono tenemos que mostrar.
+//Tenemos 3 tipos, puro, híbrido de 2 e híbrido de 3.
+//
+// -"context_hexagono.solucion" es un Array que contiene las 3 variables 
+//que vamos a tener en cuenta. Están ordenadas de mayor a menor, siendo
+//"context_hexagono.solucion[0].x" el valor mayor y "context_hexagono.solucion[0].x_i"
+//el índice descriptivo de ésta. Este índice corresponde con los tipos de organización.
+//
+// -Devuelve un string separado por comas, que comparandolo con la 
+//hoja de drive nos dará la imagen del hexágono.
+function resuelveTipoHexagono(solucion, n_preguntas){
+    console.log("SOLUCION Y ->"+solucion[1].y)        
+    //Si el segundo valor es 0, el primero es el único en seleccionarse,
+    //es un tipo puro.
+    if(solucion[1].y == 0 ){
+        //Devolvemos sólo el índice del único valor seleccionado.
+        return String(solucion[0].x_i);
+    }
+    //Si el tercero es 0, tenemos un híbrido entre 2 tipos de organizaciones.
+    else if(solucion[2].z == 0){
+        //Devolvemos los índices de los dos tipos.
+        return String(solucion[0].x_i+","+solucion[1].y_i);
+    }
+    //Híbrido entre 3 tipos de organizaciones.
+    else{
+        //Devolvemos los índices de los tres tipos.
+        return String(solucion[0].x_i+","+solucion[1].y_i+","+solucion[2].z_i);
+    }
 }
 
 
