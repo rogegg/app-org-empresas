@@ -305,11 +305,17 @@ function resultadoHexagono(json){
 //hoja de drive nos dará la imagen del hexágono.
 function resuelveTipoHexagono(solucion, n_preguntas){
     console.log("SOLUCION Y ->"+solucion[1].y)        
-    //Si el segundo valor es 0, el primero es el único en seleccionarse,
-    //es un tipo puro.
-    if(solucion[1].y == 0 ){
-        //Devolvemos sólo el índice del único valor seleccionado.
-        return String(solucion[0].x_i);
+    //Si el segundo valor es 0.
+    if(solucion[1].y == 0){
+        //Si el primero vale más que 0 es un tipo puro.
+        if(solucion[0].x>0){
+            //Devolvemos sólo el índice del único valor seleccionado.
+            return String(solucion[0].x_i);
+        }
+        //Si el primero no tiene valores, ningún valor seleccionado, algo ha ido mal.
+        else{
+            return("-1");
+        }
     }
     //Si el tercero es 0, tenemos un híbrido entre 2 tipos de organizaciones.
     else if(solucion[2].z == 0){
@@ -321,6 +327,31 @@ function resuelveTipoHexagono(solucion, n_preguntas){
         //Devolvemos los índices de los tres tipos.
         return String(solucion[0].x_i+","+solucion[1].y_i+","+solucion[2].z_i);
     }
+}
+
+
+//Función que comprueba que todos los select seleccionen algún valor:
+//- Si todos están seleccionados activa el botón siguiente.
+//- Si alguno queda sin seleccionar no se activa el botón.
+function compruebaSelect(n_preguntas){
+    var index;
+    var valor;
+    var texto;
+    for(var i=0;i<n_preguntas;i++){
+        index = eval("document.formularioHexagono.selHexagono"+i+".selectedIndex");
+        valor = eval("document.formularioHexagono.selHexagono"+i+".options[index].value");
+        texto = eval("document.formularioHexagono.selHexagono"+i+".options[index].text"); 
+        //Si algún select no está seleccionado
+        if(valor < 0){
+            //Mostrar botón rojo con comentario
+            $('#boton-hexagono-rojo').show();
+            $('#boton-hexagono-verde').hide();
+            return;
+        }   
+    }
+    //Mostrar botón verde.
+    $('#boton-hexagono-verde').show();
+    $('#boton-hexagono-rojo').hide();
 }
 
 

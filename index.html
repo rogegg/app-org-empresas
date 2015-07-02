@@ -111,7 +111,6 @@
 
 
         <!-- Plantilla para CONCEPTOS v3. (Popups añadidos)-->
-
         <script id="plantilla-conceptos" type="text/x-handlebars-template">
           <div data-role="collapsible-set">
             {{#each variable}}
@@ -257,7 +256,7 @@
             <a href="#preguntas_verdadero_falso" data-role="button">Siguiente</a>
         </script>
         
-                   
+                    
                    
         <!-- Plantilla Hexágono -->
         <script id="plantilla-hexagono" type="text/x-handlebars-template">
@@ -267,8 +266,8 @@
                 <fieldset style="padding: 10px;" data-role="controlgroup">
                 <!--<legend>Nombre: {{nombre_pregunta}} / ID: {{id_pregunta}} / N_Preguntas: {{../n_preguntas}}</legend>-->
                 <legend>{{nombre_pregunta}}</legend>
-                <select name="selHexagono{{id_pregunta}}" id="select-native-{{id_pregunta}}" class="select">
-                <option value="" selected="selected">Selecciona una opción</option>
+                <select name="selHexagono{{id_pregunta}}" id="select-native-{{id_pregunta}}" class="select" onChange="compruebaSelect({{../n_preguntas}})">
+                <option value="-1" selected="selected">Selecciona una opción</option>
                 {{#each opcion}}
                     {{#ifCond nombre '!=' '' }}
                         <option value="{{codigo}}">
@@ -282,7 +281,13 @@
             {{~/each}}
             <!--<input type=button value="Dime propiedades" onclick="dimePropiedades()">
             <button type="submit" id="submit-hexagono" data-theme="b" data-icon="carat-r" data-iconpos="right" onclick="submitHexagono({{n_preguntas}})">Siguiente</button>-->
-            <a href="#respuesta-hexagono" data-role="button" onclick="submitHexagono({{n_preguntas}})">Siguiente</a>
+            <span hidden id="boton-hexagono-verde">
+                <a href="#respuesta-hexagono" data-role="button" data-theme="g" class="ui-right-g" onclick="submitHexagono({{n_preguntas}})">Siguiente</a>                
+            </span>
+            <span id="boton-hexagono-rojo">
+                <center style="color: red;">Debe responder todas las preguntas para continuar</center>
+                <a href="#respuesta-hexagono" data-role="button" data-theme="g" class="ui-disabled ui-wrong-g" onclick="submitHexagono({{n_preguntas}})">Siguiente</a>
+            </span>
             </form>
         </script>
                  
