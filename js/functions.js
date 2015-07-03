@@ -215,6 +215,8 @@ function leerPreguntas(json) {
                     //var x = randomInt(i,k-1);
                 
                     v_opciones = generaOpciones(json.feed.entry[k].gsx$opciones.$t); 
+                    //console.log("V_OPCIONES: ");
+                    //console.log(v_opciones);
                     v_preguntas.push({  
                                       id_pregunta:k,
                                       enunciado: json.feed.entry[k].gsx$enunciado.$t,
@@ -248,6 +250,8 @@ function leerPreguntas(json) {
 //Función que recibe una cadena de palabras separadas por ; 
 ////y devuelve un vector en la que cada posición es una de esas palabras.
 function generaOpciones(cadena){
+    console.log("Dentro de generaOpciones cadena: ");
+    console.log(cadena);
     var x = -1; //primera posicion a almacenar
     var vector = new Array();
     for(var i=0; i<cadena.length ; i++) {

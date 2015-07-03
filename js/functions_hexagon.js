@@ -22,7 +22,7 @@ function leerHexagono(json){
             //Generamos las opciones de cada pregunta
             id_opc = i;
             //console.log(id_opc);
-            v_opciones = generaOpciones(json,i,total,id_opc);
+            v_opciones = generaOpcionesHexagono(json,i,total,id_opc);
             v_pregunta.push({
                 nombre_pregunta: nombre_pregunta_tmp,
                 id_pregunta: id_pregunta,
@@ -58,7 +58,7 @@ function leerHexagono(json){
 //   - total: número total de celdas de la estructura a recorrer.
 //   - id_opc: id única para cada opción.
 //
-function generaOpciones(json,indice,total,id_opc){
+function generaOpcionesHexagono(json,indice,total,id_opc){
     var i = indice;
     var nombre = new Array();
     var id = new Array();
@@ -346,12 +346,14 @@ function compruebaSelect(n_preguntas){
             //Mostrar botón rojo con comentario
             $('#boton-hexagono-rojo').show();
             $('#boton-hexagono-verde').hide();
+            
             return;
         }   
     }
     //Mostrar botón verde.
     $('#boton-hexagono-verde').show();
     $('#boton-hexagono-rojo').hide();
+    $('#boton-hexagono-verde').focus(); //Revisar,¿como hacer focus a <span>?
 }
 
 
