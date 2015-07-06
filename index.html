@@ -90,6 +90,11 @@
           var html_h = t_header(context);
         </script>
 
+        
+        
+        
+        
+        
 
         <!-- Plantilla para el HOME de la página. -->
         <script id="plantilla-home" type="text/x-handlebars-template">
@@ -193,7 +198,7 @@
                                  <a data-role="button" data-theme="g" class="opciones ui-disabled-g pregunta{{id_pregunta}}">Respuesta</a>
                                  <p class="opciones pregunta{{id_pregunta}}">
                                      {{#each opciones}}
-                                         <a href="#respuesta_preguntas_cortas" data-role="button" onclick="generaRespuesta('{{nombre}}','{{../respuesta}}','{{../explicacion}}')">{{nombre}}</a>
+                                         <a href="#respuesta_preguntas_cortas" data-role="button" onclick="generaRespuesta('{{../enunciado}}','{{nombre}}','{{../respuesta}}','{{../explicacion}}')">{{nombre}}</a>
                                      {{~/each}}
                                  </p>
                              {{~/each}}
@@ -205,9 +210,12 @@
         
         <!-- Plantilla respuesta a preguntas cortas -->
         <script id="plantilla-respuesta-preguntas-cortas" type="text/x-handlebars-template">
-            <a data-role="button" id="respuesta"></a>
-            <a data-role="button" id="opcion" data-theme="g"></a>
-            <p id="explicacion"></p>
+            <a data-role="button" data-theme="g" class="ui-disabled-g">Pregunta</a>
+            <span id="pregunta">     </span>
+            <!-- <a data-role="button" data-theme="g" class="ui-disabled-g">Respuesta seleccionada</a> -->
+            <span id="respuesta">     </span>
+            <span id="explicacion">     </span>
+            
             <a href="#temas_preguntas" data-role="button">Siguiente</a>
         </script>
         
@@ -234,11 +242,11 @@
                                      <br/>
                                      <a style="display: inline;" href="#respuesta_preguntas_verdadero_falso"
                                          data-role="button" data-icon="check" class="ui-right-g" data-theme="g"
-                                         onclick="generaRespuestaVF('V','{{respuesta}}','{{explicacion}}')">
+                                         onclick="generaRespuestaVF('{{enunciado}}','V','{{respuesta}}','{{explicacion}}')">
                                              Verdadero</a>
                                      <a style="display: inline;" href="#respuesta_preguntas_verdadero_falso" 
                                         data-role="button" data-icon="delete" class="ui-wrong-g" data-theme="g"
-                                        onclick="generaRespuestaVF('F','{{respuesta}}','{{explicacion}}')">
+                                        onclick="generaRespuestaVF('{{enunciado}}','F','{{respuesta}}','{{explicacion}}')">
                                              Falso</a>
                                  </center>                                 
                              {{~/each}}
@@ -251,8 +259,11 @@
         
         <!-- Plantilla respuesta a preguntas verdadero/falso -->
         <script id="plantilla-respuesta-verdadero-falso" type="text/x-handlebars-template">
-            <a data-role="button" id="opcionVF" data-theme="g"></a>
-            <p id="explicacionVF"></p>
+            <a data-role="button" data-theme="g" class="ui-disabled-g">Pregunta</a>
+            <span id="preguntaVF">     </span>
+            <!-- <a data-role="button" data-theme="g" class="ui-disabled-g">Respuesta seleccionada</a> -->
+            <span id="respuestaVF">     </span>
+            <span id="explicacionVF">     </span>
             <a href="#preguntas_verdadero_falso" data-role="button">Siguiente</a>
         </script>
         

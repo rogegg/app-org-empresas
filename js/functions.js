@@ -250,8 +250,6 @@ function leerPreguntas(json) {
 //Función que recibe una cadena de palabras separadas por ; 
 ////y devuelve un vector en la que cada posición es una de esas palabras.
 function generaOpciones(cadena){
-    console.log("Dentro de generaOpciones cadena: ");
-    console.log(cadena);
     var x = -1; //primera posicion a almacenar
     var vector = new Array();
     for(var i=0; i<cadena.length ; i++) {
@@ -268,25 +266,32 @@ function generaOpciones(cadena){
 
 
 //Comprueba si la respuesta es correcta o no, y genera la página de respuesta correcta o incorrecta
-function generaRespuesta(respuesta_seleccionada,respuesta_correcta,explicacion){
+function generaRespuesta(enunciado,respuesta_seleccionada,respuesta_correcta,explicacion){
+        $('#pregunta').empty();
+        $('#pregunta').append("<p>"+enunciado+"</p>");
+    
         $('#respuesta').empty();
         $('#respuesta').append(respuesta_seleccionada);    
     
+//////////////////////////////////////REVISAR NO CARGA ESTILOS LA SEGUNDA VEZ QUE APARECE////////////////////////////////
         if(respuesta_correcta == respuesta_seleccionada){
-            $('#opcion').empty();
-            $('#opcion').removeClass("ui-wrong-g");
-            $('#opcion').addClass("ui-right-g");
-            $('#opcion').append("CORRECTO: "+respuesta_correcta);    
+            $('#respuesta').empty();
+            $('#respuesta').append('<a data-role="button" data-theme="g" class="ui-right-g ui-link ui-btn ui-btn-g ui-icon-check ui-btn-icon-left ui-shadow ui-corner-all" data-icon="check">'+respuesta_seleccionada+'</a>');
         }else{
-            $('#opcion').empty();
-            $('#opcion').removeClass("ui-right-g");
-            $('#opcion').addClass("ui-wrong-g");
-            $('#opcion').append("INCORRECTO: "+respuesta_correcta);    
+            $('#respuesta').empty();
+            //class="ui-wrong-g ui-link ui-btn ui-btn-g ui-icon-delete ui-btn-icon-left ui-shadow ui-corner-all"
+            //$('#respuesta').append('<a data-role="button" data-theme="g" class="ui-wrong-g" data-icon="delete">'+respuesta_seleccionada+'</a>');
+            $('#respuesta').append('<a data-role="button" data-theme="g" class="strike ui-wrong-g ui-link ui-btn ui-btn-g ui-icon-delete ui-btn-icon-left ui-shadow ui-corner-all" data-icon="delete">'+respuesta_seleccionada+'</a>');
+            $('#respuesta').append('<h3>Respuesta correcta: '+respuesta_correcta+'</h2>');
         }
     
         $('#explicacion').empty();
         $('#explicacion').append(explicacion);
 }
+
+
+
+
 
 
 //Devuelve un número aleatorio entre min y max.
@@ -379,21 +384,35 @@ function leerPreguntasVF(json) {
 
 
 //Comprueba si la respuesta es correcta o no, y genera la página de respuesta correcta o incorrecta
-function generaRespuestaVF(respuesta_seleccionada,respuesta_correcta,explicacion){
+function generaRespuestaVF(enunciado,respuesta_seleccionada,respuesta_correcta,explicacion){
+        var respuesta_seleccionada_tmp ="";
+        var respuesta_correcta_tmp ="";
+        $('#preguntaVF').empty();
+        $('#preguntaVF').append("<p>"+enunciado+"</p>");
+    
+        //Traducimos V = Verdadero y F = Falso
+        if(respuesta_seleccionada == "V"){
+           respuesta_seleccionada_tmp = "Verdadero" ;
+        }else{respuesta_seleccionada_tmp = "Falso" ;}
+    
+        if(respuesta_correcta == "V"){
+           respuesta_correcta_tmp = "Verdadero" ;
+        }else{respuesta_correcta_tmp = "Falso" ;}
+    
         if(respuesta_correcta == respuesta_seleccionada){
-            $('#opcionVF').empty();
-            $('#opcionVF').removeClass("ui-wrong-g");
-            $('#opcionVF').addClass("ui-right-g");
-            $('#opcionVF').append("CORRECTO");    
+            $('#respuestaVF').empty();
+            $('#respuestaVF').append('<a data-role="button" data-theme="g" class="ui-right-g ui-link ui-btn ui-btn-g ui-icon-check ui-btn-icon-left ui-shadow ui-corner-all" data-icon="check">'+respuesta_seleccionada_tmp+'</a>');
         }else{
-            $('#opcionVF').empty();
-            $('#opcionVF').removeClass("ui-right-g");
-            $('#opcionVF').addClass("ui-wrong-g");
-            $('#opcionVF').append("INCORRECTO");    
+            $('#respuestaVF').empty();
+            //class="ui-wrong-g ui-link ui-btn ui-btn-g ui-icon-delete ui-btn-icon-left ui-shadow ui-corner-all"
+            //$('#respuesta').append('<a data-role="button" data-theme="g" class="ui-wrong-g" data-icon="delete">'+respuesta_seleccionada+'</a>');
+            $('#respuestaVF').append('<a data-role="button" data-theme="g" class="strike ui-wrong-g ui-link ui-btn ui-btn-g ui-icon-delete ui-btn-icon-left ui-shadow ui-corner-all" data-icon="delete">'+respuesta_seleccionada_tmp+'</a>');
+            $('#respuestaVF').append('<h3>Respuesta correcta: '+respuesta_correcta_tmp+'</h2>');
         }
     
         $('#explicacionVF').empty();
         $('#explicacionVF').append(explicacion);
+    
 }
 
 
