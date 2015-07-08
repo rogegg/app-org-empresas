@@ -147,10 +147,10 @@ function submitHexagono(n_preguntas){
     
     $("#contador").empty();
     $("#contador").append("<span>Estructura simple= "+v_contador[0]+"</span><br>");
-    $("#contador").append("<span>Burocracia Maquinal= "+v_contador[1]+"</span><br>");
-    $("#contador").append("<span>Burocracia Profesional= "+v_contador[2]+"</span><br>");
-    $("#contador").append("<span>Forma Divisional= "+v_contador[3]+"</span><br>");
-    $("#contador").append("<span>Adhocracia= "+v_contador[4]+"</span><br>");
+    $("#contador").append("<span>Burocracia maquinal= "+v_contador[1]+"</span><br>");
+    $("#contador").append("<span>Forma divisional= "+v_contador[2]+"</span><br>");
+    $("#contador").append("<span>Adhocracia= "+v_contador[3]+"</span><br>");
+    $("#contador").append("<span>Burocracia Profesional= "+v_contador[4]+"</span><br>");
     $("#contador").append("<span>Organización misional= "+v_contador[5]+"</span><br>");
     $("#contador").append("<span>No lo se= "+v_contador[6]+"</span><br>");
     
@@ -210,9 +210,10 @@ function submitHexagono(n_preguntas){
     
     //recorremos context_hexagono.resultado
     for(var i in context_hexagono.resultado){
-        $("#contador").append("<span>it= "+i+"; context_hexagono.resultado[i].condicion= "+context_hexagono.resultado[i].condicion+"</span><br>");
+        //$("#contador").append("<span>it= "+i+"; context_hexagono.resultado[i].condicion= "+context_hexagono.resultado[i].condicion+"</span><br>");
         //Si context_hexagono.resultado.condicion coincide con solucion_string.
         if(context_hexagono.resultado[i].condicion == solucion_string){
+            $("#contador").append("<span>it= "+i+"; context_hexagono.resultado[i].condicion= "+context_hexagono.resultado[i].condicion+"</span><br>");
             $("#contador").append(
                 "<h1> Solución: </h1><br> \
                  <img src="+context_hexagono.resultado[i].imagen+" width=\"200\" height=\"200\"></img><br> \
