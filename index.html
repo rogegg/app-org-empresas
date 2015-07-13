@@ -108,7 +108,7 @@
         <script id="plantilla-menu" type="text/x-handlebars-template">
           <!-- revisar href de los botones -->
           {{#each menu}}
-              <a href="#{{{nombre_menu}}}" data-role="button">
+              <a href="#{{{nombre_menu}}}" data-role="button" class="{{asig}}">
                 {{{nombre_menu}}}
               </a>
           {{~/each}}
@@ -119,7 +119,7 @@
         <script id="plantilla-conceptos" type="text/x-handlebars-template">
           <div data-role="collapsible-set">
             {{#each variable}}
-            <div data-role="collapsible" data-collapsed="true" data-collapsed-icon="carat-r" data-expanded-icon="carat-d" class="{{{asig}}}">
+            <div data-role="collapsible" data-collapsed="true" data-collapsed-icon="carat-r" data-expanded-icon="carat-d">
               <h3>{{nombre_variable}}</h3> 
               <div data-role="collapsible-set">
                  {{#each subvariables}}

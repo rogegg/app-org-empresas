@@ -60,11 +60,17 @@ function leerAsignaturas(json) {
 
 function leerMenu(json) {
   var menu = new Array();
+  var asignatura;
   context_menu.menu = new Array();
   var total = json.feed.entry.length;
   for(var i=0; i<total; i++){
-    menu[i] = json.feed.entry[i].gsx$menu.$t;
-    context_menu.menu[i] = { nombre_menu: menu[i]}
+    menu[i] = json.feed.entry[i].gsx$menu.$t;  
+    asignatura = json.feed.entry[i].gsx$asignatura.$t;  
+            //console.log("Menu--> "+menu[i]+" con asignatura ->"+asignatura);
+    context_menu.menu[i] = {
+        nombre_menu: menu[i],
+        asig: asignatura
+    }
   }
 }
 
