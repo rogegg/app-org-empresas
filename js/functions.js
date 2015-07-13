@@ -202,15 +202,12 @@ function leerPreguntas(json) {
                 };
                 /************ Preguntas dentro de un tema *******************/
                 
-                //////NOTA: CAMBIAR ---> Actualmente se envía sólo una pregunta a la plantilla. 
-                //////-----------> Hay que cambiarlo y enviar las X preguntas a la plantilla, 
-                //////-----------> desde la plantilla seleccionar aleatoriamente una pregunta.
+                //Actualmente se envía sólo una pregunta a la plantilla. 
+                
                 
                 var k;
                 for(k=i; json.feed.entry[k].gsx$tema.$t == json.feed.entry[i].gsx$tema.$t && k<total ;k++){
                     
-             
-                    //CONSULTAR NOTA ARRIBA: CAMBIAR
                     //K es el número enunciados por tema.
                     //var x = randomInt(i,k-1);
                 
