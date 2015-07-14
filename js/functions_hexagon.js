@@ -1,6 +1,17 @@
 "use strict";
 
 var context_hexagono = new Object();
+context_hexagono.codificacion = new Array();
+
+context_hexagono.codificacion = {
+    0:"estructura simple",
+    1:"burocracia maquinal",
+    2:"forma divisional",
+    3:"adhocracia",
+    4:"burocracia profesional",
+    5:"organización misional",
+    6:"no lo se"    
+}
 
 
 function leerHexagono(json){
@@ -187,8 +198,7 @@ function submitHexagono(n_preguntas){
         }
     }
     
-    
-                            //Mostramos los resultados para DEPURACIÓN
+                                //Mostramos los resultados para DEPURACIÓN
                             $("#contador").append("<span>Variable X= "+x+"; X_I= "+x_i+"</span><br>");
                             $("#contador").append("<span>Variable Y= "+y+"; Y_I= "+y_i+"</span><br>");
                             $("#contador").append("<span>Variable Z= "+z+"; Z_I= "+z_i+"</span><br>");
@@ -207,19 +217,46 @@ function submitHexagono(n_preguntas){
     //Prueba para componer el resultado de los arrays a un string
     //solucion_string=String(context_hexagono.solucion[0].x_i)+","+String(context_hexagono.solucion[1].y_i);
     
+    console.log("solucion_string[0]-> "+solucion_string[0]);
     
-    //recorremos context_hexagono.resultado
-    for(var i in context_hexagono.resultado){
-        //$("#contador").append("<span>it= "+i+"; context_hexagono.resultado[i].condicion= "+context_hexagono.resultado[i].condicion+"</span><br>");
-        //Si context_hexagono.resultado.condicion coincide con solucion_string.
-        if(context_hexagono.resultado[i].condicion == solucion_string){
-            $("#contador").append("<span>it= "+i+"; context_hexagono.resultado[i].condicion= "+context_hexagono.resultado[i].condicion+"</span><br>");
-            $("#contador").append(
-                "<h1> Solución: </h1><br> \
-                 <img src="+context_hexagono.resultado[i].imagen+" width=\"200\" height=\"200\"></img><br> \
-                <p>"+context_hexagono.resultado[i].nombre+"</p><br>"
-            );
+    //Si el primer dígito es un número o el signo negativo de un número
+    if(solucion_string>'-' && solucion_string<'9'){
+        //recorremos context_hexagono.resultado
+        for(var i in context_hexagono.resultado){
+            //$("#contador").append("<span>it= "+i+"; context_hexagono.resultado[i].condicion= "+context_hexagono.resultado[i].condicion+"</span><br>");
+            //Si context_hexagono.resultado.condicion coincide con solucion_string.
+            if(context_hexagono.resultado[i].condicion == solucion_string){
+                $("#contador").append("<span>it= "+i+"; context_hexagono.resultado[i].condicion= "+context_hexagono.resultado[i].condicion+"</span><br>");
+                $("#contador").append(
+                    "<h1> Solución: </h1><br> \
+                     <img src="+context_hexagono.resultado[i].imagen+" width=\"200\" height=\"200\"></img><br> \
+                    <p>"+context_hexagono.resultado[i].nombre+"</p><br>"
+                );
+            }
         }
+        
+    }
+    
+    //Si es una letra
+    else{
+        console.log("Caracter");
+        /*for(var i in context_hexagono.resultado){
+            //Si context_hexagono.resultado.condicion coincide con solucion_string.
+            if(context_hexagono.resultado[i].condicion == solucion_string){
+                $("#contador").append(
+                    "<h1> Solución: </h1><br> \
+                    <p>"+context_hexagono.resultado[i].nombre+"</p><br>"
+                );
+            }
+        }*/
+        
+        //Mostramos mensaje de híbrido entre 3, pero no podemos mostrar una imagen.
+        $("#contador").append(
+            "<h1> Solución: </h1><br> \
+            <p>Es un híbrido entre "+context_hexagono.codificacion[solucion_string[1]]+", \
+            "+context_hexagono.codificacion[solucion_string[3]]+" y \
+            "+context_hexagono.codificacion[solucion_string[5]]+"</p><br>"
+        );    
     }
     
     
@@ -229,11 +266,10 @@ function submitHexagono(n_preguntas){
     
     console.log(v_contador);
     //context_resultado_hexagono.mostrar = mostrar;
-    console.log("Solución String: ");
-    console.log(solucion_string);
+    console.log("Solución String: "+solucion_string);
+        
     
-    
-    console.log("Resultado hexagono:");
+    console.log("Resultado hexagono: ");
     console.log(context_hexagono);
 
     /*var prueba = "0,2,3,4";
@@ -304,7 +340,22 @@ function resultadoHexagono(json){
 //
 // -Devuelve un string separado por comas, que comparandolo con la 
 //hoja de drive nos dará la imagen del hexágono.
+//
+//Valor 1 -> solucion[0].x ; índice valor 1 -> solucion[0].x_i
+//Valor 2 -> solucion[1].y ; índice valor 2 -> solucion[1].y_i
+//Valor 3 -> solucion[2].z ; índice valor 3 -> solucion[2].z_i
+//
 function resuelveTipoHexagono(solucion, n_preguntas){
+    //Calculamos el porcentaje de preguntas límite para el "no lo sé"
+    //Con un 60% de "no lo sé" no podemos dar un resultado.
+    var limite = (n_preguntas * 60)/100; //60%
+    
+    //Si la solución es 6(no lo se) y el valor es mayor que el límite damos resultado: no lo sé
+    if(solucion[0].x_i==6 && solucion[0].x>=limite){
+        return("6");
+    }
+    
+    
     console.log("SOLUCION Y ->"+solucion[1].y)        
     //Si el segundo valor es 0.
     if(solucion[1].y == 0){
@@ -325,9 +376,19 @@ function resuelveTipoHexagono(solucion, n_preguntas){
     }
     //Híbrido entre 3 tipos de organizaciones.
     else{
-        //Devolvemos los índices de los tres tipos.
-        return String(solucion[0].x_i+","+solucion[1].y_i+","+solucion[2].z_i);
+        //Si el primero y segundo empatan, no podemos definir el tipo
+        //devolvemos los indices con una letra al principio a modo de identificador.
+        if(solucion[0].x == solucion[1].y){
+            return String("s"+solucion[0].x_i+","+solucion[1].y_i+","+solucion[2].z_i);
+        }
+        //Devolvemos los índices de los tres tipos. 
+        else{
+            return String(solucion[0].x_i+","+solucion[1].y_i+","+solucion[2].z_i);
+        }
     }
+    
+    //En cualquier otro caso, no hemos determinado que tipo es.
+    //return("-1");
 }
 
 

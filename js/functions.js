@@ -347,8 +347,9 @@ function leerPreguntasVF(json) {
                 //********************************************
                 //Contamos las preguntas por tema
                 n_preguntas = 0;
-                for(var l=i;json.feed.entry[l].gsx$tema.$t == json.feed.entry[i].gsx$tema.$t && l<total;l++){
+                for(var l=i; json.feed.entry[l].gsx$tema.$t == json.feed.entry[i].gsx$tema.$t && l<total;l++){
                     n_preguntas ++;
+                    //console.log("ERROR: "+json.feed.entry[l].gsx$tema.$t);
                 }
                                 
                 //Estructura JSON de cada tema
