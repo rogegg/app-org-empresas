@@ -89,17 +89,26 @@ function generaOpcionesHexagono(json,indice,total,id_opc){
         v_codigo=[];
     }
     
+    //console.log("DEPURACION HEXAGONO-opciones:");
+    //console.log("Indice: "+indice+", "+"Id_opc: "+id_opc);
+    //console.log("nombre: "+nombre);
     
     //Eliminamos nombres repetidos y combinamos su código.    
     for(var j=0 ; j<nombre.length ; j++){
+    //    if(indice == 35)        console.log(j+"-->"+nombre[j]);
         for(var k=j ; k<nombre.length ; k++){
+    //        if(indice == 35)            console.log("       "+k+"--->"+nombre[k]+"-> con codigo "+codigo[k])
             if(k!=j && nombre[k]==nombre[j]){
+    //            if(indice == 35)                console.log("Agrupo nombre y codigo");
                 nombre.splice(k,1);
                 codigo[j].push(codigo[k].pop());
                 codigo.splice(k,1);
+                k--;//Decrementamos para volver a comprobar la posición "k" donde se borró, pues ahora hay otro elemento en esta posición.
             }
         }
     }
+    //console.log("nombre: "+nombre);
+    
     
     //Almacenamos cada nombre con sus códigos.
     //console.log("ID_OPC: "+id_opc);
