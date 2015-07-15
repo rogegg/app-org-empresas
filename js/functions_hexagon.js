@@ -135,8 +135,8 @@ function submitHexagono(n_preguntas){
     var valor;
     var v_valores = new Array(); //Vector con los valores seleecionados
     var v_contador = new Array(7); //Vector para contar 
-    var x=0, y=0, z=0; //Variables dominantes en el hexágono.
-    var x_i=0, y_i=0, z_i=0; //Indice donde estaban las variables dominantes.
+    var x=0, y=0, z=0, t=0; //Variables dominantes en el hexágono.
+    var x_i=0, y_i=0, z_i=0, t_i=0; //Indice donde estaban las variables dominantes.
     var solucion = new Array(); 
     var solucion_string="";
     
@@ -207,13 +207,29 @@ function submitHexagono(n_preguntas){
         }
     }
     
+    //Establecemos un cuarto valor -> t
+    //Establecemos el índice del cuarto valor -> t_i
+    for(var i=0 ; i<v_contador.length ; i++){
+        //Si el nuevo valor es mayor que el que tenemos
+        //y no coincide con el índice de x_i ni con y_i
+        if((v_contador[i]>t) && (i!=x_i) && (i!=y_i) && (i!=z_i)){
+            t = v_contador[i];
+            t_i = i;
+        }
+    }
+    
+    
+console.log("VContador: "+v_contador);
+    
                                 //Mostramos los resultados para DEPURACIÓN
                             $("#contador").append("<span>Variable X= "+x+"; X_I= "+x_i+"</span><br>");
                             $("#contador").append("<span>Variable Y= "+y+"; Y_I= "+y_i+"</span><br>");
                             $("#contador").append("<span>Variable Z= "+z+"; Z_I= "+z_i+"</span><br>");
+                            $("#contador").append("<span>Variable T= "+t+"; T_I= "+t_i+"</span><br>");
     context_hexagono.solucion[0] = { x:x, x_i:x_i };
     context_hexagono.solucion[1] = { y:y, y_i:y_i };
     context_hexagono.solucion[2] = { z:z, z_i:z_i };
+    context_hexagono.solucion[3] = { t:t, t_i:t_i };
     
     
     
@@ -354,18 +370,47 @@ function resultadoHexagono(json){
 //Valor 2 -> solucion[1].y ; índice valor 2 -> solucion[1].y_i
 //Valor 3 -> solucion[2].z ; índice valor 3 -> solucion[2].z_i
 //
+// Hay que tener en cuenta que ->   X > Y > Z > T
 function resuelveTipoHexagono(solucion, n_preguntas){
     //Calculamos el porcentaje de preguntas límite para el "no lo sé"
     //Con un 60% de "no lo sé" no podemos dar un resultado.
     var limite = (n_preguntas * 60)/100; //60%
     
+    
+    //Respuestas "NO LO SE"
     //Si la solución es 6(no lo se) y el valor es mayor que el límite damos resultado: no lo sé
     if(solucion[0].x_i==6 && solucion[0].x>=limite){
         return("6");
+    }else{
+        //Si el segundo valor es 6(no lo se) lo vamos a descartar, puesto que no es mayor que el 60%
+        if(solucion[1].y_i==6){
+            //Tenemos que eliminar el valor de 6 y reordenar las variables.
+            solucion[1].y = solucion[2].z;
+            solucion[1].y_i = solucion[2].z_i;
+            
+            solucion[2].z = solucion[3].t;
+            solucion[2].z_i = solucion[3].t_i;
+            
+            solucion[3].t = 0;
+            solucion[3].t_i = 0;
+            
+        }else{
+            //Si el tercer valor es 6(no lo se) lo vamos a descartar, puesto que no es mayor que el 60%
+            if(solucion[2].z_i==6){
+                //Tenemos que eliminar el valor de 6 y reordenar las variables.
+                solucion[2].z = solucion[3].t;
+                solucion[2].z_i = solucion[3].t_i;
+                
+                solucion[3].t = 0;
+                solucion[3].t_i = 0;
+                
+            }
+        }
     }
     
     
-    console.log("SOLUCION Y ->"+solucion[1].y)        
+    
+    //console.log("SOLUCION Y ->"+solucion[1].y)        
     //Si el segundo valor es 0.
     if(solucion[1].y == 0){
         //Si el primero vale más que 0 es un tipo puro.
@@ -378,12 +423,14 @@ function resuelveTipoHexagono(solucion, n_preguntas){
             return("-1");
         }
     }
-    //Si el tercero es 0, tenemos un híbrido entre 2 tipos de organizaciones.
+        
+    //Si el tercero es 0, tenemos un [HÍBRIDO ENTRE 2] tipos de organizaciones.
     else if(solucion[2].z == 0){
         //Devolvemos los índices de los dos tipos.
         return String(solucion[0].x_i+","+solucion[1].y_i);
     }
-    //Híbrido entre 3 tipos de organizaciones.
+    
+    //[HÍBRIDO ENTRE 3] tipos de organizaciones.
     else{
         //Si el primero y segundo empatan, no podemos definir el tipo
         //devolvemos los indices con una letra al principio a modo de identificador.
