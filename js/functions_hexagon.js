@@ -373,17 +373,20 @@ function resultadoHexagono(json){
 // Hay que tener en cuenta que ->   X > Y > Z > T
 function resuelveTipoHexagono(solucion, n_preguntas){
     //Calculamos el porcentaje de preguntas límite para el "no lo sé"
-    //Con un 60% de "no lo sé" no podemos dar un resultado.
-    var limite = (n_preguntas * 60)/100; //60%
-    
+    //Con un 50% de "no lo sé" no podemos dar un resultado.
+    var limite = (n_preguntas * 50)/100; //50%    
+    var n_nolose = 0; //número de selecciones de "no lo se"
+    var n_respuestas = 0; //respuestas sin tener en cuenta "no lo se"
     
     //Respuestas "NO LO SE"
     //Si la solución es 6(no lo se) y el valor es mayor que el límite damos resultado: no lo sé
     if(solucion[0].x_i==6 && solucion[0].x>=limite){
+        n_nolose = solucion[0].x;
         return("6");
     }else{
         //Si el segundo valor es 6(no lo se) lo vamos a descartar, puesto que no es mayor que el 60%
         if(solucion[1].y_i==6){
+            n_nolose = solucion[1].y;
             //Tenemos que eliminar el valor de 6 y reordenar las variables.
             solucion[1].y = solucion[2].z;
             solucion[1].y_i = solucion[2].z_i;
@@ -397,6 +400,7 @@ function resuelveTipoHexagono(solucion, n_preguntas){
         }else{
             //Si el tercer valor es 6(no lo se) lo vamos a descartar, puesto que no es mayor que el 60%
             if(solucion[2].z_i==6){
+                n_nolose = solucion[2].z;
                 //Tenemos que eliminar el valor de 6 y reordenar las variables.
                 solucion[2].z = solucion[3].t;
                 solucion[2].z_i = solucion[3].t_i;
@@ -408,6 +412,19 @@ function resuelveTipoHexagono(solucion, n_preguntas){
         }
     }
     
+    
+    //Si el primer valor es el 80% de las respuestas (sin tener en cuenta el "no lo se") es un tipo puro
+    n_respuestas = n_preguntas - n_nolose;
+    if(solucion[0].x >= (n_respuestas*80/100)){
+        return String(solucion[0].x_i);
+    }
+    
+    
+    //Si el segundo valor es el doble del tercer valor, se omite el tercer valor.
+    if(solucion[1].y >= (solucion[2].z*2)){
+       solucion[2].z = 0;
+       solucion[2].z_i = 0;
+    }
     
     
     //console.log("SOLUCION Y ->"+solucion[1].y)        

@@ -104,7 +104,7 @@
         <script id="plantilla-menu" type="text/x-handlebars-template">
           <!-- revisar href de los botones -->
           {{#each menu}}
-              <a style="display: block" href="#{{{nombre_menu}}}" data-role="button" class="{{asig}}">
+              <a style="display: block" href="#{{{id}}}" data-role="button" class="{{asig}}">
                 {{{nombre_menu}}}
               </a>
           {{~/each}}
@@ -125,6 +125,7 @@
                        <a href="#{{id}}" data-transition="slideup" data-rel="popup" class="{{{asig}}} ui-btn ui-btn-inline ui-corner-all">{{nombre_concepto}}</a>
                        <div data-role="popup" id="{{id}}" data-position-to="window">
                          <div data-role="main" class="ui-content">
+                           <h3 style="color:#F15A29" align="center">{{nombre_concepto}}</h3>
                            <input type="button" value="Definición" data-theme="b">
                            <p align="center">{{definicion}}</p>
                            <input type="button" value="Ejemplo" data-theme="b">
@@ -307,6 +308,57 @@
             <a href="#home" data-role="button">Salir</a>
         </script>               
         
+        <!-- Plantilla Relaciones -->
+        <script id="plantilla-relaciones" type="text/x-handlebars-template">
+            <h2 class="center">Relaciones entre variables</h2>
+            <form name="formularioRelaciones">
+                <span id="primera_variable">
+                    <fieldset style="padding: 10px;" data-role="controlgroup">
+                    <!--<legend>Nombre: {{nombre_pregunta}} / ID: {{id_pregunta}} / N_Preguntas: {{../n_preguntas}}</legend>-->
+                    <legend>Selecciona la primera variable</legend>
+                    <select name="relacion0" id="select-native-relacion0" class="select" onChange="compruebaSelectRelaciones()">
+                    <option value="-1" selected="selected">Selecciona una opción</option>
+                    {{#each relaciones}}
+                        <option value="{{valor}}" class="{{asig}}">
+                            {{variable}}
+                            <a class="valor-opcion">{{valor}}</a>
+                        </option>
+                    {{~/each}}    
+                    </select>
+                    </fieldset>
+                </span>
+                <span id="segunda_variable">
+                    <fieldset style="padding: 10px;" data-role="controlgroup">
+                    <!--<legend>Nombre: {{nombre_pregunta}} / ID: {{id_pregunta}} / N_Preguntas: {{../n_preguntas}}</legend>-->
+                    <legend>Selecciona la segunda variable</legend>
+                    <select name="relacion1" id="select-native-relacion1" class="select" onChange="compruebaSelectRelaciones()">>
+                    <option value="-1" selected="selected">Selecciona una opción</option>
+                    {{#each relaciones}}
+                        <option value="{{valor}}">
+                            {{variable}}
+                            <a class="valor-opcion">{{valor}}</a>
+                        </option>
+                    {{~/each}}    
+                    </select>
+                    </fieldset>
+                </span>
+            <span hidden id="boton-relaciones-verde">
+                <a href="#respuesta-relaciones" data-role="button" data-theme="g" class="ui-right-g" onclick="submitRelaciones()">Siguiente</a>
+            </span>
+            <span id="boton-relaciones-rojo">
+                <center style="color: red;">Debe seleccionar 2 variables para continuar</center>
+                <a href="#respuesta-relaciones" data-role="button" data-theme="g" class="ui-disabled ui-wrong-g" onclick="submitRelaciones()">Siguiente</a>
+            </span>
+            </form>
+        </script>
+        
+        <!-- Plantilla respuesta Relaciones -->
+        <script id="plantilla-respuesta-relaciones" type="text/x-handlebars-template">
+            <p>Respuesta relaciones entre variables</p>
+            <p>Tipo de empresa</p>
+            <p id="explicacionRelaciones"></p>
+            <a href="#home" data-role="button">Salir</a>
+        </script>               
         
     </head>
     
@@ -456,9 +508,9 @@
                 $('#contenedor-respuesta-preguntas-vf').html(html);
             </script>
         </div>
-        
-        
-        <!--
+            
+            
+       <!--
             Hexágono
         -->    
        <div data-role="page" id="Hexágono" data-theme="c">
@@ -491,6 +543,41 @@
                 $('#contenedor-respuesta-hexagono').html(html);
             </script>
         </div>
+             
+       
+       
+       <!--
+            Relaciones entre variables
+        -->    
+       <div data-role="page" id="Relaciones" data-theme="c">
+            <script src="https://spreadsheets.google.com/feeds/list/1sFG2bBd0m00Lps7f6cZXUEAT2CbFgCof9W97ATx2VRE/oq2u8bl/public/values?alt=json-in-script&callback=leerRelaciones" type="text/javascript"></script>  
+            
+            <div id="contenedor-header-relaciones"></div>
+            <script>$('#contenedor-header-relaciones').html(html_h);</script>
+            <div id="contenedor-relaciones"></div>
+            <script>
+                var source   = $("#plantilla-relaciones").html();
+                var template = Handlebars.compile(source);
+                var html     = template(context_relaciones);
+                $('#contenedor-relaciones').html(html);
+            </script>
+        </div>
+              
+        <!--
+            Respuesta Relaciones
+        -->    
+        <div data-role="page" id="respuesta-relaciones" data-theme="c">
+            <script src="https://spreadsheets.google.com/feeds/list/1sFG2bBd0m00Lps7f6cZXUEAT2CbFgCof9W97ATx2VRE/oy52swj/public/values?alt=json-in-script&callback=leerResultadoRelaciones" type="text/javascript"></script>  
+            <div id="contenedor-header-respuesta-relaciones"></div>
+            <script>$('#contenedor-header-respuesta-relaciones').html(html_h);</script>
+            <div id="contenedor-respuesta-relaciones"></div>
+            <script>
+                var source   = $("#plantilla-respuesta-relaciones").html();
+                var template = Handlebars.compile(source);
+                var html     = template(context_relaciones);
+                $('#contenedor-respuesta-relaciones').html(html);
+            </script>
+        </div>
        
        
         <!--
@@ -507,14 +594,14 @@
             <p>María Magdalena Jiménez Barrionuevo</p>
 
             <h3>Miembros del proyecto:</h3>
-            <p>Carlos Antonio Albacete Sáez
-            Vanesa Barrales Molina
-            María Amparo Casado Mateos
-            Samuel Gómez Haro
-            Pedro Jiménez Barrionuevo
-            Rocío Llamas Sánchez
-            Blanca Mendiguchía Olalla
-            Antonio Moreno Cortés
+            <p>Carlos Antonio Albacete Sáez,
+            Vanesa Barrales Molina,
+            María Amparo Casado Mateos,
+            Samuel Gómez Haro,
+            Pedro Jiménez Barrionuevo,
+            Rocío Llamas Sánchez,
+            Blanca Mendiguchía Olalla,
+            Antonio Moreno Cortés,
             Gonzalo Sánchez Vizcaíno</p>
 
             <h3>Desarrollo técnico:</h3>

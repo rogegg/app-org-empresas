@@ -4,13 +4,17 @@ var total = 0;
 var filtro_asignatura="S";
 var context = new Object();
 var tema_seleccionado = null;
+var json_preguntas = null;
 context.name = "iOrg"; //nombre de la aplicacion
 
 
 var context_menu = new Object();
 var context_conceptos = new Object();
 var context_preguntas = new Object();
+var context_preguntas_filtrado = new Object();
 var context_preguntas_vf = new Object();
+var context_relaciones = new Object();
+
 
 
 
@@ -35,9 +39,15 @@ function filtroAsignatura(codigo_asignatura){
   if( String(codigo_asignatura) === "OE"){
     //console.log("IF: showOe();");
     showOe();
+    filtro_asignatura="OE";
+    filtroPreguntas("OE");
+    //console.log("DESDE EL FILTRO: ");
+    //console.log(context_preguntas);
+      
   }else if( String(codigo_asignatura) === "OT"){
     //console.log("ELSE IF: showOt();");
     showOt();
+    filtro_asignatura="OT";
   }else{
     //console.log("No hay filtrado");
   }
@@ -61,22 +71,25 @@ function leerAsignaturas(json) {
 function leerMenu(json) {
   var menu = new Array();
   var asignatura;
+  var id;
   context_menu.menu = new Array();
   var total = json.feed.entry.length;
   for(var i=0; i<total; i++){
     menu[i] = json.feed.entry[i].gsx$menu.$t;  
     asignatura = json.feed.entry[i].gsx$asignatura.$t;  
+    id = json.feed.entry[i].gsx$id.$t;
             //console.log("Menu--> "+menu[i]+" con asignatura ->"+asignatura);
     context_menu.menu[i] = {
         nombre_menu: menu[i],
-        asig: asignatura
+        asig: asignatura,
+        id: id
     }
   }
 }
 
 
 
-/*      //Estructura estática de ejemplo
+/*    //Estructura estática de ejemplo
       context_conceptos.variable[j] = {
         nombre_variable: json.feed.entry[i].gsx$variable.$t,
         subvariables:[]
@@ -174,8 +187,10 @@ function leerConceptos(json) {
 
 //Función que recibe datos de la hoja de cálculo de google drive en la variable json
 //Devuelve una estructura json más sencilla para mostrar con el sistema de plantillas HandlebarsJs.
+//
 //Esta hoja contiene preguntas cortas, agrupadas por Tema.
-function leerPreguntas(json) {
+function leerPreguntas(json){
+    json_preguntas = json;
     context_preguntas.tema = new Array();
     var tema_tmp = "";
     var total = json.feed.entry.length;
@@ -190,7 +205,6 @@ function leerPreguntas(json) {
             tema_tmp = json.feed.entry[i].gsx$tema.$t;
             //Si no es vacía
             if(tema_tmp != ""){
-                
                 //********************************************
                 //Contamos las preguntas por tema
                 n_preguntas = 0;
@@ -206,22 +220,20 @@ function leerPreguntas(json) {
                     numero_preguntas: n_preguntas,
                     preguntas:[],
                 };
-                /************ Preguntas dentro de un tema *******************/
-                
-                //Actualmente se envía sólo una pregunta a la plantilla. 
-                
+                /************ Preguntas dentro de un tema *******************/            
                 
                 var k;
                 for(k=i; json.feed.entry[k].gsx$tema.$t == json.feed.entry[i].gsx$tema.$t && k<total ;k++){
                     
                     //K es el número enunciados por tema.
                     //var x = randomInt(i,k-1);
-                
+                    
                     v_opciones = generaOpciones(json.feed.entry[k].gsx$opciones.$t); 
                     //console.log("V_OPCIONES: ");
                     //console.log(v_opciones);
                     v_preguntas.push({  
                                       id_pregunta:k,
+                                      asig: json.feed.entry[k].gsx$asignatura.$t,
                                       enunciado: json.feed.entry[k].gsx$enunciado.$t,
                                       opciones: v_opciones,
                                       respuesta: json.feed.entry[k].gsx$respuesta.$t,
@@ -237,7 +249,7 @@ function leerPreguntas(json) {
                 j++;
                 
                 
-                //console.log(context_preguntas);
+                console.log(context_preguntas);
             }
         }        
     }
@@ -276,7 +288,6 @@ function generaRespuesta(enunciado,respuesta_seleccionada,respuesta_correcta,exp
         $('#respuesta').empty();
         $('#respuesta').append(respuesta_seleccionada);    
     
-//////////////////////////////////////REVISAR NO CARGA ESTILOS LA SEGUNDA VEZ QUE APARECE////////////////////////////////
         if(respuesta_correcta == respuesta_seleccionada){
             $('#respuesta').empty();
             $('#respuesta').append('<a data-role="button" data-theme="g" class="ui-right-g ui-link ui-btn ui-btn-g ui-icon-check ui-btn-icon-left ui-shadow ui-corner-all" data-icon="check">'+respuesta_seleccionada+'</a>');
@@ -303,23 +314,100 @@ function randomInt(min,max){
 }
 
 
+
+
+//VERSION 1 - No filtra las asignaturas
 //Función que filtra las preguntas cortas para mostrar sólo una aleatoria.
 //ID -> ID del tema
 //n -> número de preguntas del tema
-//x -> número aleatorio entre ID y ID+n
 function filtroAleatorioPreguntas(id,n){
     //Pasamos a enteros para evitar problemas con cadenas.
     id = parseInt(id); 
     n = parseInt(n);
+    var x; //x -> número aleatorio entre ID y ID+n
     
     //Ocultamos las preguntas para después mostrar una aleatoria.
     $('.pregunta').hide();
     $('.opciones').hide();
     
-    var x = randomInt(id,id+n-1);
+    
+    
+    x = randomInt(id,id+n-1);    
+    
+    
+    
     //Mostramos la pregunta seleccionada aleatoriamente.
     $('.pregunta'+x).show();
     
+    console.log("CONTEXT_PREGUNTAS: ");
+    console.log("id: "+id+"____ n: "+n+"____ x:"+x);
+    console.log(context_preguntas);
+    console.log(filtro_asignatura);
+    //console.log(json_preguntas.feed.entry[x].gsx$enunciado.$t);
+    //console.log(json_preguntas.feed.entry[x].gsx$asignatura.$t);
+}
+
+
+
+/*VERSION 2 - filtra las asignaturas.
+//Función que filtra las preguntas cortas para mostrar sólo una aleatoria.
+//ID -> ID del tema
+//n -> número de preguntas del tema
+function filtroAleatorioPreguntas(id,n){
+    //Pasamos a enteros para evitar problemas con cadenas.
+    id = parseInt(id); 
+    n = parseInt(n);
+    var x; //x -> número aleatorio entre ID y ID+n
+    
+    //Ocultamos las preguntas para después mostrar una aleatoria.
+    $('.pregunta').hide();
+    $('.opciones').hide();
+    
+    
+    //x = randomInt(id,id+n-1);        
+    for(var i=id;i<id+n;i++){
+        $('.pregunta'+i).show();
+    }
+    
+    
+    //Mostramos la pregunta seleccionada aleatoriamente.
+    //$('.pregunta'+x).show();
+    
+    console.log("CONTEXT_PREGUNTAS: ");
+    console.log("id: "+id+"____ n: "+n+"____ x:"+x);
+    console.log(context_preguntas);
+    console.log(filtro_asignatura);
+    //console.log(json_preguntas.feed.entry[x].gsx$enunciado.$t);
+    //console.log(json_preguntas.feed.entry[x].gsx$asignatura.$t);
+}
+*/
+
+
+//Función que filtra CONTEXT_PREGUNTAS  con la asignatura elegida
+function filtroPreguntas(asig){
+    var contador =0; //Cuenta cuántas preguntas de la asignatura hay en el tema.
+    console.log("EL NUEVO FILTRO");
+    console.log(context_preguntas.tema.length);
+    //Recorremos los temas
+    for(var i=0;i<context_preguntas.tema.length;i++){
+        //Recorremos las preguntas de los temas.
+        for(var j=0; j<context_preguntas.tema[i].preguntas.length;j++){
+            if(context_preguntas.tema[i].preguntas[j].asig == asig || context_preguntas.tema[i].preguntas[j].asig == "Ambas"){
+                console.log(context_preguntas.tema[i].preguntas[j].asig);
+                contador++;
+            }
+        }
+        //Si no hay ninguna para este filtro, eliminamos el tema
+        if(contador == 0){
+            console.log("No hay preguntas de esta asignatura para este tema. BORRAMOS TEMA");
+            context_preguntas.tema.splice(i,1);
+            i--;
+        }
+        contador=0;
+    }
+    console.log("Nuevo context_preguntas:")
+    console.log(context_preguntas);
+    return context_preguntas;
 }
 
 
@@ -421,3 +509,127 @@ function generaRespuestaVF(enunciado,respuesta_seleccionada,respuesta_correcta,e
 
 
 /***************************************************/
+
+
+
+
+
+function leerRelaciones(json){
+    var total = json.feed.entry.length;
+    var v_relaciones = new Array();
+    context_relaciones.relaciones = new Array();
+    
+    //Recorremos las filas de la hoja de cálculo hasta el final.
+    for(var i=0, j=0;i<total;i++){
+            v_relaciones.push({
+                id: i,
+                asig: json.feed.entry[i].gsx$filtro.$t,
+                variable: json.feed.entry[i].gsx$variable.$t,
+                valor: json.feed.entry[i].gsx$valor.$t
+            });
+    }
+    context_relaciones.relaciones = v_relaciones;
+    
+    //console.log("Leer relaciones");
+    //console.log(context_relaciones);
+    
+    
+}
+
+
+
+//Función que comprueba que todos los select seleccionen algún valor:
+//- Si todos están seleccionados activa el botón siguiente.
+//- Si alguno queda sin seleccionar no se activa el botón.
+function compruebaSelectRelaciones(){
+    var n_relaciones=2;
+    var index;
+    var valor;
+    var texto;
+    console.log("DENTRO DE COMPRUEBASELECTrELACIONES");
+    for(var i=0;i<n_relaciones;i++){
+        index = eval("document.formularioRelaciones.relacion"+i+".selectedIndex");
+        valor = eval("document.formularioRelaciones.relacion"+i+".options[index].value");
+        texto = eval("document.formularioRelaciones.relacion"+i+".options[index].text"); 
+        //Si algún select no está seleccionado
+        if(valor < 0){
+            //Mostrar botón rojo con comentario
+            $('#boton-relaciones-rojo').show();
+            $('#boton-relaciones-verde').hide();
+            
+            return;
+        }   
+    }
+    //Mostrar botón verde.
+    $('#boton-relaciones-verde').show();
+    $('#boton-relaciones-rojo').hide();
+    $('#boton-relaciones-verde').focus(); //Revisar,¿como hacer focus a <span>?
+}
+
+
+function leerResultadoRelaciones(json){
+    var total = json.feed.entry.length;
+    var resultado = new Array();
+    
+    for(var i=0;i<total;i++){
+        resultado.push({
+            condicion: json.feed.entry[i].gsx$relacion.$t,
+            descripcion: json.feed.entry[i].gsx$descripcion.$t
+        })
+    }
+    context_relaciones.resultado = resultado;
+    console.log(context_relaciones.resultado);
+}
+
+
+
+function submitRelaciones(){
+    var n_preguntas = 2;
+    var texto;
+    var index;
+    var valor;
+    var valores="";
+    
+    //Leemos los elementos seleccionados en el select
+    $("#explicacionRelaciones").empty();    
+    index = eval("document.formularioRelaciones.relacion0.selectedIndex");
+    valor = eval("document.formularioRelaciones.relacion0.options[index].value");
+    texto = eval("document.formularioRelaciones.relacion0.options[index].text"); 
+    
+    $("#explicacionRelaciones").append("<span>Variable 1: "+texto+"</span><br>");
+
+    valores = valor;
+    valores += ",";
+    
+    index = eval("document.formularioRelaciones.relacion1.selectedIndex");
+    valor = eval("document.formularioRelaciones.relacion1.options[index].value");
+    texto = eval("document.formularioRelaciones.relacion1.options[index].text"); 
+    
+    $("#explicacionRelaciones").append("<span>Variable 2: "+texto+"</span><br>");
+    
+    valores += valor;
+    
+    console.log(valores);
+    console.log(context_relaciones.resultado);
+    
+      for(var i in context_relaciones.resultado){
+        if(valores == context_relaciones.resultado[i].condicion){
+            $("#explicacionRelaciones").append("<span>Condicion:"+context_relaciones.resultado[i].condicion+"</span><br>");
+                $("#explicacionRelaciones").append(
+                    "<h1> Solución: </h1> \
+                     <p>"+context_relaciones.resultado[i].descripcion+"</p><br>"
+                );
+            return 1;
+        }
+      }
+      $("#explicacionRelaciones").append(
+            "<h1> Solución: </h1> \
+             <p>No existe relación teórica entre las variables seleccionadas.</p><br>"
+        );
+    var valores="";
+    
+}
+
+
+
+
