@@ -116,7 +116,7 @@
           <div data-role="collapsible-set">
             {{#each variable}}
             <div data-role="collapsible" data-collapsed="true" data-collapsed-icon="carat-r" data-expanded-icon="carat-d">
-              <h3>{{nombre_variable}}</h3> 
+              <h3 class="{{filtrovariable}}">{{nombre_variable}}</h3> 
               <div data-role="collapsible-set">
                  {{#each subvariables}}
                  <!-- Si no hay subvariable mostramos directamente los conceptos -->
@@ -142,11 +142,12 @@
                  <!-- si hay subvariable, mostramos las subvariables -->     
                  {{else}}             
                  <div data-role="collapsible" data-collapsed="true" data-theme="g" data-collapsed-icon="arrow-r" data-expanded-icon="arrow-d">
-                   <h4>{{nombre_subvariable}}</h4>
+                   <h4 class="filtrosubvariable">{{nombre_subvariable}}</h4>
                        {{#each conceptos}}
                        <a href="#{{id}}" data-transition="slideup" data-rel="popup" class="{{{asig}}} ui-btn ui-btn-inline ui-corner-all">{{nombre_concepto}}</a>
                        <div data-role="popup" id="{{id}}" data-position-to="window">
                          <div data-role="main" class="ui-content">
+                           <h3 style="color:#F15A29" align="center">{{nombre_concepto}}</h3>
                            <input type="button" value="Definición" data-theme="b">
                            <p align="center">{{definicion}}</p>
                            <input type="button" value="Ejemplo" data-theme="b">
@@ -269,7 +270,7 @@
         <!-- Plantilla Hexágono -->
         <script id="plantilla-hexagono" type="text/x-handlebars-template">
             <h3>Responda estas preguntas para la clasificación de su empresa:</h3>
-            <form name="formularioHexagono"> <!--action="javascript:submitHexagono()">-->
+            <form name="formularioHexagono" id="formularioHexagono"> <!--action="javascript:submitHexagono()">-->
             {{#each pregunta}}
                 <fieldset style="padding: 10px;" data-role="controlgroup">
                 <!--<legend>Nombre: {{nombre_pregunta}} / ID: {{id_pregunta}} / N_Preguntas: {{../n_preguntas}}</legend>-->
@@ -305,17 +306,18 @@
             <p id="explicacionHexagono"></p>
             <p>Contador final</p>
             <p id="contador"></p>
-            <a href="#home" data-role="button">Salir</a>
+            <a href="#Hexágono" data-role="button" onClick="limpiaSeleccionHexagono();">Volver</a>
+            <a href="#home" data-role="button" onClick="limpiaSeleccionHexagono();">Salir</a>
         </script>               
         
         <!-- Plantilla Relaciones -->
         <script id="plantilla-relaciones" type="text/x-handlebars-template">
             <h2 class="center">Relaciones entre variables</h2>
-            <form name="formularioRelaciones">
+            <form name="formularioRelaciones" id="formularioRelaciones">
                 <span id="primera_variable">
                     <fieldset style="padding: 10px;" data-role="controlgroup">
                     <!--<legend>Nombre: {{nombre_pregunta}} / ID: {{id_pregunta}} / N_Preguntas: {{../n_preguntas}}</legend>-->
-                    <legend>Selecciona la primera variable</legend>
+                    <legend>Seleccione la primera variable - Seleccione la variable que ejerce una influencia (causa)</legend>
                     <select name="relacion0" id="select-native-relacion0" class="select" onChange="compruebaSelectRelaciones()">
                     <option value="-1" selected="selected">Selecciona una opción</option>
                     {{#each relaciones}}
@@ -330,7 +332,7 @@
                 <span id="segunda_variable">
                     <fieldset style="padding: 10px;" data-role="controlgroup">
                     <!--<legend>Nombre: {{nombre_pregunta}} / ID: {{id_pregunta}} / N_Preguntas: {{../n_preguntas}}</legend>-->
-                    <legend>Selecciona la segunda variable</legend>
+                    <legend>Seleccione la segunda variable - Seleccione la variable sobre la que ejerce influencia (efecto)</legend>
                     <select name="relacion1" id="select-native-relacion1" class="select" onChange="compruebaSelectRelaciones()">>
                     <option value="-1" selected="selected">Selecciona una opción</option>
                     {{#each relaciones}}
@@ -354,10 +356,10 @@
         
         <!-- Plantilla respuesta Relaciones -->
         <script id="plantilla-respuesta-relaciones" type="text/x-handlebars-template">
-            <p>Respuesta relaciones entre variables</p>
-            <p>Tipo de empresa</p>
+            <h2 class="center">Relaciones entre variables</h2>
             <p id="explicacionRelaciones"></p>
-            <a href="#home" data-role="button">Salir</a>
+            <a href="#Relaciones" data-role="button" onclick="limpiaSeleccionRelaciones()">Volver</a>
+            <a href="#home" data-role="button" onclick="limpiaSeleccionRelaciones()">Salir</a>
         </script>               
         
     </head>

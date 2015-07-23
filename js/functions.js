@@ -135,7 +135,8 @@ function leerConceptos(json) {
 
       //Estructura de cada variable
       context_conceptos.variable[j] = {
-        asig: json.feed.entry[i].gsx$asignatura.$t,  
+        filtrovariable:   json.feed.entry[i].gsx$filtrovariable.$t,  
+        asig: json.feed.entry[i].gsx$filtroconcepto.$t,  
         nombre_variable: json.feed.entry[i].gsx$variable.$t,
         subvariables:[]
       };
@@ -150,7 +151,8 @@ function leerConceptos(json) {
 
             /*************************** CONCEPTOS ********************************/
             for(var l=k ; l<total && json.feed.entry[k].gsx$subvariable.$t == json.feed.entry[l].gsx$subvariable.$t ; l++){
-              v_concepto.push({asig: json.feed.entry[l].gsx$asignatura.$t, 
+              v_concepto.push({
+                              asig: json.feed.entry[l].gsx$filtroconcepto.$t, 
                               id:l,
                               nombre_concepto: json.feed.entry[l].gsx$concepto.$t,
                               definicion: String(json.feed.entry[l].gsx$definicion.$t),
@@ -160,12 +162,11 @@ function leerConceptos(json) {
             }
 
             //Añadimos las subvariables y conceptos a las variables.
-            context_conceptos.variable[j].subvariables.push(
-              {nombre_subvariable: json.feed.entry[k].gsx$subvariable.$t,
+            context_conceptos.variable[j].subvariables.push({
+                nombre_subvariable: json.feed.entry[k].gsx$subvariable.$t,
+                filtrosubvariable: json.feed.entry[k].gsx$filtrosubvariable.$t,
                 conceptos: v_concepto
-              }
-
-            );
+              });
           }
 
           subvariable_tmp = json.feed.entry[k].gsx$subvariable.$t;
@@ -180,7 +181,9 @@ function leerConceptos(json) {
     }
   
   }
-    //console.log(context_conceptos);
+    console.log("CONTEXT_CONCEPTOS");
+    console.log(context_conceptos);
+    console.log(json);
 }
 
 
@@ -532,8 +535,6 @@ function leerRelaciones(json){
     
     //console.log("Leer relaciones");
     //console.log(context_relaciones);
-    
-    
 }
 
 
@@ -546,7 +547,7 @@ function compruebaSelectRelaciones(){
     var index;
     var valor;
     var texto;
-    console.log("DENTRO DE COMPRUEBASELECTrELACIONES");
+    //console.log("DENTRO DE COMPRUEBASELECTrELACIONES");
     for(var i=0;i<n_relaciones;i++){
         index = eval("document.formularioRelaciones.relacion"+i+".selectedIndex");
         valor = eval("document.formularioRelaciones.relacion"+i+".options[index].value");
@@ -566,7 +567,7 @@ function compruebaSelectRelaciones(){
     $('#boton-relaciones-verde').focus(); //Revisar,¿como hacer focus a <span>?
 }
 
-
+//Lee la plantilla resultados de relaciones de drive.
 function leerResultadoRelaciones(json){
     var total = json.feed.entry.length;
     var resultado = new Array();
@@ -578,11 +579,11 @@ function leerResultadoRelaciones(json){
         })
     }
     context_relaciones.resultado = resultado;
-    console.log(context_relaciones.resultado);
+    //console.log(context_relaciones.resultado);
 }
 
 
-
+//Procesa el formulario de Relaciones entre variables.
 function submitRelaciones(){
     var n_preguntas = 2;
     var texto;
@@ -596,7 +597,7 @@ function submitRelaciones(){
     valor = eval("document.formularioRelaciones.relacion0.options[index].value");
     texto = eval("document.formularioRelaciones.relacion0.options[index].text"); 
     
-    $("#explicacionRelaciones").append("<span>Variable 1: "+texto+"</span><br>");
+    $("#explicacionRelaciones").append("<span>Variable que ejerce una influencia (causa):<br> <strong>"+texto+"</strong></span><br><br>");
 
     valores = valor;
     valores += ",";
@@ -605,7 +606,7 @@ function submitRelaciones(){
     valor = eval("document.formularioRelaciones.relacion1.options[index].value");
     texto = eval("document.formularioRelaciones.relacion1.options[index].text"); 
     
-    $("#explicacionRelaciones").append("<span>Variable 2: "+texto+"</span><br>");
+    $("#explicacionRelaciones").append("<span>Variable sobre la que ejerce la influencia (efecto):<br> <strong>"+texto+"</strong></span><br>");
     
     valores += valor;
     
@@ -614,22 +615,27 @@ function submitRelaciones(){
     
       for(var i in context_relaciones.resultado){
         if(valores == context_relaciones.resultado[i].condicion){
-            $("#explicacionRelaciones").append("<span>Condicion:"+context_relaciones.resultado[i].condicion+"</span><br>");
-                $("#explicacionRelaciones").append(
-                    "<h1> Solución: </h1> \
-                     <p>"+context_relaciones.resultado[i].descripcion+"</p><br>"
-                );
+            //$("#explicacionRelaciones").append("<span>Condicion:"+context_relaciones.resultado[i].condicion+"</span><br>");
+            $("#explicacionRelaciones").append(
+                "<h3> Solución: </h3> \
+                 <p>"+context_relaciones.resultado[i].descripcion+"</p><br>"
+            );
             return 1;
         }
       }
       $("#explicacionRelaciones").append(
-            "<h1> Solución: </h1> \
+            "<h3> Solución: </h3> \
              <p>No existe relación teórica entre las variables seleccionadas.</p><br>"
         );
-    var valores="";
-    
 }
 
+
+//Vuelve al valor por defecto el formulario.
+function limpiaSeleccionRelaciones(){
+    document.getElementById("formularioRelaciones").reset();
+    //Desactiva botón verde
+    compruebaSelectRelaciones();
+}
 
 
 

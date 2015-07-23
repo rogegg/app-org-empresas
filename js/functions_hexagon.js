@@ -491,4 +491,10 @@ function compruebaSelect(n_preguntas){
     $('#boton-hexagono-verde').focus(); //Revisar,¿como hacer focus a <span>?
 }
 
+//Vuelve al valor por defecto el formulario.
+function limpiaSeleccionHexagono(){
+    document.getElementById("formularioHexagono").reset();
+    //Desactiva botón verde
+    compruebaSelect(context_hexagono.n_preguntas);
+}
 
