@@ -78,9 +78,9 @@
         <script id="plantilla-header" type= "text/x-handlebars-template">
             <div data-role="header" data-theme="b">
                     <a href="#" data-rel="back" data-role="button" data-icon="arrow-l"
-                       data-iconpos="notext" class="ui-btn-left">Info</a>
+                       data-iconpos="notext" class="ui-btn-left" onClick="limpiaSeleccion();">Volver</a>
                     <a href="#home" data-role="button" data-icon="home"
-                       data-iconpos="notext" class="ui-btn-right">Info</a>
+                       data-iconpos="notext" class="ui-btn-right" onClick="limpiaSeleccion();">Home</a>
                     <h1>{{{name}}}</h1>
             </div>
         </script>
@@ -302,9 +302,8 @@
                  
         <!-- Plantilla respuesta Hexágono -->
         <script id="plantilla-respuesta-hexagono" type="text/x-handlebars-template">
-            <p>Tipo de empresa</p>
+            <h2 class="center">Tipo de empresa</h2>
             <p id="explicacionHexagono"></p>
-            <p>Contador final</p>
             <p id="contador"></p>
             <a href="#Hexágono" data-role="button" onClick="limpiaSeleccionHexagono();">Volver</a>
             <a href="#home" data-role="button" onClick="limpiaSeleccionHexagono();">Salir</a>

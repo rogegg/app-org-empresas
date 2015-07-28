@@ -340,10 +340,10 @@ function filtroAleatorioPreguntasVF(id,n){
     //Mostramos la pregunta seleccionada aleatoriamente.
     $('.pregunta'+x).show();
     
-    console.log("CONTEXT_PREGUNTAS: ");
-    console.log("id: "+id+"____ n: "+n+"____ x:"+x);
-    console.log(context_preguntas);
-    console.log(filtro_asignatura);
+    //console.log("CONTEXT_PREGUNTAS: ");
+    //console.log("id: "+id+"____ n: "+n+"____ x:"+x);
+    //console.log(context_preguntas);
+    //console.log(filtro_asignatura);
     //console.log(json_preguntas.feed.entry[x].gsx$enunciado.$t);
     //console.log(json_preguntas.feed.entry[x].gsx$asignatura.$t);
 }
@@ -355,7 +355,7 @@ function filtroAleatorioPreguntasVF(id,n){
 //ID -> ID del tema
 //n -> número de preguntas del tema
 function filtroAleatorioPreguntas(indice,id,n){
-    console.log("############# FILTRO ALEATORIO PREGUNTAS ####################");
+    //console.log("############# FILTRO ALEATORIO PREGUNTAS ####################");
     //Pasamos a enteros para evitar problemas con cadenas.
     id = parseInt(id); 
     n = parseInt(n);
@@ -369,13 +369,13 @@ function filtroAleatorioPreguntas(indice,id,n){
 
     
     //Recorrer la estructura con todas las preguntas del tema. Desde id hasta id+n
-    console.log(context_preguntas);    
+    //console.log(context_preguntas);    
     //console.log("EL ID -> "+id);
     for(var i=0; i<n; i++){        
         //Almacenar las preguntas que corresponden al filtrado
         if(context_preguntas.tema[indice].preguntas[i].asig=="Ambas" || 
            context_preguntas.tema[indice].preguntas[i].asig==filtro_asignatura){
-           console.log("coincidencia encontrada");
+           //console.log("coincidencia encontrada");
             v_coincidencias.push(i);
         }
         //console.log(context_preguntas.tema[indice])
@@ -386,16 +386,15 @@ function filtroAleatorioPreguntas(indice,id,n){
     //x = randomInt(id,id+n-1);    
     
     x = randomInt(0,eval(v_coincidencias.length-1));
-    console.log("Random(0, "+eval(v_coincidencias.length-1)+") = "+x);
     
     
     //Mostramos la pregunta seleccionada aleatoriamente.
     //$('.pregunta'+x).show();
     $('.pregunta'+eval(v_coincidencias[x]+id)).show();
     
-    console.log("V_COINCIDENCIAS: ");
-    console.log(v_coincidencias);
-    console.log("id: "+id+" id+n: "+eval(id+n-1));
+    //console.log("V_COINCIDENCIAS: ");
+    //console.log(v_coincidencias);
+    //console.log("id: "+id+" id+n: "+eval(id+n-1));
     
     
     //console.log("id: "+id+"____ n: "+n+"____ x:"+x);
@@ -413,7 +412,7 @@ function filtroAleatorioPreguntas(indice,id,n){
 //ID -> ID del tema
 //n -> número de preguntas del tema
 function filtroAleatorioPreguntasVF2(indice,id,n){
-    console.log("############# FILTRO ALEATORIO PREGUNTAS VF2 ####################");
+    //console.log("############# FILTRO ALEATORIO PREGUNTAS VF2 ####################");
     //Pasamos a enteros para evitar problemas con cadenas.
     id = parseInt(id); 
     n = parseInt(n);
@@ -427,14 +426,14 @@ function filtroAleatorioPreguntasVF2(indice,id,n){
 
     
     //Recorrer la estructura con todas las preguntas del tema. Desde id hasta id+n
-    console.log(context_preguntas_vf);    
-    console.log("EL ID -> "+id);
+    //console.log(context_preguntas_vf);    
+    //console.log("EL ID -> "+id);
     for(var i=0; i<n; i++){  
         //Almacenar las preguntas que corresponden al filtrado
-        console.log("Dentro for: "+context_preguntas_vf.tema[indice].preguntas[i].asig);
+        //console.log("Dentro for: "+context_preguntas_vf.tema[indice].preguntas[i].asig);
         if(context_preguntas_vf.tema[indice].preguntas[i].asig=="Ambas" || 
            context_preguntas_vf.tema[indice].preguntas[i].asig==filtro_asignatura){
-           console.log("coincidencia encontrada");
+           //console.log("coincidencia encontrada");
             v_coincidencias_vf.push(i);
         }
         //console.log(context_preguntas.tema[indice])
@@ -452,9 +451,9 @@ function filtroAleatorioPreguntasVF2(indice,id,n){
     //$('.pregunta'+x).show();
     $('.pregunta'+eval(v_coincidencias_vf[x]+id)).show();
     
-    console.log("V_COINCIDENCIAS: ");
-    console.log(v_coincidencias_vf);
-    console.log("id: "+id+" id+n: "+eval(id+n-1));
+    //console.log("V_COINCIDENCIAS: ");
+    //console.log(v_coincidencias_vf);
+    //console.log("id: "+id+" id+n: "+eval(id+n-1));
     
     
     //console.log("id: "+id+"____ n: "+n+"____ x:"+x);
@@ -663,8 +662,8 @@ function submitRelaciones(){
     
     valores += valor;
     
-    console.log(valores);
-    console.log(context_relaciones.resultado);
+    //console.log(valores);
+    //console.log(context_relaciones.resultado);
     
       for(var i in context_relaciones.resultado){
         if(valores == context_relaciones.resultado[i].condicion){
@@ -688,6 +687,11 @@ function limpiaSeleccionRelaciones(){
     document.getElementById("formularioRelaciones").reset();
     //Desactiva botón verde
     compruebaSelectRelaciones();
+}
+
+function limpiaSeleccion(){
+    limpiaSeleccionHexagono();
+    limpiaSeleccionRelaciones();
 }
 
 

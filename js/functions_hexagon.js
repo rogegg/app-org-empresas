@@ -156,16 +156,19 @@ function submitHexagono(n_preguntas){
         texto = eval("document.formularioHexagono.selHexagono"+i+".options[index].text"); 
         //Pasamos la cadena de texto con los valores, a un vector.
         v_valores = procesaValores(valor);
+        /*Depuración
         $("#explicacionHexagono").append("<span>ID: "+index+" / Valor: "+valor+", Vector: "+v_valores+" / Texto: "+texto+"<br></span>");
+        */
         
         //Contabilizamos los valores para dar un resultado
         for(var j=0 ; j<v_valores.length ; j++){
             v_contador[parseInt(v_valores[j])] = v_contador[parseInt(v_valores[j])]+1;
-            console.log(v_valores);
+            //console.log(v_valores);
         }
     }
     
     $("#contador").empty();
+    /*Depuración
     $("#contador").append("<span>Estructura simple= "+v_contador[0]+"</span><br>");
     $("#contador").append("<span>Burocracia maquinal= "+v_contador[1]+"</span><br>");
     $("#contador").append("<span>Forma divisional= "+v_contador[2]+"</span><br>");
@@ -173,7 +176,7 @@ function submitHexagono(n_preguntas){
     $("#contador").append("<span>Burocracia Profesional= "+v_contador[4]+"</span><br>");
     $("#contador").append("<span>Organización misional= "+v_contador[5]+"</span><br>");
     $("#contador").append("<span>No lo se= "+v_contador[6]+"</span><br>");
-    
+    */
     
     //Establecemos el valor mayor -> x
     //Establecemos el índice del valor mayor -> x_i
@@ -219,13 +222,14 @@ function submitHexagono(n_preguntas){
     }
     
     
-console.log("VContador: "+v_contador);
+    //console.log("VContador: "+v_contador);
     
-                                //Mostramos los resultados para DEPURACIÓN
+    /*Depuración   //Mostramos los resultados para DEPURACIÓN
                             $("#contador").append("<span>Variable X= "+x+"; X_I= "+x_i+"</span><br>");
                             $("#contador").append("<span>Variable Y= "+y+"; Y_I= "+y_i+"</span><br>");
                             $("#contador").append("<span>Variable Z= "+z+"; Z_I= "+z_i+"</span><br>");
                             $("#contador").append("<span>Variable T= "+t+"; T_I= "+t_i+"</span><br>");
+    */
     context_hexagono.solucion[0] = { x:x, x_i:x_i };
     context_hexagono.solucion[1] = { y:y, y_i:y_i };
     context_hexagono.solucion[2] = { z:z, z_i:z_i };
@@ -241,21 +245,19 @@ console.log("VContador: "+v_contador);
         
     //Prueba para componer el resultado de los arrays a un string
     //solucion_string=String(context_hexagono.solucion[0].x_i)+","+String(context_hexagono.solucion[1].y_i);
-    
-    console.log("solucion_string[0]-> "+solucion_string[0]);
+    //console.log("solucion_string[0]-> "+solucion_string[0]);
     
     //Si el primer dígito es un número o el signo negativo de un número
     if(solucion_string>'-' && solucion_string<'9'){
         //recorremos context_hexagono.resultado
         for(var i in context_hexagono.resultado){
-            //$("#contador").append("<span>it= "+i+"; context_hexagono.resultado[i].condicion= "+context_hexagono.resultado[i].condicion+"</span><br>");
             //Si context_hexagono.resultado.condicion coincide con solucion_string.
             if(context_hexagono.resultado[i].condicion == solucion_string){
-                $("#contador").append("<span>it= "+i+"; context_hexagono.resultado[i].condicion= "+context_hexagono.resultado[i].condicion+"</span><br>");
                 $("#contador").append(
-                    "<h1> Solución: </h1><br> \
-                     <img src="+context_hexagono.resultado[i].imagen+" width=\"200\" height=\"200\"></img><br> \
-                    <p>"+context_hexagono.resultado[i].nombre+"</p><br>"
+                    "<div class='center'> \
+                        <img src="+context_hexagono.resultado[i].imagen+" width=\"200\" height=\"200\"></img><br> \
+                        <strong>"+context_hexagono.resultado[i].nombre+"</strong><br> \
+                    </div>"
                 );
             }
         }
@@ -264,23 +266,13 @@ console.log("VContador: "+v_contador);
     
     //Si es una letra
     else{
-        console.log("Caracter");
-        /*for(var i in context_hexagono.resultado){
-            //Si context_hexagono.resultado.condicion coincide con solucion_string.
-            if(context_hexagono.resultado[i].condicion == solucion_string){
-                $("#contador").append(
-                    "<h1> Solución: </h1><br> \
-                    <p>"+context_hexagono.resultado[i].nombre+"</p><br>"
-                );
-            }
-        }*/
-        
         //Mostramos mensaje de híbrido entre 3, pero no podemos mostrar una imagen.
         $("#contador").append(
-            "<h1> Solución: </h1><br> \
-            <p>Es un híbrido entre "+context_hexagono.codificacion[solucion_string[1]]+", \
-            "+context_hexagono.codificacion[solucion_string[3]]+" y \
-            "+context_hexagono.codificacion[solucion_string[5]]+"</p><br>"
+            "<div class='center'> \
+                <strong>Es un híbrido entre "+context_hexagono.codificacion[solucion_string[1]]+", \
+                "+context_hexagono.codificacion[solucion_string[3]]+" y \
+                "+context_hexagono.codificacion[solucion_string[5]]+"</strong><br> \
+            </div>"
         );    
     }
     
@@ -289,13 +281,13 @@ console.log("VContador: "+v_contador);
     
     
     
-    console.log(v_contador);
+    //console.log(v_contador);
     //context_resultado_hexagono.mostrar = mostrar;
-    console.log("Solución String: "+solucion_string);
+    //console.log("Solución String: "+solucion_string);
         
     
-    console.log("Resultado hexagono: ");
-    console.log(context_hexagono);
+    //console.log("Resultado hexagono: ");
+    //console.log(context_hexagono);
 
     /*var prueba = "0,2,3,4";
     v_valores = procesaValores(prueba);
