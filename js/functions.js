@@ -1,7 +1,7 @@
 "use strict";
 
 var total = 0;
-var filtro_asignatura="S";
+var filtro_asignatura="Ambas";
 var context = new Object();
 var tema_seleccionado = null;
 var json_preguntas = null;
@@ -40,7 +40,6 @@ function filtroAsignatura(codigo_asignatura){
     //console.log("IF: showOe();");
     showOe();
     filtro_asignatura="OE";
-    filtroPreguntas("OE");
     //console.log("DESDE EL FILTRO: ");
     //console.log(context_preguntas);
       
@@ -181,9 +180,9 @@ function leerConceptos(json) {
     }
   
   }
-    console.log("CONTEXT_CONCEPTOS");
-    console.log(context_conceptos);
-    console.log(json);
+    //console.log("CONTEXT_CONCEPTOS");
+    //console.log(context_conceptos);
+    //console.log(json);
 }
 
 
@@ -217,7 +216,9 @@ function leerPreguntas(json){
                                 
                 //Estructura JSON de cada tema
                 context_preguntas.tema[j] = {
+                    filtrotema: json.feed.entry[i].gsx$filtrotema.$t,
                     nombre_tema: json.feed.entry[i].gsx$tema.$t,
+                    indice: j,
                     id_tema: "id_tema"+i,
                     id2_tema: i, //Se utiliza para conocer el índice del id.
                     numero_preguntas: n_preguntas,
@@ -236,7 +237,7 @@ function leerPreguntas(json){
                     //console.log(v_opciones);
                     v_preguntas.push({  
                                       id_pregunta:k,
-                                      asig: json.feed.entry[k].gsx$asignatura.$t,
+                                      asig: json.feed.entry[k].gsx$filtropregunta.$t,
                                       enunciado: json.feed.entry[k].gsx$enunciado.$t,
                                       opciones: v_opciones,
                                       respuesta: json.feed.entry[k].gsx$respuesta.$t,
@@ -252,7 +253,7 @@ function leerPreguntas(json){
                 j++;
                 
                 
-                console.log(context_preguntas);
+                //console.log(context_preguntas);
             }
         }        
     }
@@ -311,7 +312,7 @@ function generaRespuesta(enunciado,respuesta_seleccionada,respuesta_correcta,exp
 
 
 
-//Devuelve un número aleatorio entre min y max.
+//Devuelve un número aleatorio entre min y max. (min y max incluidos)
 function randomInt(min,max){
     return Math.floor(Math.random()*(max-min+1)+min);
 }
@@ -323,7 +324,7 @@ function randomInt(min,max){
 //Función que filtra las preguntas cortas para mostrar sólo una aleatoria.
 //ID -> ID del tema
 //n -> número de preguntas del tema
-function filtroAleatorioPreguntas(id,n){
+function filtroAleatorioPreguntasVF(id,n){
     //Pasamos a enteros para evitar problemas con cadenas.
     id = parseInt(id); 
     n = parseInt(n);
@@ -332,9 +333,6 @@ function filtroAleatorioPreguntas(id,n){
     //Ocultamos las preguntas para después mostrar una aleatoria.
     $('.pregunta').hide();
     $('.opciones').hide();
-    
-    
-    
     x = randomInt(id,id+n-1);    
     
     
@@ -352,68 +350,120 @@ function filtroAleatorioPreguntas(id,n){
 
 
 
-/*VERSION 2 - filtra las asignaturas.
+//VERSION 2 - filtra las asignaturas.
 //Función que filtra las preguntas cortas para mostrar sólo una aleatoria.
 //ID -> ID del tema
 //n -> número de preguntas del tema
-function filtroAleatorioPreguntas(id,n){
+function filtroAleatorioPreguntas(indice,id,n){
+    console.log("############# FILTRO ALEATORIO PREGUNTAS ####################");
     //Pasamos a enteros para evitar problemas con cadenas.
     id = parseInt(id); 
     n = parseInt(n);
+    indice = parseInt(indice);
+    var v_coincidencias = new Array(); //Almacenamos las coincidencias con el filtro.
     var x; //x -> número aleatorio entre ID y ID+n
     
     //Ocultamos las preguntas para después mostrar una aleatoria.
     $('.pregunta').hide();
     $('.opciones').hide();
+
     
-    
-    //x = randomInt(id,id+n-1);        
-    for(var i=id;i<id+n;i++){
-        $('.pregunta'+i).show();
+    //Recorrer la estructura con todas las preguntas del tema. Desde id hasta id+n
+    console.log(context_preguntas);    
+    //console.log("EL ID -> "+id);
+    for(var i=0; i<n; i++){        
+        //Almacenar las preguntas que corresponden al filtrado
+        if(context_preguntas.tema[indice].preguntas[i].asig=="Ambas" || 
+           context_preguntas.tema[indice].preguntas[i].asig==filtro_asignatura){
+           console.log("coincidencia encontrada");
+            v_coincidencias.push(i);
+        }
+        //console.log(context_preguntas.tema[indice])
     }
+    
+    
+    //Elegimos una aleatoria
+    //x = randomInt(id,id+n-1);    
+    
+    x = randomInt(0,eval(v_coincidencias.length-1));
+    console.log("Random(0, "+eval(v_coincidencias.length-1)+") = "+x);
     
     
     //Mostramos la pregunta seleccionada aleatoriamente.
     //$('.pregunta'+x).show();
+    $('.pregunta'+eval(v_coincidencias[x]+id)).show();
     
-    console.log("CONTEXT_PREGUNTAS: ");
-    console.log("id: "+id+"____ n: "+n+"____ x:"+x);
-    console.log(context_preguntas);
-    console.log(filtro_asignatura);
+    console.log("V_COINCIDENCIAS: ");
+    console.log(v_coincidencias);
+    console.log("id: "+id+" id+n: "+eval(id+n-1));
+    
+    
+    //console.log("id: "+id+"____ n: "+n+"____ x:"+x);
+    //console.log(context_preguntas);
+    //console.log("Filtro asignatura: "+filtro_asignatura);
+    
     //console.log(json_preguntas.feed.entry[x].gsx$enunciado.$t);
     //console.log(json_preguntas.feed.entry[x].gsx$asignatura.$t);
 }
-*/
 
 
-//Función que filtra CONTEXT_PREGUNTAS  con la asignatura elegida
-function filtroPreguntas(asig){
-    var contador =0; //Cuenta cuántas preguntas de la asignatura hay en el tema.
-    console.log("EL NUEVO FILTRO");
-    console.log(context_preguntas.tema.length);
-    //Recorremos los temas
-    for(var i=0;i<context_preguntas.tema.length;i++){
-        //Recorremos las preguntas de los temas.
-        for(var j=0; j<context_preguntas.tema[i].preguntas.length;j++){
-            if(context_preguntas.tema[i].preguntas[j].asig == asig || context_preguntas.tema[i].preguntas[j].asig == "Ambas"){
-                console.log(context_preguntas.tema[i].preguntas[j].asig);
-                contador++;
-            }
+
+//VERSION 2 - filtra las asignaturas.
+//Función que filtra las preguntas cortas para mostrar sólo una aleatoria.
+//ID -> ID del tema
+//n -> número de preguntas del tema
+function filtroAleatorioPreguntasVF2(indice,id,n){
+    console.log("############# FILTRO ALEATORIO PREGUNTAS VF2 ####################");
+    //Pasamos a enteros para evitar problemas con cadenas.
+    id = parseInt(id); 
+    n = parseInt(n);
+    indice = parseInt(indice);
+    var v_coincidencias_vf = new Array(); //Almacenamos las coincidencias con el filtro.
+    var x; //x -> número aleatorio entre ID y ID+n
+    
+    //Ocultamos las preguntas para después mostrar una aleatoria.
+    $('.pregunta').hide();
+    $('.opciones').hide();
+
+    
+    //Recorrer la estructura con todas las preguntas del tema. Desde id hasta id+n
+    console.log(context_preguntas_vf);    
+    console.log("EL ID -> "+id);
+    for(var i=0; i<n; i++){  
+        //Almacenar las preguntas que corresponden al filtrado
+        console.log("Dentro for: "+context_preguntas_vf.tema[indice].preguntas[i].asig);
+        if(context_preguntas_vf.tema[indice].preguntas[i].asig=="Ambas" || 
+           context_preguntas_vf.tema[indice].preguntas[i].asig==filtro_asignatura){
+           console.log("coincidencia encontrada");
+            v_coincidencias_vf.push(i);
         }
-        //Si no hay ninguna para este filtro, eliminamos el tema
-        if(contador == 0){
-            console.log("No hay preguntas de esta asignatura para este tema. BORRAMOS TEMA");
-            context_preguntas.tema.splice(i,1);
-            i--;
-        }
-        contador=0;
+        //console.log(context_preguntas.tema[indice])
     }
-    console.log("Nuevo context_preguntas:")
-    console.log(context_preguntas);
-    return context_preguntas;
+    
+    
+    //Elegimos una aleatoria
+    //x = randomInt(id,id+n-1);    
+    
+    x = randomInt(0,eval(v_coincidencias_vf.length-1));
+    //console.log("Random(0, "+eval(v_coincidencias_vf.length-1)+") = "+x);
+    
+    
+    //Mostramos la pregunta seleccionada aleatoriamente.
+    //$('.pregunta'+x).show();
+    $('.pregunta'+eval(v_coincidencias_vf[x]+id)).show();
+    
+    console.log("V_COINCIDENCIAS: ");
+    console.log(v_coincidencias_vf);
+    console.log("id: "+id+" id+n: "+eval(id+n-1));
+    
+    
+    //console.log("id: "+id+"____ n: "+n+"____ x:"+x);
+    //console.log(context_preguntas);
+    //console.log("Filtro asignatura: "+filtro_asignatura);
+    
+    //console.log(json_preguntas.feed.entry[x].gsx$enunciado.$t);
+    //console.log(json_preguntas.feed.entry[x].gsx$asignatura.$t);
 }
-
-
 
 
 
@@ -438,13 +488,15 @@ function leerPreguntasVF(json) {
                 //********************************************
                 //Contamos las preguntas por tema
                 n_preguntas = 0;
-                for(var l=i; json.feed.entry[l].gsx$tema.$t == json.feed.entry[i].gsx$tema.$t && l<total;l++){
+                
+                for(var l=i; json.feed.entry[l].gsx$tema.$t == json.feed.entry[i].gsx$tema.$t && l<eval(total-1);l++){
                     n_preguntas ++;
-                    //console.log("ERROR: "+json.feed.entry[l].gsx$tema.$t);
                 }
-                                
+                                                
                 //Estructura JSON de cada tema
                 context_preguntas_vf.tema[j] = {
+                    indice: j,
+                    filtrotema: json.feed.entry[i].gsx$filtrotema.$t,
                     nombre_tema: json.feed.entry[i].gsx$tema.$t,
                     id_tema: "id_tema_vf"+i,
                     id2_tema: i, //Se utiliza para conocer el índice del id.
@@ -454,9 +506,10 @@ function leerPreguntasVF(json) {
                 
                 /************ Preguntas dentro de un tema *******************/          
                 var k;
-                for(k=i; json.feed.entry[k].gsx$tema.$t == json.feed.entry[i].gsx$tema.$t && k<total ;k++){            
+                for(k=i; json.feed.entry[k].gsx$tema.$t == json.feed.entry[i].gsx$tema.$t && k<eval(total-1) ;k++){            
                     v_preguntas.push({  
                                       id_pregunta:k,
+                                      asig: json.feed.entry[k].gsx$filtropregunta.$t,
                                       enunciado: json.feed.entry[k].gsx$pregunta.$t,
                                       respuesta: json.feed.entry[k].gsx$respuesta.$t,
                                       explicacion: json.feed.entry[k].gsx$explicacion.$t

@@ -180,11 +180,11 @@
         
         <!-- Plantilla Temas Preguntas Cortas -->
         <script id="plantilla-temas-preguntas-cortas" type="text/x-handlebars-template">
-            <ul data-role="listview" data-inset="true" data-filter="true" >
+            <ul data-role="listview" data-inset="true" data-filter="false" >
                 <li data-role="list-divider" data-theme="b">Temas</li>
                 {{#each tema}}
                      <li>
-                         <a href="#{{id_tema}}" data-rel="popup" class="ui-btn ui-corner-all ui-shadow ui-btn-inline" data-transition="pop" onclick="filtroAleatorioPreguntas('{{id2_tema}}','{{numero_preguntas}}')">
+                         <a href="#{{id_tema}}" data-rel="popup" class="{{filtrotema}} ui-btn ui-corner-all ui-shadow ui-btn-inline" data-transition="pop" onclick="filtroAleatorioPreguntas('{{indice}}','{{id2_tema}}','{{numero_preguntas}}')">
                              {{nombre_tema}}
                          </a>
                      </li>
@@ -223,11 +223,11 @@
        
         <!-- Plantilla Preguntas Verdadero y Falso -->
         <script id="plantilla-preguntas-vf" type="text/x-handlebars-template">
-            <ul data-role="listview" data-inset="true" data-filter="true" >
+            <ul data-role="listview" data-inset="true" data-filter="false" >
                 <li data-role="list-divider" data-theme="b">Temas</li>
                 {{#each tema}}
                      <li>
-                         <a href="#{{id_tema}}" data-rel="popup" class="ui-btn ui-corner-all ui-shadow ui-btn-inline" data-transition="pop" onclick="filtroAleatorioPreguntas('{{id2_tema}}','{{numero_preguntas}}')">
+                         <a href="#{{id_tema}}" data-rel="popup" class="{{filtrotema}} ui-btn ui-corner-all ui-shadow ui-btn-inline" data-transition="pop" onclick="filtroAleatorioPreguntasVF2('{{indice}}','{{id2_tema}}','{{numero_preguntas}}')">
                              {{nombre_tema}}
                          </a>
                      </li>
