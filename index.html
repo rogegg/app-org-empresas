@@ -281,7 +281,7 @@
                     {{#ifCond nombre '!=' '' }}
                         <option value="{{codigo}}">
                             {{nombre}}
-                            <a class="codigo-opcion">{{codigo}}</a>
+                            <!--<a class="codigo-opcion">{{codigo}}</a>-->
                         </option>
                     {{/ifCond}}
                 {{~/each}}
@@ -302,7 +302,7 @@
                  
         <!-- Plantilla respuesta Hexágono -->
         <script id="plantilla-respuesta-hexagono" type="text/x-handlebars-template">
-            <h2 class="center">Tipo de empresa</h2>
+            <h2 class="center">Tipo de organización</h2>
             <p id="explicacionHexagono"></p>
             <p id="contador"></p>
             <a href="#Hexágono" data-role="button" onClick="limpiaSeleccionHexagono();">Volver</a>
@@ -322,7 +322,7 @@
                     {{#each relaciones}}
                         <option value="{{valor}}" class="{{asig}}">
                             {{variable}}
-                            <a class="valor-opcion">{{valor}}</a>
+                            <!--<a class="valor-opcion">{{valor}}</a>-->
                         </option>
                     {{~/each}}    
                     </select>
@@ -337,7 +337,7 @@
                     {{#each relaciones}}
                         <option value="{{valor}}">
                             {{variable}}
-                            <a class="valor-opcion">{{valor}}</a>
+                            <!--<a class="valor-opcion">{{valor}}</a>-->
                         </option>
                     {{~/each}}    
                     </select>
