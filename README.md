@@ -19,3 +19,4 @@ Consta de 3 apartados:
 Los lenguajes de programación utilizados son HTML, CSS y Javascript. Para la compilación y empaquetamiento se usa Apache Cordova, tenemos así una aplicación móvil híbrida. 
 
 Código fuente en el submódulo [app](https://github.com/rogegg/app-org-empresas).
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
