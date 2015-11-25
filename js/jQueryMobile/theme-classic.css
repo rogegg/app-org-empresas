@@ -1489,3 +1489,21 @@ button[disabled],
 .center {
       text-align:center
  }
+
+
+/*Other styles
+---------------------------------------------------------------------------------------------------------------*/
+#cargando div{
+    width: 100%;
+    height:50%;
+    position:absolute;
+    text-align:center;
+}
+
+#cargando center {
+    padding-top:20%;
+}
+
+#granDiv{
+    visibility:hidden;
+}
