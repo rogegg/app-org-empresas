@@ -50,6 +50,13 @@
         <link rel="stylesheet" href="js/jQueryMobile/theme-classic.css" />
 
         
+        <!-- Preload -->
+        <script language="JavaScript" type="text/javascript">
+            function muestraGranDiv(){
+                document.getElementById('granDiv').style.visibility = "visible";
+                document.getElementById('cargando').style.visibility = "hidden";
+            }
+        </script>
 
        
        
@@ -366,6 +373,16 @@
 <!-- *********************************** BODY ************************************************ -->
     
     <body>
+      
+       <!-- Preload -->
+       <body onload="muestraGranDiv()">
+       <div id="cargando">
+           <center><img src="img/gif-load.gif"></img></center>
+        </div>
+        
+        <!-- Div invisible hasta terminar la carga -->
+        <div id="granDiv" style="">
+
         <!--
             Página home, princial de la aplicación.
             Se selecciona la asignatura.
@@ -619,6 +636,6 @@
            </center>
         </div>
 
-
+        </div>
     </body>
 </html>
