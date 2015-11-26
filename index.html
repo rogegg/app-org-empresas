@@ -120,35 +120,37 @@
 
         <!-- Plantilla para CONCEPTOS v3. (Popups añadidos)-->
         <script id="plantilla-conceptos" type="text/x-handlebars-template">
-        
+
+         
+<!-- PRUEBA PARA COLLAPSIBLE         
           <h1>Prueba collapsible</h1>        
           <div data-role="collapsibleset" data-theme="a" data-content-theme="a">
               {{#each variable}}
               <div data-role="collapsible">
                   <h3>{{nombre_variable}}</h3>
-                  {{#ifCond nombre_subvariable '!=' ../nombre_variable}} <!-- añadido nuevo!!!!!!!!!!!!!!!!!!!!! -->
+                  {{#ifCond nombre_subvariable '!=' ../nombre_variable}} <!-- añadido nuevo!!!!!!!!!!!!!!!!!!!!! 
                   <div data-role="collapsibleset">
                   {{/ifCond}}
                   {{#each subvariables}}
 
-                      {{#ifCond nombre_subvariable '==' ../nombre_variable}}  <!-- si NO hay subvariable -->
+                      {{#ifCond nombre_subvariable '==' ../nombre_variable}}  <!-- si NO hay subvariable 
                           {{#each conceptos}}
                               <p>{{nombre_concepto}}</p>
                           {{~/each}}    
-                      {{else}} <!-- si hay subvariable -->
+                      {{else}} <!-- si hay subvariable 
                         <div data-role="collapsible">
                             <h4 class="filtrosubvariable">{{nombre_subvariable}}</h4>
                         </div>
                     
                       {{/ifCond}}
-                  {{~/each}} <!-- subvariables -->
-                {{#ifCond nombre_subvariable '!=' ../nombre_variable}} <!-- añadido nuevo!!!!!!!!!!!!!!!!!!!!! -->
+                  {{~/each}} <!-- subvariables 
+                {{#ifCond nombre_subvariable '!=' ../nombre_variable}} <!-- añadido nuevo!!!!!!!!!!!!!!!!!!!!! 
                 </div>
                 {{/ifCond}}
               </div>
               {{~/each}}
           </div>
-         
+--------------------------------------------------------------------------------------------------->
           <div data-role="collapsibleset">
             {{#each variable}}
             <div data-role="collapsible" data-collapsed="true" data-collapsed-icon="carat-r" data-expanded-icon="carat-d">
@@ -163,7 +165,7 @@
                        <a href="#{{id}}" data-transition="slideup" data-rel="popup" class="{{{asig}}} ui-btn ui-btn-inline ui-corner-all">{{nombre_concepto}}</a>
                        <div data-role="popup" id="{{id}}" data-position-to="window">
                          <div data-role="main" class="ui-content">
-                           <h3 style="color:#F15A29" align="center">{{nombre_concepto}}</h3>
+                           <h4 style="color:#F15A29" align="center">{{nombre_concepto}}</h4>
                            <input type="button" value="Definición" data-theme="b">
                            <p align="center">{{definicion}}</p>
                            <input type="button" value="Ejemplo" data-theme="b">
@@ -172,6 +174,7 @@
                                {{#ifCond img '!=' '' }}
                                    <br><img src="{{img}}"></img>
                                {{/ifCond}}
+                               <a href="#Conceptos" data-rel="back" data-role="button">Volver</a>   
                            </p>
                          </div>
                        </div>
@@ -180,12 +183,12 @@
                  <!-- si hay subvariable, mostramos las subvariables -->     
                  {{else}}    
                  <div data-role="collapsible" data-theme="g" data-collapsed-icon="arrow-r" data-expanded-icon="arrow-d">
-                        <h1 class="filtrosubvariable">{{nombre_subvariable}}</h1>
+                        <h4 class="filtrosubvariable">{{nombre_subvariable}}</h4>
                        {{#each conceptos}}   
                        <a href="#{{id}}" data-transition="slideup" data-rel="popup" class="{{{asig}}} ui-btn ui-btn-inline ui-corner-all">{{nombre_concepto}}</a>
                        <div data-role="popup" id="{{id}}" data-position-to="window">
                          <div data-role="main" class="ui-content">
-                           <h3 style="color:#F15A29" align="center">{{nombre_concepto}}</h3>
+                           <h4 style="color:#F15A29" align="center">{{nombre_concepto}}</h4>
                            <input type="button" value="Definición" data-theme="b">
                            <p align="center">{{definicion}}</p>
                            <input type="button" value="Ejemplo" data-theme="b">
@@ -194,6 +197,7 @@
                                {{#ifCond img '!=' '' }}
                                    <br><img src="{{img}}"></img>
                                {{/ifCond}}
+                               <a href="#Conceptos" data-rel="back" data-role="button">Volver</a>
                            </p>
                          </div>
                        </div>
