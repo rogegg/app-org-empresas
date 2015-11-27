@@ -1497,7 +1497,8 @@ button[disabled],
 
 /*CONCEPTOS*/
 #contenedor-conceptos a {
-    font-size: 13pt;
+    font-size: 11.75pt;
+    font-stretch: normal;
 
 }
 
