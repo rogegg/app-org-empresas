@@ -154,7 +154,7 @@
           <div data-role="collapsibleset">
             {{#each variable}}
             <div data-role="collapsible" data-collapsed="true" data-collapsed-icon="carat-r" data-expanded-icon="carat-d">
-              <h4 class="{{filtrovariable}}">{{nombre_variable}}</h4> 
+              <h4 class="{{filtrovariable}} collapsible-title">{{nombre_variable}}</h4> 
                   {{#ifCond nombre_subvariable '!=' ../nombre_variable}} <!-- añadido nuevo!!!!!!!!!!!!!!!!!!!!! -->
                     <div data-role="collapsibleset">
                   {{/ifCond}}

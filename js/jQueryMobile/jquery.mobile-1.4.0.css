@@ -1512,8 +1512,8 @@ div.ui-mobile-viewport {
 	position: relative;
 	text-align: center;
 	text-overflow: ellipsis;
-	overflow: hidden;
-	white-space: nowrap;
+    white-space: nowrap;
+    overflow: hidden;
 	cursor: pointer;
 	-webkit-user-select: none;
 	-moz-user-select: none;
@@ -2807,6 +2807,7 @@ li.ui-block-e {
 }
 .ui-collapsible {
 	margin: 0 -1em;
+    background-color: red !important;
 }
 .ui-collapsible-inset,
 .ui-collapsible-set {
@@ -2817,6 +2818,7 @@ li.ui-block-e {
 	margin: 0;
 	padding: 0;
 	position: relative;
+    background-color: red !important;
 }
 .ui-collapsible-heading .ui-btn {
 	text-align: left;
