@@ -694,5 +694,14 @@ function limpiaSeleccion(){
     limpiaSeleccionRelaciones();
 }
 
+//Función que contrae TODOS los desplegables abiertos.
+function contraerDesplegables(){
+    $( ".ui-collapsible" ).collapsible( "collapse" );
+}
 
 
+//Contraer todos los desplegables de nivel 2, estos son los desplegables 
+//anidados dentro de otro desplegable.(Ver menú conceptos).
+function contraerLvl2(){
+    $( ".collapsible-lvl2" ).collapsible( "collapse" );
+}

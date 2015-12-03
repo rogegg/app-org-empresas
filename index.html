@@ -111,7 +111,7 @@
         <script id="plantilla-menu" type="text/x-handlebars-template">
           <!-- revisar href de los botones -->
           {{#each menu}}
-              <a style="display: block" href="#{{{id}}}" data-role="button" class="{{asig}}">
+              <a style="display: block" href="#{{{id}}}" data-role="button" class="{{asig}}" onclick="contraerDesplegables()">
                 {{{nombre_menu}}}
               </a>
           {{~/each}}
@@ -119,9 +119,7 @@
 
 
         <!-- Plantilla para CONCEPTOS v3. (Popups añadidos)-->
-        <script id="plantilla-conceptos" type="text/x-handlebars-template">
-
-         
+        <script id="plantilla-conceptos" type="text/x-handlebars-template">         
 <!-- PRUEBA PARA COLLAPSIBLE         
           <h1>Prueba collapsible</h1>        
           <div data-role="collapsibleset" data-theme="a" data-content-theme="a">
@@ -153,61 +151,58 @@
 --------------------------------------------------------------------------------------------------->
           <div data-role="collapsibleset">
             {{#each variable}}
-            <div data-role="collapsible" data-collapsed="true" data-collapsed-icon="carat-r" data-expanded-icon="carat-d">
-              <h4 class="{{filtrovariable}} collapsible-title">{{nombre_variable}}</h4> 
-                  {{#ifCond nombre_subvariable '!=' ../nombre_variable}} <!-- añadido nuevo!!!!!!!!!!!!!!!!!!!!! -->
-                    <div data-role="collapsibleset">
-                  {{/ifCond}}
-                 {{#each subvariables}}
-                 <!-- Si no hay subvariable mostramos directamente los conceptos -->
-                 {{#ifCond nombre_subvariable '==' ../nombre_variable}}         
-                       {{#each conceptos}}
-                       <a href="#{{id}}" data-transition="slideup" data-rel="popup" class="{{{asig}}} ui-btn ui-btn-inline ui-corner-all">{{nombre_concepto}}</a>
-                       <div data-role="popup" id="{{id}}" data-position-to="window">
-                         <div data-role="main" class="ui-content">
-                           <h4 style="color:#F15A29" align="center">{{nombre_concepto}}</h4>
-                           <input type="button" value="Definición" data-theme="b">
-                           <p align="center">{{definicion}}</p>
-                           <input type="button" value="Ejemplo" data-theme="b">
-                           <p align="center">
-                               {{ejemplo}}
-                               {{#ifCond img '!=' '' }}
-                                   <br><img src="{{img}}"></img>
-                               {{/ifCond}}
-                               <a href="#Conceptos" data-rel="back" data-role="button">Volver</a>   
-                           </p>
-                         </div>
-                       </div>
-                       {{~/each}}
-                                         
-                 <!-- si hay subvariable, mostramos las subvariables -->     
-                 {{else}}    
-                 <div data-role="collapsible" data-theme="g" data-collapsed-icon="arrow-r" data-expanded-icon="arrow-d">
-                        <h4 class="filtrosubvariable">{{nombre_subvariable}}</h4>
-                       {{#each conceptos}}   
-                       <a href="#{{id}}" data-transition="slideup" data-rel="popup" class="{{{asig}}} ui-btn ui-btn-inline ui-corner-all">{{nombre_concepto}}</a>
-                       <div data-role="popup" id="{{id}}" data-position-to="window">
-                         <div data-role="main" class="ui-content">
-                           <h4 style="color:#F15A29" align="center">{{nombre_concepto}}</h4>
-                           <input type="button" value="Definición" data-theme="b">
-                           <p align="center">{{definicion}}</p>
-                           <input type="button" value="Ejemplo" data-theme="b">
-                           <p align="center">
-                               {{ejemplo}}
-                               {{#ifCond img '!=' '' }}
-                                   <br><img src="{{img}}"></img>
-                               {{/ifCond}}
-                               <a href="#Conceptos" data-rel="back" data-role="button">Volver</a>
-                           </p>
-                         </div>
-                       </div>
-                       {{~/each}}
-                 </div>
-                 {{/ifCond}}
-                 {{~/each}}<!-- subvariables -->
-                 {{#ifCond nombre_subvariable '!=' ../nombre_variable}} <!-- </div> Collapsibleset que aparece sólo para las subvariables. -->
+            <div data-role="collapsible" data-collapsed="true" data-collapsed-icon="carat-r" data-expanded-icon="carat-d" >
+              <h4 class="{{filtrovariable}} collapsible-title" onclick="contraerLvl2()">{{nombre_variable}}</h4> 
+                 <div data-role="collapsibleset"> <!-- collapsible set de subvariables -->
+                     {{#each subvariables}}
+                     <!-- Si no hay subvariable mostramos directamente los conceptos -->
+                     {{#ifCond nombre_subvariable '==' ../nombre_variable}}         
+                           {{#each conceptos}}
+                           <a href="#{{id}}" data-transition="slideup" data-rel="popup" class="{{{asig}}} ui-btn ui-btn-inline ui-corner-all">{{nombre_concepto}}</a>
+                           <div data-role="popup" id="{{id}}" data-position-to="window">
+                             <div data-role="main" class="ui-content">
+                               <h4 style="color:#F15A29" align="center">{{nombre_concepto}}</h4>
+                               <input type="button" value="Definición" data-theme="b">
+                               <p align="center">{{definicion}}</p>
+                               <input type="button" value="Ejemplo" data-theme="b">
+                               <p align="center">
+                                   {{ejemplo}}
+                                   {{#ifCond img '!=' '' }}
+                                       <br><img src="{{img}}"></img>
+                                   {{/ifCond}}
+                                   <a href="#Conceptos" data-rel="back" data-role="button">Volver</a>   
+                               </p>
+                             </div>
+                           </div>
+                           {{~/each}}
+
+                     <!-- si hay subvariable, mostramos las subvariables -->     
+                     {{else}}    
+                     <div data-role="collapsible" data-theme="g" data-collapsed-icon="arrow-r" data-expanded-icon="arrow-d" class="collapsible-lvl2">
+                            <h4 class="filtrosubvariable">{{nombre_subvariable}}</h4>
+
+                           {{#each conceptos}}   
+                           <a href="#{{id}}" data-transition="slideup" data-rel="popup" class="{{{asig}}} ui-btn ui-btn-inline ui-corner-all">{{nombre_concepto}}</a>
+                           <div data-role="popup" id="{{id}}" data-position-to="window">
+                             <div data-role="main" class="ui-content">
+                               <h4 style="color:#F15A29" align="center">{{nombre_concepto}}</h4>
+                               <input type="button" value="Definición" data-theme="b">
+                               <p align="center">{{definicion}}</p>
+                               <input type="button" value="Ejemplo" data-theme="b">
+                               <p align="center">
+                                   {{ejemplo}}
+                                   {{#ifCond img '!=' '' }}
+                                       <br><img src="{{img}}"></img>
+                                   {{/ifCond}}
+                                   <a href="#Conceptos" data-rel="back" data-role="button">Volver</a>
+                               </p>
+                             </div>
+                           </div>
+                           {{~/each}}
                      </div>
-                 {{/ifCond}}
+                     {{/ifCond}}
+                     {{~/each}}<!-- subvariables -->
+                 </div> <!-- collapsible set de subvariables -->
             </div>
             {{~/each}}
           </div>
