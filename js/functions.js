@@ -14,6 +14,7 @@ var context_preguntas = new Object();
 var context_preguntas_filtrado = new Object();
 var context_preguntas_vf = new Object();
 var context_relaciones = new Object();
+var context_preguntas_por_tema = new Object();
 
 
 
@@ -213,6 +214,8 @@ function leerPreguntas(json){
                 for(var l=i;json.feed.entry[l].gsx$tema.$t == json.feed.entry[i].gsx$tema.$t && l<total;l++){
                     n_preguntas ++;
                 }
+                
+                
                                 
                 //Estructura JSON de cada tema
                 context_preguntas.tema[j] = {
@@ -224,8 +227,9 @@ function leerPreguntas(json){
                     numero_preguntas: n_preguntas,
                     preguntas:[],
                 };
-                /************ Preguntas dentro de un tema *******************/            
                 
+                
+                /************ Preguntas dentro de un tema *******************/            
                 var k;
                 for(k=i; json.feed.entry[k].gsx$tema.$t == json.feed.entry[i].gsx$tema.$t && k<total ;k++){
                     
@@ -253,18 +257,53 @@ function leerPreguntas(json){
                 j++;
                 
                 
-                //console.log(context_preguntas);
+                
             }
         }        
     }
+    
+    //Generamos una página por tema con todas las preguntas.
+    //generaTema();
+    
+    
+    
+    //console.log(context_preguntas);
     
     //console.log("Context preguntas");
     //console.log(context_preguntas);
 }
 
 
-
-
+//Genera las distintas páginas por temas de preguntas cortas.
+function generaTema(indice){
+   
+    var ini=0, fin=0, x=0, nombre="";
+    ini = 0;
+    fin = parseInt(context_preguntas.tema[indice].numero_preguntas) - 1 ;
+    x = randomInt(ini,fin);
+    
+    var respuesta = context_preguntas.tema[indice].preguntas[x].respuesta;
+    var explicacion = context_preguntas.tema[indice].preguntas[x].explicacion;
+    var enunciado = context_preguntas.tema[indice].preguntas[x].enunciado;
+    $('#enunciado-pregunta').empty();
+    $('#enunciado-pregunta').append(enunciado);
+    
+    $('#opciones-respuesta').empty();
+    for(var i=0 ; i<context_preguntas.tema[indice].preguntas[x].opciones.length; i++){
+        nombre = context_preguntas.tema[indice].preguntas[x].opciones[i].nombre;
+        $('#opciones-respuesta').append(
+            '<a href="#respuesta_preguntas_cortas" data-role="button" role="button" class="ui-link ui-btn ui-shadow ui-corner-all" onclick="generaRespuesta(\''+enunciado+'\',\''+nombre+'\',\''+respuesta+'\',\''+explicacion+'\',\''+indice+'\')">'+nombre+'</a>'
+        );
+    }
+    
+    
+    $('#boton-siguiente-pregunta').attr({
+        'href':'#',
+        'data-role':'button',
+        'onclick':'generaTema('+indice+')'
+    });
+    
+}
 
 //Función que recibe una cadena de palabras separadas por ; 
 ////y devuelve un vector en la que cada posición es una de esas palabras.
@@ -285,7 +324,9 @@ function generaOpciones(cadena){
 
 
 //Comprueba si la respuesta es correcta o no, y genera la página de respuesta correcta o incorrecta
-function generaRespuesta(enunciado,respuesta_seleccionada,respuesta_correcta,explicacion){
+function generaRespuesta(enunciado,respuesta_seleccionada,respuesta_correcta,explicacion,indice){
+    
+    
         $('#pregunta').empty();
         $('#pregunta').append("<p>"+enunciado+"</p>");
     
@@ -305,6 +346,9 @@ function generaRespuesta(enunciado,respuesta_seleccionada,respuesta_correcta,exp
     
         $('#explicacion').empty();
         $('#explicacion').append(explicacion);
+    
+        
+        $('#genera-siguiente').attr('onclick','generaTema('+indice+')');
 }
 
 

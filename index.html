@@ -61,7 +61,6 @@
        
        
         <title>iOrg</title>
-        <script src="https://spreadsheets.google.com/feeds/list/1sFG2bBd0m00Lps7f6cZXUEAT2CbFgCof9W97ATx2VRE/ovfi9s6/public/values?alt=json-in-script&callback=leerAsignaturas" type="text/javascript"></script>
 
 
        
@@ -219,6 +218,8 @@
         
         <!-- Plantilla Temas Preguntas Cortas -->
         <script id="plantilla-temas-preguntas-cortas" type="text/x-handlebars-template">
+           <!--
+           
             <ul data-role="listview" data-inset="true" data-filter="false" >
                 <li data-role="list-divider" data-theme="b">Temas</li>
                 {{#each tema}}
@@ -242,8 +243,41 @@
                          </div>
                      </div>
                 {{~/each}}
-            </ul>                      
+            </ul>
+            
+                         -->         
+            <!-- prueba nuevo -->
+            <ul data-role="listview" data-inset="true" data-filter="false">
+                <li data-role="list-divider" data-theme="b">Temas</li>
+                {{#each tema}}
+                     <li>
+                         <a href="#pregunta_corta" class="{{filtrotema}} ui-btn ui-corner-all ui-shadow ui-btn-inline" onclick="generaTema({{indice}})">
+                             {{nombre_tema}}
+                         </a>
+                     </li>
+                {{~/each}}
+            </ul>                                                                                                                                                                                                                                  
         </script>
+        
+             
+        
+        <!-- Plantilla pregunta corta -->
+        <script id="plantilla-pregunta-corta" type="text/x-handlebars-template">
+            <div class="ui-body ui-corner-all" id="pregunta-corta">           
+                
+                <a data-role="button" data-theme="g" class="ui-disabled-g pregunta">Pregunta</a>
+                <p id="enunciado-pregunta"> </p>
+                
+                <a data-role="button" data-theme="g" class="opciones ui-disabled-g">Respuesta</a>
+                <div id="opciones-respuesta" class="opciones ui-body ui-corner-all"> </div>
+                
+                <a id="boton-siguiente-pregunta" data-role="button"> Siguiente </a>
+            </div>
+            
+        </script>
+        
+        
+        
         
         <!-- Plantilla respuesta a preguntas cortas -->
         <script id="plantilla-respuesta-preguntas-cortas" type="text/x-handlebars-template">
@@ -253,13 +287,13 @@
             <span id="respuesta">     </span>
             <span id="explicacion">     </span>
             
-            <a href="#" data-rel="back" data-role="button">Siguiente</a>
+            <a id="genera-siguiente" href="#pregunta_corta" data-role="button">Siguiente Pregunta</a>
+            <a href="#temas_preguntas" data-role="button">Elegir Tema</a>
+            <a href="#home" data-role="button">Salir</a>
         </script>
         
-
-       
-       
-       
+        
+        
         <!-- Plantilla Preguntas Verdadero y Falso -->
         <script id="plantilla-preguntas-vf" type="text/x-handlebars-template">
             <ul data-role="listview" data-inset="true" data-filter="false" >
@@ -420,6 +454,8 @@
             Se selecciona la asignatura.
         -->
         <div data-role="page" id="home" data-theme="c">
+            <script src="https://spreadsheets.google.com/feeds/list/1sFG2bBd0m00Lps7f6cZXUEAT2CbFgCof9W97ATx2VRE/ovfi9s6/public/values?alt=json-in-script&callback=leerAsignaturas" type="text/javascript"></script>
+
             <div id="contenedor-header-home"></div>
             <script>$('#contenedor-header-home').html(html_header);</script>
 
@@ -472,6 +508,7 @@
           </script>
         </div>
 
+       
         <!--
             Página de AUTOEVALUACION.
         -->
@@ -507,6 +544,24 @@
           </script>
         </div>
             
+                      
+        <!--
+            Página para PREGUNTA CORTA
+        -->                        
+        <div data-role="page" id="pregunta_corta" data-theme="c">
+            <div id="contenedor-header-temas-preguntas"></div>
+            <script>$('#contenedor-header-temas-preguntas').html(html_h);</script>
+            <div id="contenedor-pregunta-corta"></div>
+            <script>
+                var source   = $("#plantilla-pregunta-corta").html();
+                var template = Handlebars.compile(source);
+                var html     = template(context_preguntas);
+                $('#contenedor-pregunta-corta').html(html);
+            </script>
+        </div>         
+                                                    
+                                                                                       
+                                                                                                                                                             
         <!--
 
             Respuesta a preguntas cortas
@@ -524,6 +579,7 @@
         </div>
 
        
+               
        
        <!--
             Página para los temas de preguntas verdadero/falso.
@@ -559,6 +615,7 @@
             </script>
         </div>
             
+
             
        <!--
             Hexágono
@@ -667,7 +724,11 @@
             <p>Mintzberg, H. (2005). La estructuración de las organizaciones. Barcelona: Editorial Ariel.</p>
            </center>
         </div>
+<div data-role="page" id="prueba" data-theme="c">
+         <p>PRueba aaaaaaaaaaaaaaaaa</p>
+        </div>
 
         </div>
+        
     </body>
 </html>
