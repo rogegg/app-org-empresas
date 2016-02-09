@@ -214,6 +214,7 @@
         <script id="plantilla-autoevaluacion" type="text/x-handlebars-template">
           <a href="#preguntas_verdadero_falso" data-role="button">Verdadero/Falso</a>
           <a href="#temas_preguntas" data-role="button">Preguntas de opción múltiple</a>
+          <a href="#examen" data-role="button" onclick="generaExamen()">Exámenes de prueba</a>
         </script>
         
         <!-- Plantilla Temas Preguntas Cortas -->
@@ -338,7 +339,27 @@
             <a href="#" data-rel="back" data-role="button">Siguiente</a>
         </script>
         
+        
+        
+        <!-- Plantilla Exámenes de prueba -->
+        <script id="plantilla-examen" type="text/x-handlebars-template">                   
+            <h1>Exámenes de prueba.</h1>
+            {{#each tema}}
+                {{#each preguntas}}
+                <fieldset style="padding: 10px;" data-role="controlgroup">
+                <legend>{{enunciado}}</legend>
+                <select name="selExamen{{id_pregunta}}" id="select-examen-{{id_pregunta}}" class="select" >
+                </select>
+                </fieldset>
                     
+                    
+                    
+                    
+                {{~/each}}
+            {{~/each}}                      
+        </script>
+                   
+                   
                    
         <!-- Plantilla Hexágono -->
         <script id="plantilla-hexagono" type="text/x-handlebars-template">
@@ -426,6 +447,8 @@
             </form>
         </script>
         
+        
+        
         <!-- Plantilla respuesta Relaciones -->
         <script id="plantilla-respuesta-relaciones" type="text/x-handlebars-template">
             <h2 class="center">Relaciones entre variables</h2>
@@ -436,8 +459,12 @@
         
     </head>
     
-<!-- *********************************** BODY ************************************************ -->
-    
+<!-- *****************************************************************************************         
+     **********************************        ***********************************************     
+     **********************************  BODY  *********************************************** 
+     **********************************        ***********************************************     
+     ***************************************************************************************** -->     
+      
     <body>
       
        <!-- Preload -->
@@ -534,7 +561,6 @@
           <script src="https://spreadsheets.google.com/feeds/list/1sFG2bBd0m00Lps7f6cZXUEAT2CbFgCof9W97ATx2VRE/otku9qe/public/values?alt=json-in-script&callback=leerPreguntas" type="text/javascript"></script>          
           <div id="contenedor-header-preguntas"></div>
           <script>$('#contenedor-header-preguntas').html(html_h);</script>
-          
           <div id="contenedor-temas-preguntas"></div>
           <script>
             var source   = $("#plantilla-temas-preguntas-cortas").html();
@@ -560,8 +586,7 @@
             </script>
         </div>         
                                                     
-                                                                                       
-                                                                                                                                                             
+                                                                                                                                               
         <!--
 
             Respuesta a preguntas cortas
@@ -615,7 +640,23 @@
             </script>
         </div>
             
-
+              
+        <!--
+            Página para los Exámenes de prueba.
+        -->    
+        <div data-role="page" id="examen" data-theme="c">
+            <div id="contenedor-header-examen"></div>
+            <script>$('#contenedor-header-examen').html(html_h);</script>
+            <div id="contenedor-examen"></div>
+            <script>
+                var source   = $("#plantilla-examen").html();
+                var template = Handlebars.compile(source);
+                var html     = template(context_preguntas);
+                $('#contenedor-examen').html(html);
+            </script>
+        </div>
+            
+            
             
        <!--
             Hexágono
