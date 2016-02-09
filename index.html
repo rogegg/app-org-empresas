@@ -61,7 +61,6 @@
        
        
         <title>iOrg</title>
-        <script src="https://spreadsheets.google.com/feeds/list/1sFG2bBd0m00Lps7f6cZXUEAT2CbFgCof9W97ATx2VRE/ovfi9s6/public/values?alt=json-in-script&callback=leerAsignaturas" type="text/javascript"></script>
 
 
        
@@ -214,11 +213,13 @@
         <!-- Plantilla Autoevaluación -->
         <script id="plantilla-autoevaluacion" type="text/x-handlebars-template">
           <a href="#preguntas_verdadero_falso" data-role="button">Verdadero/Falso</a>
-          <a href="#temas_preguntas" data-role="button">Preguntas de opción múltiple</a>
+          <a href="#temas_preguntas" data-role="button" onclick="generaTema()">Preguntas de opción múltiple</a>
         </script>
         
         <!-- Plantilla Temas Preguntas Cortas -->
         <script id="plantilla-temas-preguntas-cortas" type="text/x-handlebars-template">
+           <!--
+           
             <ul data-role="listview" data-inset="true" data-filter="false" >
                 <li data-role="list-divider" data-theme="b">Temas</li>
                 {{#each tema}}
@@ -242,8 +243,50 @@
                          </div>
                      </div>
                 {{~/each}}
-            </ul>                      
+            </ul>
+            
+                         -->         
+            <!-- prueba nuevo -->
+            <ul data-role="listview" data-inset="true" data-filter="false">
+                <li data-role="list-divider" data-theme="b">Temas</li>
+                {{#each tema}}
+                     <li>
+                         <a href="#tema_preguntas_{{indice}}" class="{{filtrotema}} ui-btn ui-corner-all ui-shadow ui-btn-inline" >
+                             {{nombre_tema}}
+                         </a>
+                         <a href="#tema_preguntas_id" class="{{filtrotema}} ui-btn ui-corner-all ui-shadow ui-btn-inline">
+                             {{nombre_tema}}
+                         </a>
+                     </li>
+                     <div data-role="popup" id="{{id_tema}}" data-position-to="window"> 
+                         <div data-role="main" class="ui-content">   
+                             {{#each preguntas}}
+                                 <a data-role="button" data-theme="g" class="ui-disabled-g pregunta pregunta{{id_pregunta}}">Pregunta</a>
+                                 <p class="pregunta pregunta{{id_pregunta}}">{{enunciado}}</p>
+                                 <a data-role="button" data-theme="g" class="opciones ui-disabled-g pregunta{{id_pregunta}}">Respuesta</a>
+                                 <p class="opciones pregunta{{id_pregunta}}">
+                                     {{#each opciones}}
+                                         <a href="#respuesta_preguntas_cortas" data-role="button" onclick="generaRespuesta('{{../enunciado}}','{{nombre}}','{{../respuesta}}','{{../explicacion}}')">{{nombre}}</a>
+                                     {{~/each}}
+                                 </p>
+                             {{~/each}}
+                         </div>
+                     </div>
+                {{~/each}}
+            </ul>                                                                                                                                                                                                                                  
         </script>
+        
+        <!-- Plantilla respuesta a preguntas cortas -->
+        <script id="plantilla-preguntas-cortas-por-tema" type="text/x-handlebars-template">
+            {{#each tema}}
+                <h3>{{nombre_tema}}</h3>
+            {{~/each}}
+            <span id="listaTemas">   </span>
+            
+        </script>
+        
+        
+        
         
         <!-- Plantilla respuesta a preguntas cortas -->
         <script id="plantilla-respuesta-preguntas-cortas" type="text/x-handlebars-template">
@@ -256,10 +299,8 @@
             <a href="#" data-rel="back" data-role="button">Siguiente</a>
         </script>
         
-
-       
-       
-       
+        
+        
         <!-- Plantilla Preguntas Verdadero y Falso -->
         <script id="plantilla-preguntas-vf" type="text/x-handlebars-template">
             <ul data-role="listview" data-inset="true" data-filter="false" >
@@ -420,6 +461,8 @@
             Se selecciona la asignatura.
         -->
         <div data-role="page" id="home" data-theme="c">
+            <script src="https://spreadsheets.google.com/feeds/list/1sFG2bBd0m00Lps7f6cZXUEAT2CbFgCof9W97ATx2VRE/ovfi9s6/public/values?alt=json-in-script&callback=leerAsignaturas" type="text/javascript"></script>
+
             <div id="contenedor-header-home"></div>
             <script>$('#contenedor-header-home').html(html_header);</script>
 
@@ -507,6 +550,24 @@
           </script>
         </div>
             
+                      
+        <!--
+            Página para los PREGUNTAS CORTAS POR ID
+        -->                        
+        <div data-role="page" id="tema_preguntas_id" data-theme="c">
+            <div id="contenedor-header-temas-preguntas"></div>
+            <script>$('#contenedor-header-temas-preguntas').html(html_h);</script>
+            <div id="contenedor-preguntas-cortas-por-tema"></div>
+            <script>
+                var source   = $("#plantilla-preguntas-cortas-por-tema").html();
+                var template = Handlebars.compile(source);
+                var html     = template(context_preguntas);
+                $('#contenedor-preguntas-cortas-por-tema ').html(html);
+            </script>
+        </div>         
+                                                    
+                                                                                       
+                                                                                                                                                             
         <!--
 
             Respuesta a preguntas cortas
@@ -524,6 +585,7 @@
         </div>
 
        
+               
        
        <!--
             Página para los temas de preguntas verdadero/falso.
@@ -667,7 +729,11 @@
             <p>Mintzberg, H. (2005). La estructuración de las organizaciones. Barcelona: Editorial Ariel.</p>
            </center>
         </div>
+<div data-role="page" id="prueba" data-theme="c">
+         <p>PRueba aaaaaaaaaaaaaaaaa</p>
+        </div>
 
         </div>
+        
     </body>
 </html>
