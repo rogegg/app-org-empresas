@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <!--
     Licensed to the Apache Software Foundation (ASF) under one
@@ -213,7 +214,8 @@
         <!-- Plantilla Autoevaluación -->
         <script id="plantilla-autoevaluacion" type="text/x-handlebars-template">
           <a href="#preguntas_verdadero_falso" data-role="button">Verdadero/Falso</a>
-          <a href="#temas_preguntas" data-role="button" onclick="generaTema()">Preguntas de opción múltiple</a>
+          <a href="#temas_preguntas" data-role="button">Preguntas de opción múltiple</a>
+          <a href="#examen" data-role="button" onclick="generaExamen()">Exámenes de prueba</a>
         </script>
         
         <!-- Plantilla Temas Preguntas Cortas -->
@@ -251,37 +253,28 @@
                 <li data-role="list-divider" data-theme="b">Temas</li>
                 {{#each tema}}
                      <li>
-                         <a href="#tema_preguntas_{{indice}}" class="{{filtrotema}} ui-btn ui-corner-all ui-shadow ui-btn-inline" >
-                             {{nombre_tema}}
-                         </a>
-                         <a href="#tema_preguntas_id" class="{{filtrotema}} ui-btn ui-corner-all ui-shadow ui-btn-inline">
+                         <a href="#pregunta_corta" class="{{filtrotema}} ui-btn ui-corner-all ui-shadow ui-btn-inline" onclick="generaTema({{indice}})">
                              {{nombre_tema}}
                          </a>
                      </li>
-                     <div data-role="popup" id="{{id_tema}}" data-position-to="window"> 
-                         <div data-role="main" class="ui-content">   
-                             {{#each preguntas}}
-                                 <a data-role="button" data-theme="g" class="ui-disabled-g pregunta pregunta{{id_pregunta}}">Pregunta</a>
-                                 <p class="pregunta pregunta{{id_pregunta}}">{{enunciado}}</p>
-                                 <a data-role="button" data-theme="g" class="opciones ui-disabled-g pregunta{{id_pregunta}}">Respuesta</a>
-                                 <p class="opciones pregunta{{id_pregunta}}">
-                                     {{#each opciones}}
-                                         <a href="#respuesta_preguntas_cortas" data-role="button" onclick="generaRespuesta('{{../enunciado}}','{{nombre}}','{{../respuesta}}','{{../explicacion}}')">{{nombre}}</a>
-                                     {{~/each}}
-                                 </p>
-                             {{~/each}}
-                         </div>
-                     </div>
                 {{~/each}}
             </ul>                                                                                                                                                                                                                                  
         </script>
         
-        <!-- Plantilla respuesta a preguntas cortas -->
-        <script id="plantilla-preguntas-cortas-por-tema" type="text/x-handlebars-template">
-            {{#each tema}}
-                <h3>{{nombre_tema}}</h3>
-            {{~/each}}
-            <span id="listaTemas">   </span>
+             
+        
+        <!-- Plantilla pregunta corta -->
+        <script id="plantilla-pregunta-corta" type="text/x-handlebars-template">
+            <div class="ui-body ui-corner-all" id="pregunta-corta">           
+                
+                <a data-role="button" data-theme="g" class="ui-disabled-g pregunta">Pregunta</a>
+                <p id="enunciado-pregunta"> </p>
+                
+                <a data-role="button" data-theme="g" class="opciones ui-disabled-g">Respuesta</a>
+                <div id="opciones-respuesta" class="opciones ui-body ui-corner-all"> </div>
+                
+                <a id="boton-siguiente-pregunta" data-role="button"> Siguiente </a>
+            </div>
             
         </script>
         
@@ -296,7 +289,9 @@
             <span id="respuesta">     </span>
             <span id="explicacion">     </span>
             
-            <a href="#" data-rel="back" data-role="button">Siguiente</a>
+            <a id="genera-siguiente" href="#pregunta_corta" data-role="button">Siguiente Pregunta</a>
+            <a href="#temas_preguntas" data-role="button">Elegir Tema</a>
+            <a href="#home" data-role="button">Salir</a>
         </script>
         
         
@@ -345,7 +340,27 @@
             <a href="#" data-rel="back" data-role="button">Siguiente</a>
         </script>
         
+        
+        
+        <!-- Plantilla Exámenes de prueba -->
+        <script id="plantilla-examen" type="text/x-handlebars-template">                   
+            <h1>Exámenes de prueba.</h1>
+            {{#each tema}}
+                {{#each preguntas}}
+                <fieldset style="padding: 10px;" data-role="controlgroup">
+                <legend>{{enunciado}}</legend>
+                <select name="selExamen{{id_pregunta}}" id="select-examen-{{id_pregunta}}" class="select" >
+                </select>
+                </fieldset>
                     
+                    
+                    
+                    
+                {{~/each}}
+            {{~/each}}                      
+        </script>
+                   
+                   
                    
         <!-- Plantilla Hexágono -->
         <script id="plantilla-hexagono" type="text/x-handlebars-template">
@@ -433,6 +448,8 @@
             </form>
         </script>
         
+        
+        
         <!-- Plantilla respuesta Relaciones -->
         <script id="plantilla-respuesta-relaciones" type="text/x-handlebars-template">
             <h2 class="center">Relaciones entre variables</h2>
@@ -443,8 +460,12 @@
         
     </head>
     
-<!-- *********************************** BODY ************************************************ -->
-    
+<!-- *****************************************************************************************         
+     **********************************        ***********************************************     
+     **********************************  BODY  *********************************************** 
+     **********************************        ***********************************************     
+     ***************************************************************************************** -->     
+      
     <body>
       
        <!-- Preload -->
@@ -515,6 +536,7 @@
           </script>
         </div>
 
+       
         <!--
             Página de AUTOEVALUACION.
         -->
@@ -540,7 +562,6 @@
           <script src="https://spreadsheets.google.com/feeds/list/1sFG2bBd0m00Lps7f6cZXUEAT2CbFgCof9W97ATx2VRE/otku9qe/public/values?alt=json-in-script&callback=leerPreguntas" type="text/javascript"></script>          
           <div id="contenedor-header-preguntas"></div>
           <script>$('#contenedor-header-preguntas').html(html_h);</script>
-          
           <div id="contenedor-temas-preguntas"></div>
           <script>
             var source   = $("#plantilla-temas-preguntas-cortas").html();
@@ -552,22 +573,21 @@
             
                       
         <!--
-            Página para los PREGUNTAS CORTAS POR ID
+            Página para PREGUNTA CORTA
         -->                        
-        <div data-role="page" id="tema_preguntas_id" data-theme="c">
+        <div data-role="page" id="pregunta_corta" data-theme="c">
             <div id="contenedor-header-temas-preguntas"></div>
             <script>$('#contenedor-header-temas-preguntas').html(html_h);</script>
-            <div id="contenedor-preguntas-cortas-por-tema"></div>
+            <div id="contenedor-pregunta-corta"></div>
             <script>
-                var source   = $("#plantilla-preguntas-cortas-por-tema").html();
+                var source   = $("#plantilla-pregunta-corta").html();
                 var template = Handlebars.compile(source);
                 var html     = template(context_preguntas);
-                $('#contenedor-preguntas-cortas-por-tema ').html(html);
+                $('#contenedor-pregunta-corta').html(html);
             </script>
         </div>         
                                                     
-                                                                                       
-                                                                                                                                                             
+                                                                                                                                               
         <!--
 
             Respuesta a preguntas cortas
@@ -620,6 +640,23 @@
                 $('#contenedor-respuesta-preguntas-vf').html(html);
             </script>
         </div>
+            
+              
+        <!--
+            Página para los Exámenes de prueba.
+        -->    
+        <div data-role="page" id="examen" data-theme="c">
+            <div id="contenedor-header-examen"></div>
+            <script>$('#contenedor-header-examen').html(html_h);</script>
+            <div id="contenedor-examen"></div>
+            <script>
+                var source   = $("#plantilla-examen").html();
+                var template = Handlebars.compile(source);
+                var html     = template(context_preguntas);
+                $('#contenedor-examen').html(html);
+            </script>
+        </div>
+            
             
             
        <!--
@@ -737,3 +774,4 @@
         
     </body>
 </html>
+>>>>>>> 04f14e50833c5d55a8052a556637246ffcac7c93

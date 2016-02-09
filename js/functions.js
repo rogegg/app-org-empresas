@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 "use strict";
 
 var total = 0;
@@ -275,38 +276,34 @@ function leerPreguntas(json){
 
 
 //Genera las distintas páginas por temas de preguntas cortas.
-function generaTema(){
-    $('#listaTemas').empty();
-    var ini=0;
-    var fin=0;
-    var x=0;
-
-    for(var i=0; i<context_preguntas.tema.length ; i++){
-        //console.log(context_preguntas.tema[i].nombre_tema);
-        //console.log("");
-        $('#granDiv').append('<div data-role="page" id="tema_preguntas_'+context_preguntas.tema[i].indice+'" data-theme="c" data-url="tema_preguntas_'+context_preguntas.tema[i].indice+'">');
-        for(var j=0; j<context_preguntas.tema[i].numero_preguntas ;j++){
-            $('#tema_preguntas_'+context_preguntas.tema[i].indice).empty();
-            $('#tema_preguntas_'+context_preguntas.tema[i].indice).append('<p id="id_pregunta_'+context_preguntas.tema[i].preguntas[j].id_pregunta+'">'+context_preguntas.tema[i].preguntas[j].enunciado+'</p>');
-        }
-       
-        $('#tema_preguntas_'+context_preguntas.tema[i].indice).append('<a href="#tema_preguntas_'+context_preguntas.tema[i].indice+'" data-role="button" onclick="preguntaAleatoria()">Siguiente</a></div>');
-    }     
-    
-    //console.log(context_preguntas);
-    //console.log(context_preguntas.tema.length);
-}
-
-//Cambia la pregunta mostrada en preguntas cortas.
-function preguntaAleatoria(){
-    var ini, fin, x;
-    
-    //console.log(ini,fin);
-    console.log("Seleccionado - > id_pregunta_"+x);
-    $('#id_pregunta_'+x).append("<p>EEEEEEEEEE</p>");
-    ini = parseInt(context_preguntas.tema[i].id2_tema);
-    fin = parseInt(ini+context_preguntas.tema[i].numero_preguntas);
+function generaTema(indice){
+   
+    var ini=0, fin=0, x=0, nombre="";
+    ini = 0;
+    fin = parseInt(context_preguntas.tema[indice].numero_preguntas) - 1 ;
     x = randomInt(ini,fin);
+    
+    var respuesta = context_preguntas.tema[indice].preguntas[x].respuesta;
+    var explicacion = context_preguntas.tema[indice].preguntas[x].explicacion;
+    var enunciado = context_preguntas.tema[indice].preguntas[x].enunciado;
+    $('#enunciado-pregunta').empty();
+    $('#enunciado-pregunta').append(enunciado);
+    
+    $('#opciones-respuesta').empty();
+    for(var i=0 ; i<context_preguntas.tema[indice].preguntas[x].opciones.length; i++){
+        nombre = context_preguntas.tema[indice].preguntas[x].opciones[i].nombre;
+        $('#opciones-respuesta').append(
+            '<a href="#respuesta_preguntas_cortas" data-role="button" role="button" class="ui-link ui-btn ui-shadow ui-corner-all" onclick="generaRespuesta(\''+enunciado+'\',\''+nombre+'\',\''+respuesta+'\',\''+explicacion+'\',\''+indice+'\')">'+nombre+'</a>'
+        );
+    }
+    
+    
+    $('#boton-siguiente-pregunta').attr({
+        'href':'#',
+        'data-role':'button',
+        'onclick':'generaTema('+indice+')'
+    });
+    
 }
 
 //Función que recibe una cadena de palabras separadas por ; 
@@ -328,7 +325,9 @@ function generaOpciones(cadena){
 
 
 //Comprueba si la respuesta es correcta o no, y genera la página de respuesta correcta o incorrecta
-function generaRespuesta(enunciado,respuesta_seleccionada,respuesta_correcta,explicacion){
+function generaRespuesta(enunciado,respuesta_seleccionada,respuesta_correcta,explicacion,indice){
+    
+    
         $('#pregunta').empty();
         $('#pregunta').append("<p>"+enunciado+"</p>");
     
@@ -348,6 +347,9 @@ function generaRespuesta(enunciado,respuesta_seleccionada,respuesta_correcta,exp
     
         $('#explicacion').empty();
         $('#explicacion').append(explicacion);
+    
+        
+        $('#genera-siguiente').attr('onclick','generaTema('+indice+')');
 }
 
 
@@ -748,3 +750,4 @@ function contraerDesplegables(){
 function contraerLvl2(){
     $( ".collapsible-lvl2" ).collapsible( "collapse" );
 }
+>>>>>>> 04f14e50833c5d55a8052a556637246ffcac7c93
