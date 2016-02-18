@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <!DOCTYPE html>
 <!--
     Licensed to the Apache Software Foundation (ASF) under one
@@ -44,6 +43,7 @@
         <!-- Mis funciones JavaScript -->
         <script src="js/functions.js"></script> 
         <script src="js/functions_hexagon.js"></script> 
+        <script src="js/functions_exam.js"></script> 
 
 
         <!-- Ficheros Css -->
@@ -215,7 +215,6 @@
         <script id="plantilla-autoevaluacion" type="text/x-handlebars-template">
           <a href="#preguntas_verdadero_falso" data-role="button">Verdadero/Falso</a>
           <a href="#temas_preguntas" data-role="button">Preguntas de opción múltiple</a>
-          <a href="#examen" data-role="button" onclick="generaExamen()">Exámenes de prueba</a>
         </script>
         
         <!-- Plantilla Temas Preguntas Cortas -->
@@ -258,7 +257,9 @@
                          </a>
                      </li>
                 {{~/each}}
-            </ul>                                                                                                                                                                                                                                  
+            </ul>                                                                                                                                                                                                                   
+            
+            <a href="#examen-autoev" data-role="button" onclick="generaExamen()">Examen</a>               
         </script>
         
              
@@ -344,20 +345,35 @@
         
         <!-- Plantilla Exámenes de prueba -->
         <script id="plantilla-examen" type="text/x-handlebars-template">                   
-            <h1>Exámenes de prueba.</h1>
-            {{#each tema}}
+            <center><h2>Examen</h2></center>
+            <center class="calificacion-examen"></center>
+            <form name="formularioExamen" id="formularioExamen">
                 {{#each preguntas}}
-                <fieldset style="padding: 10px;" data-role="controlgroup">
-                <legend>{{enunciado}}</legend>
-                <select name="selExamen{{id_pregunta}}" id="select-examen-{{id_pregunta}}" class="select" >
-                </select>
-                </fieldset>
-                    
-                    
-                    
-                    
-                {{~/each}}
-            {{~/each}}                      
+                   <center id=caja-pregunta-examen-{{id_examen}} style="margin: 10px;border:1px solid grey;border-radius: 15px" id="pregunta-examen-{{id_examen}}">
+                        <span id="resultado-examen-{{id_examen}}"></span>
+                        <fieldset style="padding: 10px;" data-role="controlgroup">
+                            <legend id="titulo-pregunta-examen-{{id_examen}}"><h3>Pregunta {{id_n_pregunta}}</h3></legend>
+                        <legend id="enunciado-examen-{{id_examen}}">{{enunciado}}</legend>
+                        <select name="selExamen{{id_examen}}" id="select-examen-{{id_examen}}" class="select" >
+                            <option value="-1" selected="selected" >Selecciona una opción</option>
+                            {{#each opciones}}
+                                <option value="{{codigo}}">
+                                    {{nombre}}
+                                </option>
+                            {{~/each}}
+                        </select>
+                        </fieldset>
+                        <center id="explicacion-examen-{{id_examen}}"></center>
+                    </center>
+                {{~/each}}               
+            </form>
+            <center class="calificacion-examen"></center>
+            </br>
+            <span id="botones-examen">
+                <a href="" data-role="button" data-theme="b" onclick="corrigeExamen()">Corregir</a>
+                <a href="" data-role="button"  onclick="generaOtroExamen()">Siguiente Examen</a>
+                <a href="#" data-rel="back" data-role="button" data-theme="b" >Salir</a>
+            </span>
         </script>
                    
                    
@@ -394,6 +410,11 @@
             </span>
             </form>
         </script>
+                
+                
+                
+                
+                
                  
         <!-- Plantilla respuesta Hexágono -->
         <script id="plantilla-respuesta-hexagono" type="text/x-handlebars-template">
@@ -627,7 +648,7 @@
        
        
         <!--
-            Respuesta a preguntas cortas
+            Respuesta a preguntas verdadero falso
         -->    
         <div data-role="page" id="respuesta_preguntas_verdadero_falso" data-theme="c">
             <div id="contenedor-header-respuesta-vf"></div>
@@ -643,16 +664,17 @@
             
               
         <!--
-            Página para los Exámenes de prueba.
+            Página para EXAMEN  de Preguntas Cortas.
         -->    
-        <div data-role="page" id="examen" data-theme="c">
+        <div data-role="page" id="examen-autoev" data-theme="c">
+            <script src="https://spreadsheets.google.com/feeds/list/1sFG2bBd0m00Lps7f6cZXUEAT2CbFgCof9W97ATx2VRE/otku9qe/public/values?alt=json-in-script&callback=generaExamen" type="text/javascript"></script>          
             <div id="contenedor-header-examen"></div>
             <script>$('#contenedor-header-examen').html(html_h);</script>
             <div id="contenedor-examen"></div>
             <script>
                 var source   = $("#plantilla-examen").html();
                 var template = Handlebars.compile(source);
-                var html     = template(context_preguntas);
+                var html     = template(context_examen);
                 $('#contenedor-examen').html(html);
             </script>
         </div>
@@ -774,4 +796,3 @@
         
     </body>
 </html>
->>>>>>> 04f14e50833c5d55a8052a556637246ffcac7c93

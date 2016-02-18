@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 "use strict";
 
 var total = 0;
@@ -17,6 +16,7 @@ var context_preguntas_vf = new Object();
 var context_relaciones = new Object();
 var context_preguntas_por_tema = new Object();
 
+var context_examen = new Object();
 
 
 
@@ -212,7 +212,7 @@ function leerPreguntas(json){
                 //********************************************
                 //Contamos las preguntas por tema
                 n_preguntas = 0;
-                for(var l=i;json.feed.entry[l].gsx$tema.$t == json.feed.entry[i].gsx$tema.$t && l<total;l++){
+                for(var l=i;json.feed.entry[l].gsx$tema.$t == json.feed.entry[i].gsx$tema.$t && l<(total-1);l++){
                     n_preguntas ++;
                 }
                 
@@ -220,6 +220,7 @@ function leerPreguntas(json){
                                 
                 //Estructura JSON de cada tema
                 context_preguntas.tema[j] = {
+                    filtro_examen: json.feed.entry[i].gsx$filtroexamen.$t,
                     filtrotema: json.feed.entry[i].gsx$filtrotema.$t,
                     nombre_tema: json.feed.entry[i].gsx$tema.$t,
                     indice: j,
@@ -232,12 +233,12 @@ function leerPreguntas(json){
                 
                 /************ Preguntas dentro de un tema *******************/            
                 var k;
-                for(k=i; json.feed.entry[k].gsx$tema.$t == json.feed.entry[i].gsx$tema.$t && k<total ;k++){
+                for(k=i; json.feed.entry[k].gsx$tema.$t == json.feed.entry[i].gsx$tema.$t && k<(total-1) ;k++){
                     
                     //K es el número enunciados por tema.
                     //var x = randomInt(i,k-1);
                     
-                    v_opciones = generaOpciones(json.feed.entry[k].gsx$opciones.$t); 
+                    v_opciones = generaOpciones(json.feed.entry[k].gsx$opciones.$t,k); 
                     //console.log("V_OPCIONES: ");
                     //console.log(v_opciones);
                     v_preguntas.push({  
@@ -251,6 +252,19 @@ function leerPreguntas(json){
                     v_opciones = [];
                 }
                            
+                //Aún falta el último valor K para añadir.
+                v_opciones = generaOpciones(json.feed.entry[k].gsx$opciones.$t); 
+                    v_preguntas.push({  
+                                      id_pregunta:k,
+                                      asig: json.feed.entry[k].gsx$filtropregunta.$t,
+                                      enunciado: json.feed.entry[k].gsx$enunciado.$t,
+                                      opciones: v_opciones,
+                                      respuesta: json.feed.entry[k].gsx$respuesta.$t,
+                                      explicacion: json.feed.entry[k].gsx$explicacion.$t
+                    })
+                    v_opciones = [];
+                
+                
                 
                 //Guardamos la pregunta aleatoria en el tema.
                 context_preguntas.tema[j].preguntas = v_preguntas;
@@ -273,6 +287,10 @@ function leerPreguntas(json){
     //console.log("Context preguntas");
     //console.log(context_preguntas);
 }
+
+
+
+
 
 
 //Genera las distintas páginas por temas de preguntas cortas.
@@ -308,9 +326,10 @@ function generaTema(indice){
 
 //Función que recibe una cadena de palabras separadas por ; 
 ////y devuelve un vector en la que cada posición es una de esas palabras.
-function generaOpciones(cadena){
+function generaOpciones(cadena,indice){
     var x = -1; //primera posicion a almacenar
     var vector = new Array();
+    indice = parseInt(indice);
     for(var i=0; i<cadena.length ; i++) {
         //Si encuentro un punto y coma almaceno la palabra.
         if(cadena[i]==";"){
@@ -750,4 +769,18 @@ function contraerDesplegables(){
 function contraerLvl2(){
     $( ".collapsible-lvl2" ).collapsible( "collapse" );
 }
->>>>>>> 04f14e50833c5d55a8052a556637246ffcac7c93
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

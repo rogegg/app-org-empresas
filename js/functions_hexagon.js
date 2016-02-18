@@ -48,7 +48,7 @@ function leerHexagono(json){
     
     context_hexagono.pregunta = v_pregunta;
     
-    //console.log(context_hexagono);
+    //console.log("Context hexagono", context_hexagono);
 }
 
 
