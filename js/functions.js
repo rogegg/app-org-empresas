@@ -23,14 +23,12 @@ var context_examen_vf = new Object();
 
 //Muestra sólo los ejercicios y conceptos de la asignatura (Organización de Empresas)
 function showOe(){
-    //console.log("         Dentro de showOe()");
     $('.OE').show();
     $('.OT').hide();
 }
 
 //Muestra sólo los ejercicios y conceptos de la asignatura (Organización del trabajo)
 function showOt(){
-    //console.log("         Dentro de showOt()");
     $('.OT').show();
     $('.OE').hide();
 }
@@ -38,25 +36,23 @@ function showOt(){
 
 //Aplicamos filtro por asignatura
 function filtroAsignatura(codigo_asignatura){
-    //console.log("La asignatura seleccionada es: " + codigo_asignatura);
   if( String(codigo_asignatura) === "OE"){
-    //console.log("IF: showOe();");
+    //Asignatura Organización de Empresas
     showOe();
     filtro_asignatura="OE";
-    //console.log("DESDE EL FILTRO: ");
-    //console.log(context_preguntas);
       
   }else if( String(codigo_asignatura) === "OT"){
-    //console.log("ELSE IF: showOt();");
+    //Asignatura Organización del Trabajo
     showOt();
     filtro_asignatura="OT";
+      
   }else{
-    //console.log("No hay filtrado");
+    //Sin filtrado
   }
 }
 
 
-
+//Leemos las asignaturas y sus códigos del documento de Google Drive parseado en la variable json
 function leerAsignaturas(json) {
   var asig = new Array();
   var cod = new Array();
@@ -70,6 +66,8 @@ function leerAsignaturas(json) {
 }
 
 
+
+//Leemos el menú del documento de Google Drive parseado en la variable json
 function leerMenu(json) {
   var menu = new Array();
   var asignatura;
@@ -80,7 +78,7 @@ function leerMenu(json) {
     menu[i] = json.feed.entry[i].gsx$menu.$t;  
     asignatura = json.feed.entry[i].gsx$asignatura.$t;  
     id = json.feed.entry[i].gsx$id.$t;
-            //console.log("Menu--> "+menu[i]+" con asignatura ->"+asignatura);
+
     context_menu.menu[i] = {
         nombre_menu: menu[i],
         asig: asignatura,
@@ -90,29 +88,6 @@ function leerMenu(json) {
 }
 
 
-
-/*    //Estructura estática de ejemplo
-      context_conceptos.variable[j] = {
-        nombre_variable: json.feed.entry[i].gsx$variable.$t,
-        subvariables:[]
-         [
-          {nombre_subvariable:"subvariable",
-           conceptos:[
-              {nombre_concepto:"concepto"},
-              {nombre_concepto:"concepto2"},
-              {nombre_concepto:"concepto3"}
-           ]
-          },
-          {nombre_subvariable:"subvariable2",
-           conceptos:[
-              {nombre_concepto:"concepto"},
-              {nombre_concepto:"concepto2"},
-              {nombre_concepto:"concepto3"}
-           ]
-          }
-         ]
-      };
-*/
 
 
 //Función que recibe datos de la hoja de cálculo de google drive en la variable json
@@ -183,9 +158,7 @@ function leerConceptos(json) {
     }
   
   }
-    //console.log("CONTEXT_CONCEPTOS");
-    //console.log(context_conceptos);
-    //console.log(json);
+
 }
 
 
@@ -236,12 +209,9 @@ function leerPreguntas(json){
                 var k;
                 for(k=i; json.feed.entry[k].gsx$tema.$t == json.feed.entry[i].gsx$tema.$t && k<(total-1) ;k++){
                     
-                    //K es el número enunciados por tema.
-                    //var x = randomInt(i,k-1);
-                    
+                
                     v_opciones = generaOpciones(json.feed.entry[k].gsx$opciones.$t,k); 
-                    //console.log("V_OPCIONES: ");
-                    //console.log(v_opciones);
+ 
                     v_preguntas.push({  
                                       id_pregunta:k,
                                       asig: json.feed.entry[k].gsx$filtropregunta.$t,
@@ -278,15 +248,6 @@ function leerPreguntas(json){
         }        
     }
     
-    //Generamos una página por tema con todas las preguntas.
-    //generaTema();
-    
-    
-    
-    //console.log(context_preguntas);
-    
-    //console.log("Context preguntas");
-    //console.log(context_preguntas);
 }
 
 
@@ -344,6 +305,9 @@ function generaOpciones(cadena,indice){
 }
 
 
+
+
+
 //Comprueba si la respuesta es correcta o no, y genera la página de respuesta correcta o incorrecta
 function generaRespuesta(enunciado,respuesta_seleccionada,respuesta_correcta,explicacion,indice){
     
@@ -389,7 +353,6 @@ function randomInt(min,max){
 //ID -> ID del tema
 //n -> número de preguntas del tema
 function filtroAleatorioPreguntas(indice,id,n){
-    //console.log("############# FILTRO ALEATORIO PREGUNTAS ####################");
     //Pasamos a enteros para evitar problemas con cadenas.
     id = parseInt(id); 
     n = parseInt(n);
@@ -403,50 +366,32 @@ function filtroAleatorioPreguntas(indice,id,n){
 
     
     //Recorrer la estructura con todas las preguntas del tema. Desde id hasta id+n
-    //console.log(context_preguntas);    
-    //console.log("EL ID -> "+id);
     for(var i=0; i<n; i++){        
         //Almacenar las preguntas que corresponden al filtrado
         if(context_preguntas.tema[indice].preguntas[i].asig=="Ambas" || 
            context_preguntas.tema[indice].preguntas[i].asig==filtro_asignatura){
-           //console.log("coincidencia encontrada");
             v_coincidencias.push(i);
         }
-        //console.log(context_preguntas.tema[indice])
     }
     
     
     //Elegimos una aleatoria
-    //x = randomInt(id,id+n-1);    
-    
     x = randomInt(0,eval(v_coincidencias.length-1));
     
     
     //Mostramos la pregunta seleccionada aleatoriamente.
-    //$('.pregunta'+x).show();
     $('.pregunta'+eval(v_coincidencias[x]+id)).show();
     
-    //console.log("V_COINCIDENCIAS: ");
-    //console.log(v_coincidencias);
-    //console.log("id: "+id+" id+n: "+eval(id+n-1));
-    
-    
-    //console.log("id: "+id+"____ n: "+n+"____ x:"+x);
-    //console.log(context_preguntas);
-    //console.log("Filtro asignatura: "+filtro_asignatura);
-    
-    //console.log(json_preguntas.feed.entry[x].gsx$enunciado.$t);
-    //console.log(json_preguntas.feed.entry[x].gsx$asignatura.$t);
+
 }
 
 
 
 //VERSION 2 - filtra las asignaturas.
-//Función que filtra las preguntas cortas para mostrar sólo una aleatoria.
+//Función que filtra las preguntas verdadero y falso para mostrar sólo una aleatoria.
 //ID -> ID del tema
 //n -> número de preguntas del tema
 function filtroAleatorioPreguntasVF2(indice,id,n){
-    //console.log("############# FILTRO ALEATORIO PREGUNTAS VF2 ####################");
     //Pasamos a enteros para evitar problemas con cadenas.
     id = parseInt(id); 
     n = parseInt(n);
@@ -460,42 +405,23 @@ function filtroAleatorioPreguntasVF2(indice,id,n){
 
     
     //Recorrer la estructura con todas las preguntas del tema. Desde id hasta id+n
-    //console.log(context_preguntas_vf);    
-    //console.log("EL ID -> "+id);
     for(var i=0; i<n; i++){  
         //Almacenar las preguntas que corresponden al filtrado
-        //console.log("Dentro for: "+context_preguntas_vf.tema[indice].preguntas[i].asig);
         if(context_preguntas_vf.tema[indice].preguntas[i].asig=="Ambas" || 
            context_preguntas_vf.tema[indice].preguntas[i].asig==filtro_asignatura){
-           //console.log("coincidencia encontrada");
             v_coincidencias_vf.push(i);
         }
-        //console.log(context_preguntas.tema[indice])
     }
     
     
-    //Elegimos una aleatoria
-    //x = randomInt(id,id+n-1);    
-    
+    //Elegimos una aleatoria  
     x = randomInt(0,eval(v_coincidencias_vf.length-1));
-    //console.log("Random(0, "+eval(v_coincidencias_vf.length-1)+") = "+x);
     
     
     //Mostramos la pregunta seleccionada aleatoriamente.
-    //$('.pregunta'+x).show();
     $('.pregunta'+eval(v_coincidencias_vf[x]+id)).show();
     
-    //console.log("V_COINCIDENCIAS: ");
-    //console.log(v_coincidencias_vf);
-    //console.log("id: "+id+" id+n: "+eval(id+n-1));
-    
-    
-    //console.log("id: "+id+"____ n: "+n+"____ x:"+x);
-    //console.log(context_preguntas);
-    //console.log("Filtro asignatura: "+filtro_asignatura);
-    
-    //console.log(json_preguntas.feed.entry[x].gsx$enunciado.$t);
-    //console.log(json_preguntas.feed.entry[x].gsx$asignatura.$t);
+
 }
 
 
@@ -560,8 +486,6 @@ function leerPreguntasVF(json) {
         }        
     }
     
-    //console.log("Context preguntas VF");
-    //console.log(context_preguntas_vf);
 }
 
 
@@ -586,8 +510,6 @@ function generaRespuestaVF(enunciado,respuesta_seleccionada,respuesta_correcta,e
             $('#respuestaVF').append('<a data-role="button" data-theme="g" class="ui-right-g ui-link ui-btn ui-btn-g ui-icon-check ui-btn-icon-left ui-shadow ui-corner-all" data-icon="check">'+respuesta_seleccionada_tmp+'</a>');
         }else{
             $('#respuestaVF').empty();
-            //class="ui-wrong-g ui-link ui-btn ui-btn-g ui-icon-delete ui-btn-icon-left ui-shadow ui-corner-all"
-            //$('#respuesta').append('<a data-role="button" data-theme="g" class="ui-wrong-g" data-icon="delete">'+respuesta_seleccionada+'</a>');
             $('#respuestaVF').append('<a data-role="button" data-theme="g" class="strike ui-wrong-g ui-link ui-btn ui-btn-g ui-icon-delete ui-btn-icon-left ui-shadow ui-corner-all" data-icon="delete">'+respuesta_seleccionada_tmp+'</a>');
             $('#respuestaVF').append('<h3>Respuesta correcta: '+respuesta_correcta_tmp+'</h2>');
         }
@@ -620,8 +542,6 @@ function leerRelaciones(json){
     }
     context_relaciones.relaciones = v_relaciones;
     
-    //console.log("Leer relaciones");
-    //console.log(context_relaciones);
 }
 
 
@@ -634,7 +554,7 @@ function compruebaSelectRelaciones(){
     var index;
     var valor;
     var texto;
-    //console.log("DENTRO DE COMPRUEBASELECTrELACIONES");
+
     for(var i=0;i<n_relaciones;i++){
         index = eval("document.formularioRelaciones.relacion"+i+".selectedIndex");
         valor = eval("document.formularioRelaciones.relacion"+i+".options[index].value");
@@ -666,7 +586,6 @@ function leerResultadoRelaciones(json){
         })
     }
     context_relaciones.resultado = resultado;
-    //console.log(context_relaciones.resultado);
 }
 
 
@@ -697,12 +616,9 @@ function submitRelaciones(){
     
     valores += valor;
     
-    //console.log(valores);
-    //console.log(context_relaciones.resultado);
     
       for(var i in context_relaciones.resultado){
         if(valores == context_relaciones.resultado[i].condicion){
-            //$("#explicacionRelaciones").append("<span>Condicion:"+context_relaciones.resultado[i].condicion+"</span><br>");
             $("#explicacionRelaciones").append(
                 "<h3> Solución: </h3> \
                  <p>"+context_relaciones.resultado[i].descripcion+"</p><br>"
