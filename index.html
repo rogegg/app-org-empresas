@@ -328,8 +328,15 @@
                      </div>
                 {{~/each}}
             </ul>  
+                           
+                           
+            <a href="#examen-autoev-vf" data-role="button" onclick="generaExamenVF()">Examen</a>
                             
         </script>
+        
+        
+        
+        
         
         <!-- Plantilla respuesta a preguntas verdadero/falso -->
         <script id="plantilla-respuesta-verdadero-falso" type="text/x-handlebars-template">
@@ -343,7 +350,12 @@
         
         
         
-        <!-- Plantilla Exámenes de prueba -->
+        
+        
+        
+        
+        
+        <!-- Plantilla Exámenes preguntas de opción múltiple -->
         <script id="plantilla-examen" type="text/x-handlebars-template">                   
             <center><h2>Examen</h2></center>
             <center class="calificacion-examen"></center>
@@ -375,6 +387,38 @@
                 <a href="#" data-rel="back" data-role="button" data-theme="b" >Salir</a>
             </span>
         </script>
+                   
+                    
+                   
+        <!-- Plantilla Exámenes preguntas verdadero y falso -->
+        <script id="plantilla-examen-vf" type="text/x-handlebars-template">                   
+            <center><h2>Examen</h2></center>
+            <center class="calificacion-examen-vf"></center>
+            <form name="formularioExamenVF" id="formularioExamenVF">
+                {{#each preguntas}}
+                   <center id=caja-pregunta-examen-vf-{{id_examen}} style="margin: 10px;border:1px solid grey;border-radius: 15px" id="pregunta-examen-vf-{{id_examen}}">
+                        <span id="resultado-examen-vf-{{id_examen}}"></span>
+                        <fieldset data-role="controlgroup" data-type="horizontal">
+                            <legend id="titulo-pregunta-examen-vf-{{id_examen}}"><h3>Pregunta {{id_n_pregunta}}</h3></legend>
+                            <legend id="enunciado-examen-vf-{{id_examen}}">{{enunciado}}</legend>
+                            <input type="radio" name="radio-examen-pregunta-{{id_examen}}" id="radio-examen-verdadero-{{id_examen}}" value="off">
+                            <label for="radio-examen-verdadero-{{id_examen}}">Verdadero</label>
+                            <input type="radio" name="radio-examen-pregunta-{{id_examen}}" id="radio-examen-falso-{{id_examen}}" value="off">
+                            <label for="radio-examen-falso-{{id_examen}}">Falso</label>
+                        </fieldset>                    
+                        <center id="explicacion-examen-vf-{{id_examen}}"></center>
+                    </center>
+                {{~/each}}               
+            </form>
+            <center class="calificacion-examen-vf"></center>
+            </br>
+            <span id="botones-examen-vf">
+                <a href="" data-role="button" data-theme="b" onclick="corrigeExamenVF()">Corregir</a>
+                <a href="" data-role="button"  onclick="generaOtroExamenVF()">Siguiente Examen</a>
+                <a href="#" data-rel="back" data-role="button" data-theme="b" >Salir</a>
+            </span>
+        </script>                   
+                   
                    
                    
                    
@@ -679,6 +723,23 @@
             </script>
         </div>
             
+            
+        <!--
+            Página para EXAMEN  de Preguntas Verdader y Falso.
+        -->    
+        <div data-role="page" id="examen-autoev-vf" data-theme="c">
+            <script src="https://spreadsheets.google.com/feeds/list/1sFG2bBd0m00Lps7f6cZXUEAT2CbFgCof9W97ATx2VRE/o2iqq0f/public/values?alt=json-in-script&callback=generaExamenVF" type="text/javascript"></script>          
+            <div id="contenedor-header-examen-vf"></div>
+            <script>$('#contenedor-header-examen-vf').html(html_h);</script>
+            <div id="contenedor-examen-vf"></div>
+            <script>
+                var source   = $("#plantilla-examen-vf").html();
+                var template = Handlebars.compile(source);
+                var html     = template(context_examen_vf);
+                $('#contenedor-examen-vf').html(html);
+            </script>
+        </div>
+                
             
             
        <!--

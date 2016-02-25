@@ -17,6 +17,7 @@ var context_relaciones = new Object();
 var context_preguntas_por_tema = new Object();
 
 var context_examen = new Object();
+var context_examen_vf = new Object();
 
 
 
@@ -383,37 +384,6 @@ function randomInt(min,max){
 
 
 
-
-//VERSION 1 - No filtra las asignaturas
-//Función que filtra las preguntas cortas para mostrar sólo una aleatoria.
-//ID -> ID del tema
-//n -> número de preguntas del tema
-function filtroAleatorioPreguntasVF(id,n){
-    //Pasamos a enteros para evitar problemas con cadenas.
-    id = parseInt(id); 
-    n = parseInt(n);
-    var x; //x -> número aleatorio entre ID y ID+n
-    
-    //Ocultamos las preguntas para después mostrar una aleatoria.
-    $('.pregunta').hide();
-    $('.opciones').hide();
-    x = randomInt(id,id+n-1);    
-    
-    
-    
-    //Mostramos la pregunta seleccionada aleatoriamente.
-    $('.pregunta'+x).show();
-    
-    //console.log("CONTEXT_PREGUNTAS: ");
-    //console.log("id: "+id+"____ n: "+n+"____ x:"+x);
-    //console.log(context_preguntas);
-    //console.log(filtro_asignatura);
-    //console.log(json_preguntas.feed.entry[x].gsx$enunciado.$t);
-    //console.log(json_preguntas.feed.entry[x].gsx$asignatura.$t);
-}
-
-
-
 //VERSION 2 - filtra las asignaturas.
 //Función que filtra las preguntas cortas para mostrar sólo una aleatoria.
 //ID -> ID del tema
@@ -558,6 +528,7 @@ function leerPreguntasVF(json) {
                                                 
                 //Estructura JSON de cada tema
                 context_preguntas_vf.tema[j] = {
+                    filtro_examen: json.feed.entry[i].gsx$filtroexamen.$t,
                     indice: j,
                     filtrotema: json.feed.entry[i].gsx$filtrotema.$t,
                     nombre_tema: json.feed.entry[i].gsx$tema.$t,
