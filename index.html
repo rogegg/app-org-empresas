@@ -120,35 +120,6 @@
 
         <!-- Plantilla para CONCEPTOS v3. (Popups añadidos)-->
         <script id="plantilla-conceptos" type="text/x-handlebars-template">         
-<!-- PRUEBA PARA COLLAPSIBLE         
-          <h1>Prueba collapsible</h1>        
-          <div data-role="collapsibleset" data-theme="a" data-content-theme="a">
-              {{#each variable}}
-              <div data-role="collapsible">
-                  <h3>{{nombre_variable}}</h3>
-                  {{#ifCond nombre_subvariable '!=' ../nombre_variable}} <!-- añadido nuevo!!!!!!!!!!!!!!!!!!!!! 
-                  <div data-role="collapsibleset">
-                  {{/ifCond}}
-                  {{#each subvariables}}
-
-                      {{#ifCond nombre_subvariable '==' ../nombre_variable}}  <!-- si NO hay subvariable 
-                          {{#each conceptos}}
-                              <p>{{nombre_concepto}}</p>
-                          {{~/each}}    
-                      {{else}} <!-- si hay subvariable 
-                        <div data-role="collapsible">
-                            <h4 class="filtrosubvariable">{{nombre_subvariable}}</h4>
-                        </div>
-                    
-                      {{/ifCond}}
-                  {{~/each}} <!-- subvariables 
-                {{#ifCond nombre_subvariable '!=' ../nombre_variable}} <!-- añadido nuevo!!!!!!!!!!!!!!!!!!!!! 
-                </div>
-                {{/ifCond}}
-              </div>
-              {{~/each}}
-          </div>
---------------------------------------------------------------------------------------------------->
           <div data-role="collapsibleset">
             {{#each variable}}
             <div data-role="collapsible" data-collapsed="true" data-collapsed-icon="carat-r" data-expanded-icon="carat-d" >
@@ -219,35 +190,6 @@
         
         <!-- Plantilla Temas Preguntas Cortas -->
         <script id="plantilla-temas-preguntas-cortas" type="text/x-handlebars-template">
-           <!--
-           
-            <ul data-role="listview" data-inset="true" data-filter="false" >
-                <li data-role="list-divider" data-theme="b">Temas</li>
-                {{#each tema}}
-                     <li>
-                         <a href="#{{id_tema}}" data-rel="popup" class="{{filtrotema}} ui-btn ui-corner-all ui-shadow ui-btn-inline" data-transition="pop" onclick="filtroAleatorioPreguntas('{{indice}}','{{id2_tema}}','{{numero_preguntas}}')">
-                             {{nombre_tema}}
-                         </a>
-                     </li>
-                     <div data-role="popup" id="{{id_tema}}" data-position-to="window"> 
-                         <div data-role="main" class="ui-content">   
-                             {{#each preguntas}}
-                                 <a data-role="button" data-theme="g" class="ui-disabled-g pregunta pregunta{{id_pregunta}}">Pregunta</a>
-                                 <p class="pregunta pregunta{{id_pregunta}}">{{enunciado}}</p>
-                                 <a data-role="button" data-theme="g" class="opciones ui-disabled-g pregunta{{id_pregunta}}">Respuesta</a>
-                                 <p class="opciones pregunta{{id_pregunta}}">
-                                     {{#each opciones}}
-                                         <a href="#respuesta_preguntas_cortas" data-role="button" onclick="generaRespuesta('{{../enunciado}}','{{nombre}}','{{../respuesta}}','{{../explicacion}}')">{{nombre}}</a>
-                                     {{~/each}}
-                                 </p>
-                             {{~/each}}
-                         </div>
-                     </div>
-                {{~/each}}
-            </ul>
-            
-                         -->         
-            <!-- prueba nuevo -->
             <ul data-role="listview" data-inset="true" data-filter="false">
                 <li data-role="list-divider" data-theme="b">Temas</li>
                 {{#each tema}}
@@ -286,7 +228,6 @@
         <script id="plantilla-respuesta-preguntas-cortas" type="text/x-handlebars-template">
             <a data-role="button" data-theme="g" class="ui-disabled-g">Pregunta</a>
             <span id="pregunta">     </span>
-            <!-- <a data-role="button" data-theme="g" class="ui-disabled-g">Respuesta seleccionada</a> -->
             <span id="respuesta">     </span>
             <span id="explicacion">     </span>
             
@@ -342,7 +283,6 @@
         <script id="plantilla-respuesta-verdadero-falso" type="text/x-handlebars-template">
             <a data-role="button" data-theme="g" class="ui-disabled-g">Pregunta</a>
             <span id="preguntaVF">     </span>
-            <!-- <a data-role="button" data-theme="g" class="ui-disabled-g">Respuesta seleccionada</a> -->
             <span id="respuestaVF">     </span>
             <span id="explicacionVF">     </span>
             <a href="#" data-rel="back" data-role="button">Siguiente</a>
@@ -428,7 +368,6 @@
             <form name="formularioHexagono" id="formularioHexagono"> <!--action="javascript:submitHexagono()">-->
             {{#each pregunta}}
                 <fieldset style="padding: 10px;" data-role="controlgroup">
-                <!--<legend>Nombre: {{nombre_pregunta}} / ID: {{id_pregunta}} / N_Preguntas: {{../n_preguntas}}</legend>-->
                 <legend>{{nombre_pregunta}}</legend>
                 <select name="selHexagono{{id_pregunta}}" id="select-native-{{id_pregunta}}" class="select" onChange="compruebaSelect({{../n_preguntas}})">
                 <option value="-1" selected="selected">Selecciona una opción</option>
@@ -436,15 +375,13 @@
                     {{#ifCond nombre '!=' '' }}
                         <option value="{{codigo}}">
                             {{nombre}}
-                            <!--<a class="codigo-opcion">{{codigo}}</a>-->
                         </option>
                     {{/ifCond}}
                 {{~/each}}
                 </select>
                 </fieldset>
             {{~/each}}
-            <!--<input type=button value="Dime propiedades" onclick="dimePropiedades()">
-            <button type="submit" id="submit-hexagono" data-theme="b" data-icon="carat-r" data-iconpos="right" onclick="submitHexagono({{n_preguntas}})">Siguiente</button>-->
+
             <span hidden id="boton-hexagono-verde">
                 <a href="#respuesta-hexagono" data-role="button" data-theme="g" class="ui-right-g" onclick="submitHexagono({{n_preguntas}})">Siguiente</a>
             </span>
@@ -475,14 +412,12 @@
             <form name="formularioRelaciones" id="formularioRelaciones">
                 <span id="primera_variable">
                     <fieldset style="padding: 10px;" data-role="controlgroup">
-                    <!--<legend>Nombre: {{nombre_pregunta}} / ID: {{id_pregunta}} / N_Preguntas: {{../n_preguntas}}</legend>-->
                     <legend>Seleccione la primera variable - Seleccione la variable que ejerce una influencia (causa)</legend>
                     <select name="relacion0" id="select-native-relacion0" class="select" onChange="compruebaSelectRelaciones()">
                     <option value="-1" selected="selected">Selecciona una opción</option>
                     {{#each relaciones}}
                         <option value="{{valor}}" class="{{asig}}">
                             {{variable}}
-                            <!--<a class="valor-opcion">{{valor}}</a>-->
                         </option>
                     {{~/each}}    
                     </select>
@@ -490,14 +425,12 @@
                 </span>
                 <span id="segunda_variable">
                     <fieldset style="padding: 10px;" data-role="controlgroup">
-                    <!--<legend>Nombre: {{nombre_pregunta}} / ID: {{id_pregunta}} / N_Preguntas: {{../n_preguntas}}</legend>-->
                     <legend>Seleccione la segunda variable - Seleccione la variable sobre la que ejerce influencia (efecto)</legend>
                     <select name="relacion1" id="select-native-relacion1" class="select" onChange="compruebaSelectRelaciones()">>
                     <option value="-1" selected="selected">Selecciona una opción</option>
                     {{#each relaciones}}
                         <option value="{{valor}}">
                             {{variable}}
-                            <!--<a class="valor-opcion">{{valor}}</a>-->
                         </option>
                     {{~/each}}    
                     </select>
@@ -850,7 +783,6 @@
            </center>
         </div>
 <div data-role="page" id="prueba" data-theme="c">
-         <p>PRueba aaaaaaaaaaaaaaaaa</p>
         </div>
 
         </div>
