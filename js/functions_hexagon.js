@@ -32,7 +32,6 @@ function leerHexagono(json){
             nombre_pregunta_tmp = json.feed.entry[i].gsx$pregunta.$t;
             //Generamos las opciones de cada pregunta
             id_opc = i;
-            //console.log(id_opc);
             v_opciones = generaOpcionesHexagono(json,i,total,id_opc);
             v_pregunta.push({
                 nombre_pregunta: nombre_pregunta_tmp,
@@ -48,7 +47,6 @@ function leerHexagono(json){
     
     context_hexagono.pregunta = v_pregunta;
     
-    //console.log("Context hexagono", context_hexagono);
 }
 
 
@@ -89,17 +87,11 @@ function generaOpcionesHexagono(json,indice,total,id_opc){
         v_codigo=[];
     }
     
-    //console.log("DEPURACION HEXAGONO-opciones:");
-    //console.log("Indice: "+indice+", "+"Id_opc: "+id_opc);
-    //console.log("nombre: "+nombre);
-    
+     
     //Eliminamos nombres repetidos y combinamos su código.    
     for(var j=0 ; j<nombre.length ; j++){
-    //    if(indice == 35)        console.log(j+"-->"+nombre[j]);
         for(var k=j ; k<nombre.length ; k++){
-    //        if(indice == 35)            console.log("       "+k+"--->"+nombre[k]+"-> con codigo "+codigo[k])
             if(k!=j && nombre[k]==nombre[j]){
-    //            if(indice == 35)                console.log("Agrupo nombre y codigo");
                 nombre.splice(k,1);
                 codigo[j].push(codigo[k].pop());
                 codigo.splice(k,1);
@@ -107,14 +99,11 @@ function generaOpcionesHexagono(json,indice,total,id_opc){
             }
         }
     }
-    //console.log("nombre: "+nombre);
     
     
     //Almacenamos cada nombre con sus códigos.
-    //console.log("ID_OPC: "+id_opc);
     for(var j=0; j<nombre.length ;j++){        
         var x = j+id_opc+1; //Id para la opcion
-        //console.log("ID_OPCION: "+x);
         vector.push({
             nombre: nombre[j],
             codigo: codigo[j],
@@ -163,7 +152,6 @@ function submitHexagono(n_preguntas){
         //Contabilizamos los valores para dar un resultado
         for(var j=0 ; j<v_valores.length ; j++){
             v_contador[parseInt(v_valores[j])] = v_contador[parseInt(v_valores[j])]+1;
-            //console.log(v_valores);
         }
     }
     
@@ -222,7 +210,6 @@ function submitHexagono(n_preguntas){
     }
     
     
-    //console.log("VContador: "+v_contador);
     
     /*Depuración   //Mostramos los resultados para DEPURACIÓN
                             $("#contador").append("<span>Variable X= "+x+"; X_I= "+x_i+"</span><br>");
@@ -243,9 +230,7 @@ function submitHexagono(n_preguntas){
     //--Si es un híbrido triple.
     solucion_string = resuelveTipoHexagono(context_hexagono.solucion,n_preguntas);
         
-    //Prueba para componer el resultado de los arrays a un string
-    //solucion_string=String(context_hexagono.solucion[0].x_i)+","+String(context_hexagono.solucion[1].y_i);
-    //console.log("solucion_string[0]-> "+solucion_string[0]);
+
     
     //Si el primer dígito es un número o el signo negativo de un número
     if(solucion_string>'-' && solucion_string<'9'){
@@ -276,23 +261,6 @@ function submitHexagono(n_preguntas){
         );    
     }
     
-    
-    
-    
-    
-    
-    //console.log(v_contador);
-    //context_resultado_hexagono.mostrar = mostrar;
-    //console.log("Solución String: "+solucion_string);
-        
-    
-    //console.log("Resultado hexagono: ");
-    //console.log(context_hexagono);
-
-    /*var prueba = "0,2,3,4";
-    v_valores = procesaValores(prueba);
-    console.log(v_valores);
-    console.log(prueba);*/
 }
 
 
@@ -419,7 +387,6 @@ function resuelveTipoHexagono(solucion, n_preguntas){
     }
     
     
-    //console.log("SOLUCION Y ->"+solucion[1].y)        
     //Si el segundo valor es 0.
     if(solucion[1].y == 0){
         //Si el primero vale más que 0 es un tipo puro.
@@ -453,7 +420,6 @@ function resuelveTipoHexagono(solucion, n_preguntas){
     }
     
     //En cualquier otro caso, no hemos determinado que tipo es.
-    //return("-1");
 }
 
 
