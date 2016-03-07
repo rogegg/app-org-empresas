@@ -60,8 +60,8 @@
         </script>
 
        
-       
-        <title>iOrg</title>
+
+       <title>iOrg</title>
 
 
        
@@ -109,7 +109,6 @@
 
         <!-- Plantilla para el menú. -->
         <script id="plantilla-menu" type="text/x-handlebars-template">
-          <!-- revisar href de los botones -->
           {{#each menu}}
               <a style="display: block" href="#{{{id}}}" data-role="button" class="{{asig}}" onclick="contraerDesplegables()">
                 {{{nombre_menu}}}
@@ -184,9 +183,11 @@
          
         <!-- Plantilla Autoevaluación -->
         <script id="plantilla-autoevaluacion" type="text/x-handlebars-template">
-          <a href="#preguntas_verdadero_falso" data-role="button">Verdadero/Falso</a>
+                                              <!-- <a href="#preguntas_verdadero_falso" data-role="button">Verdadero/Falso</a> -->
+          <a href="#temas_preguntas_verdadero_falso" data-role="button">Verdadero/Falso</a>
           <a href="#temas_preguntas" data-role="button">Preguntas de opción múltiple</a>
         </script>
+        
         
         <!-- Plantilla Temas Preguntas Cortas -->
         <script id="plantilla-temas-preguntas-cortas" type="text/x-handlebars-template">
@@ -238,7 +239,8 @@
         
         
         
-        <!-- Plantilla Preguntas Verdadero y Falso -->
+        
+        <!-- Plantilla Preguntas Verdadero y Falso 
         <script id="plantilla-preguntas-vf" type="text/x-handlebars-template">
             <ul data-role="listview" data-inset="true" data-filter="false" >
                 <li data-role="list-divider" data-theme="b">Temas</li>
@@ -275,20 +277,61 @@
                             
         </script>
         
+        -->
         
         
         
         
-        <!-- Plantilla respuesta a preguntas verdadero/falso -->
+        <!-- Plantilla Temas Preguntas Verdadero y Falso -->
+        <script id="plantilla-temas-preguntas-vf" type="text/x-handlebars-template">
+            
+            <h3>Prueba temas verdadero falso</h3>
+            
+            <ul data-role="listview" data-inset="true" data-filter="false">
+                <li data-role="list-divider" data-theme="b">Temas</li>
+                {{#each tema}}
+                     <li>
+                         <a href="#pregunta_vf" class="{{filtrotema}} ui-btn ui-corner-all ui-shadow ui-btn-inline" onclick="generaTemaVF({{indice}})">
+                             {{nombre_tema}}
+                         </a>
+                     </li>
+                {{~/each}}
+            </ul>                                                                                                                                                                                                                   
+                    
+            <a href="#examen-autoev" data-role="button" onclick="generaExamenVF()">Examen</a>               
+        </script>
+        
+        
+        
+        
+        <!-- Plantilla pregunta verdadero falso -->
+        <script id="plantilla-pregunta-vf" type="text/x-handlebars-template">
+            <div class="ui-body ui-corner-all" id="pregunta-vf">           
+                
+                <a data-role="button" data-theme="g" class="ui-disabled-g pregunta">Pregunta</a>
+                <p id="enunciado-pregunta-vf"></p>
+                <center>
+                <p id="botones-pregunta-vf"></p>                                                          
+                </center>       
+                <a id="boton-siguiente-pregunta-vf" data-role="button"> Siguiente </a>
+                <a href="#temas_preguntas_verdadero_falso" data-role="button">Elegir Tema</a>
+                <a href="#home" data-role="button">Salir</a>
+            </div>
+            
+        </script>
+        
+        
+          <!-- Plantilla respuesta a preguntas verdadero/falso -->
         <script id="plantilla-respuesta-verdadero-falso" type="text/x-handlebars-template">
             <a data-role="button" data-theme="g" class="ui-disabled-g">Pregunta</a>
             <span id="preguntaVF">     </span>
             <span id="respuestaVF">     </span>
             <span id="explicacionVF">     </span>
-            <a href="#" data-rel="back" data-role="button">Siguiente</a>
+            
+            <a id="genera-siguiente-pregunta-vf" href="#pregunta_vf" data-role="button">Siguiente Pregunta</a>
+            <a href="#temas_preguntas_verdadero_falso" data-role="button">Elegir Tema</a>
+            <a href="#home" data-role="button">Salir</a>
         </script>
-        
-        
         
         
         
@@ -320,7 +363,7 @@
                 {{~/each}}               
             </form>
             <center class="calificacion-examen"></center>
-            </br>
+            <br>
             <span id="botones-examen">
                 <a href="" data-role="button" data-theme="b" onclick="corrigeExamen()">Corregir</a>
                 <a href="" data-role="button"  onclick="generaOtroExamen()">Siguiente Examen</a>
@@ -351,7 +394,7 @@
                 {{~/each}}               
             </form>
             <center class="calificacion-examen-vf"></center>
-            </br>
+            <br>
             <span id="botones-examen-vf">
                 <a href="" data-role="button" data-theme="b" onclick="corrigeExamenVF()">Corregir</a>
                 <a href="" data-role="button"  onclick="generaOtroExamenVF()">Siguiente Examen</a>
@@ -607,7 +650,7 @@
        
        <!--
             Página para los temas de preguntas verdadero/falso.
-        -->
+      
         <div data-role="page" id="preguntas_verdadero_falso" data-theme="c">
           <script src="https://spreadsheets.google.com/feeds/list/1sFG2bBd0m00Lps7f6cZXUEAT2CbFgCof9W97ATx2VRE/o2iqq0f/public/values?alt=json-in-script&callback=leerPreguntasVF" type="text/javascript"></script>          
           <div id="contenedor-header-preguntas-vf"></div>
@@ -621,10 +664,48 @@
             $('#contenedor-preguntas-vf').html(html);
           </script>
         </div>
+         -->
        
        
-       
+        
+              
+              
+              
+       <!--
+            Página para los temas de PREGUNTAS VERDADERO / FALSO.
+        -->
+        <div data-role="page" id="temas_preguntas_verdadero_falso" data-theme="c">
+          <script src="https://spreadsheets.google.com/feeds/list/1sFG2bBd0m00Lps7f6cZXUEAT2CbFgCof9W97ATx2VRE/o2iqq0f/public/values?alt=json-in-script&callback=leerPreguntasVF" type="text/javascript"></script>          
+          <div id="contenedor-header-preguntas-vf2"></div>
+          <script>$('#contenedor-header-preguntas-vf2').html(html_h);</script>
+          <div id="contenedor-temas-preguntas-vf"></div>
+          <script>
+            var source   = $("#plantilla-temas-preguntas-vf").html();
+            var template = Handlebars.compile(source);
+            var html     = template(context_preguntas_vf);
+            $('#contenedor-temas-preguntas-vf').html(html);
+          </script>
+        </div>       
+              
+              
+              
         <!--
+            Página para PREGUNTA VERDADERO FALSO
+        -->                        
+        <div data-role="page" id="pregunta_vf" data-theme="c">
+            <div id="contenedor-header-pregunta-vf"></div>
+            <script>$('#contenedor-header-pregunta-vf').html(html_h);</script>
+            <div id="contenedor-pregunta-vf"></div>
+            <script>
+                var source   = $("#plantilla-pregunta-vf").html();
+                var template = Handlebars.compile(source);
+                var html     = template(context_preguntas);
+                $('#contenedor-pregunta-vf').html(html);
+            </script>
+        </div>         
+                              
+              
+       <!--
             Respuesta a preguntas verdadero falso
         -->    
         <div data-role="page" id="respuesta_preguntas_verdadero_falso" data-theme="c">
@@ -638,7 +719,21 @@
                 $('#contenedor-respuesta-preguntas-vf').html(html);
             </script>
         </div>
-            
+                   
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
               
         <!--
             Página para EXAMEN  de Preguntas Cortas.
@@ -728,6 +823,8 @@
             </script>
         </div>
               
+              
+              
         <!--
             Respuesta Relaciones
         -->    
@@ -787,5 +884,7 @@
 
         </div>
         
+        
+                      <script>muestraInfo()</script>
     </body>
 </html>

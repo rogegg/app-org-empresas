@@ -286,6 +286,11 @@ function generaTema(indice){
     
 }
 
+
+
+
+
+
 //Función que recibe una cadena de palabras separadas por ; 
 ////y devuelve un vector en la que cada posición es una de esas palabras.
 function generaOpciones(cadena,indice){
@@ -334,6 +339,11 @@ function generaRespuesta(enunciado,respuesta_seleccionada,respuesta_correcta,exp
     
         
         $('#genera-siguiente').attr('onclick','generaTema('+indice+')');
+    
+        //Recargamos estilos de JqueryMobile
+        $('#respuesta_preguntas_cortas').trigger('create');
+        //Al recargar estilos necesitamos volver a ocultar el gif de carga.
+        $('#cargando').hide();
 }
 
 
@@ -381,8 +391,6 @@ function filtroAleatorioPreguntas(indice,id,n){
     
     //Mostramos la pregunta seleccionada aleatoriamente.
     $('.pregunta'+eval(v_coincidencias[x]+id)).show();
-    
-
 }
 
 
@@ -423,6 +431,9 @@ function filtroAleatorioPreguntasVF2(indice,id,n){
     
 
 }
+
+
+
 
 
 
@@ -490,7 +501,7 @@ function leerPreguntasVF(json) {
 
 
 //Comprueba si la respuesta es correcta o no, y genera la página de respuesta correcta o incorrecta
-function generaRespuestaVF(enunciado,respuesta_seleccionada,respuesta_correcta,explicacion){
+function generaRespuestaVF(enunciado,respuesta_seleccionada,respuesta_correcta,explicacion,indice){
         var respuesta_seleccionada_tmp ="";
         var respuesta_correcta_tmp ="";
         $('#preguntaVF').empty();
@@ -517,7 +528,73 @@ function generaRespuestaVF(enunciado,respuesta_seleccionada,respuesta_correcta,e
         $('#explicacionVF').empty();
         $('#explicacionVF').append(explicacion);
     
+        $('#genera-siguiente-pregunta-vf').attr('onclick','generaTemaVF('+indice+')');
+    
+    
+        //Volvemos a cargar los estilos de JqueryMobile 
+        $('#respuesta_preguntas_verdadero_falso').trigger('create');
+        //Al recargar estilos necesitamos volver a ocultar el gif de carga.
+        $('#cargando').hide();
+    
 }
+
+
+
+
+//Genera las distintas páginas por temas de preguntas verdadero falso.
+function generaTemaVF(indice){
+   
+    var ini=0, fin=0, x=0, nombre="";
+    ini = 0;
+    fin = parseInt(context_preguntas_vf.tema[indice].numero_preguntas) - 1 ;
+    x = randomInt(ini,fin);
+    
+    
+    var respuesta = context_preguntas_vf.tema[indice].preguntas[x].respuesta;
+    var explicacion = context_preguntas_vf.tema[indice].preguntas[x].explicacion;
+    var enunciado = context_preguntas_vf.tema[indice].preguntas[x].enunciado;
+    $('#enunciado-pregunta-vf').empty();
+    $('#enunciado-pregunta-vf').append(enunciado);
+    
+    $('#botones-pregunta-vf').empty();   
+    $('#botones-pregunta-vf').append(
+            '<a style="display: inline;" href="#respuesta_preguntas_verdadero_falso" data-role="button" data-icon="check" class="ui-right-g ui-link ui-btn ui-btn-g ui-icon-check ui-btn-icon-left ui-shadow ui-corner-all" data-theme="g" onclick="generaRespuestaVF(\''+enunciado+'\',\'V\',\''+respuesta+'\',\''+explicacion+'\',\''+indice+'\')">Verdadero</a>'
+        );    
+        
+    $('#botones-pregunta-vf').append(
+            '<a style="display: inline;" href="#respuesta_preguntas_verdadero_falso" data-role="button" data-icon="delete" class="ui-wrong-g ui-link ui-btn ui-btn-g ui-icon-delete ui-btn-icon-left ui-shadow ui-corner-all" data-theme="g" onclick="generaRespuestaVF(\''+enunciado+'\',\'F\',\''+respuesta+'\',\''+explicacion+'\',\''+indice+'\')">Falso</a>'
+        );   
+        
+
+    
+    $('#boton-siguiente-pregunta-vf').attr({
+        'href':'#',
+        'data-role':'button',
+        'onclick':'generaTemaVF('+indice+')'
+    });
+    
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 /***************************************************/
@@ -657,6 +734,12 @@ function contraerLvl2(){
     $( ".collapsible-lvl2" ).collapsible( "collapse" );
 }
 
+
+
+function muestraInfo(){
+    console.log("Context_preguntas:", context_preguntas);
+    console.log("Context_preguntas_Verdadero/Falso:", context_preguntas_vf);
+}
 
 
 
